@@ -1,0 +1,28 @@
+.periodicTable {
+  -fx-padding: 50px 50px 50px 50px;
+}
+
+.reactionTextArea {
+  -fx-font-size: 15px; -fx-font-family: Helvetica; -fx-padding: 0px 0px 0px 3px
+}
+
+.button_AddEquation {
+  -fx-border-radius: 0px;
+  -fx-background-color: #83e780;
+}
+
+.button_AddEquation:hover {
+  -fx-text-fill: #FFF;
+  -fx-background-color: #06b80f;
+}
+
+.button_DeleteEquation {
+  -fx-border-radius: 0px;
+  -fx-background-color: #ffa6a0;
+}
+
+.button_DeleteEquation:hover {
+  -fx-text-fill: #FFF;
+  -fx-border-width: 1px;
+  -fx-background-color: #ff4841;
+}
