@@ -7,8 +7,12 @@ typealias ElementsAndAmounts = LinkedHashMap<ElementSymbol, Int>
 data class Compound
 constructor(
         val amount: Int,
-        val atoms: ElementsAndAmounts = LinkedHashMap()
-)
+        val elements: ElementsAndAmounts = LinkedHashMap()
+) {
+    fun getString(): String {
+        return elements.entries.joinToString(separator = "", truncated = "") { (element, amount) -> "$element$amount" }
+    }
+}
 
 typealias Compounds = ArrayList<Compound>
 

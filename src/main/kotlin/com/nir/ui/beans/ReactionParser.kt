@@ -52,6 +52,15 @@ object ReactionParser {
         }
     }
 
+    fun convert(rawReaction: RawReaction): Reaction {
+        val leftCompounds = ArrayList<Compound>()
+        val rightCompounds = ArrayList<Compound>()
+        val lefts = rawReaction.reagents.map { convert(it) }.toCollection(leftCompounds)
+        val rights = rawReaction.products.map { convert(it) }.toCollection(rightCompounds)
+        val reactionTypeSymbol = rawReaction.reactionSymbol
+        return Reaction(lefts, reactionTypeSymbol, rights)
+    }
+
     private fun separateAmountFromCompound(amountsAndCompounds: String): Map<String, Int> {
         return amountsAndCompounds
                 .split("+")
@@ -79,15 +88,6 @@ object ReactionParser {
             1 -> 1
             else -> toReturn()
         }
-    }
-
-    fun convert(rawReaction: RawReaction): Reaction {
-        val leftCompounds = ArrayList<Compound>()
-        val rightCompounds = ArrayList<Compound>()
-        val lefts = rawReaction.reagents.map { convert(it) }.toCollection(leftCompounds)
-        val rights = rawReaction.products.map { convert(it) }.toCollection(rightCompounds)
-        val reactionTypeSymbol = rawReaction.reactionSymbol
-        return Reaction(lefts, reactionTypeSymbol, rights)
     }
 
     private fun isContain(source: String, subItem: String): Boolean {
