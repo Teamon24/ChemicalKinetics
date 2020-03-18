@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<TitledPane animated="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="206.0" prefWidth="245.0" text="Выбор реакции" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+  <content>
+    <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="207.0" prefWidth="243.0">
+         <children>
+            <ComboBox layoutX="23.0" layoutY="38.0" prefHeight="37.0" prefWidth="206.0" promptText="Выберите реакцию" />
+            <Button layoutX="23.0" layoutY="118.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="108.0" text="Добавить новую" />
+            <Button layoutX="173.0" layoutY="118.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="56.0" text="OK" />
+         </children></AnchorPane>
+  </content>
+</TitledPane>
