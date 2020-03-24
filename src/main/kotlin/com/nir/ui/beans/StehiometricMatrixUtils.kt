@@ -6,7 +6,13 @@ import com.nir.ui.utils.ElementsAndAmounts
 import com.nir.ui.utils.Reaction
 
 object StehiometricMatrixUtils {
-    fun unique(reactions: Collection<Reaction>) {
+
+    fun getMatrix(reactions: Collection<Reaction>) {
+
+    }
+
+    fun uniqueReagentsAndProducts(reactions: Collection<Reaction>) {
+
     }
 }
 
@@ -30,5 +36,5 @@ fun main() {
                     )
             )
     ))
-    StehiometricMatrixUtils.unique(listOf(reaction))
+    StehiometricMatrixUtils.uniqueReagentsAndProducts(listOf(reaction))
 }

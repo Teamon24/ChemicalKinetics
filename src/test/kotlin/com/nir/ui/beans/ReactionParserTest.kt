@@ -1,4 +1,4 @@
-package com.nir.beans
+package com.nir.ui.beans
 
 import com.nir.ui.beans.Beans
 import com.nir.ui.beans.RawReactionType
