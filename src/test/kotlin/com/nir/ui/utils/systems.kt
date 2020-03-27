@@ -4,7 +4,7 @@ package com.nir.ui.utils
 class LorentzStrangeAttractor(
         private val b: Double = 8/3.0,
         private val sigma: Double = 10.0,
-        private val R: Double = 4.0)
+        private val R: Double = 28.0)
     :
         F(
                 { r, t -> sigma*(r[1] - r[0]) },

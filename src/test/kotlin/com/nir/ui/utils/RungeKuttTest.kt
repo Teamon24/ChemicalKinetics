@@ -14,18 +14,18 @@ import javax.swing.SwingConstants
 import javax.swing.SwingUtilities
 
 fun main() {
-    val N = 20000
+    val N = 30000
     val t0 = 0.0
-    val dt = 0.0001
+    val dt = 0.0025
     val solution = RungeKutta(4)(LorentzStrangeAttractor(), arrayOf(1.0, 1.0, 1.0), t0, N, dt)
 
     val chart = XYChartBuilder().width(800).height(600).theme(Styler.ChartTheme.Matlab).build()
-    val timeSeria = series(t0, N, dt)
-    chart.addSeries("x", timeSeria, solution.map { it[0] }.toDoubleArray())
-    chart.addSeries("y", timeSeria, solution.map { it[1] }.toDoubleArray())
-    chart.addSeries("z", timeSeria, solution.map { it[2] }.toDoubleArray())
+    val timeSeries = series(t0, N, dt)
+    chart.addSeries("x", timeSeries, solution.map { it[0] }.toDoubleArray())
+    chart.addSeries("y", timeSeries, solution.map { it[1] }.toDoubleArray())
+    chart.addSeries("z", timeSeries, solution.map { it[2] }.toDoubleArray())
 
-    chart.styler.defaultSeriesRenderStyle = XYSeries.XYSeriesRenderStyle.Scatter;
+    chart.styler.defaultSeriesRenderStyle = XYSeries.XYSeriesRenderStyle.Scatter
     chart.styler.markerSize = 1;
 
     SwingUtilities.invokeLater {

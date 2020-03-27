@@ -3,7 +3,6 @@ package com.nir.ui.utils.math
 import com.nir.ui.utils.ArrayUtils
 import com.nir.ui.utils.F
 
-
 class RungeKutta(order: Int) {
     private val core: RungeKuttaCore = when (order) {
         4 -> RungeKutta4Core()
@@ -32,9 +31,6 @@ class RungeKutta(order: Int) {
 
         return r
     }
-
-
-
 }
 
 
