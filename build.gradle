@@ -32,10 +32,7 @@ dependencies {
     compile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
     compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 
-    compile 'org.springframework:spring-webmvc:3.2.2.RELEASE'
-    compile 'org.springframework:spring-core:3.2.2.RELEASE'
-    compile 'org.springframework:spring-aop:3.2.2.RELEASE'
-
+    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
 }
 
 compileKotlin {

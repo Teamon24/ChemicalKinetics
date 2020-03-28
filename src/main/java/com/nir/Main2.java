@@ -1,6 +1,5 @@
 package com.nir;
 
-import com.mysql.cj.jdbc.Driver;
 import com.nir.ui.UiComponents;
 import com.nir.ui.beans.Beans;
 import com.nir.ui.beans.RawReaction;
@@ -8,18 +7,13 @@ import com.nir.ui.beans.ReactionParser;
 import com.nir.ui.utils.CSS;
 import com.nir.ui.utils.Reaction;
 import javafx.application.Application;
-import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.stage.Stage;
 
-import java.awt.*;
-import java.sql.DriverManager;
 import java.util.ArrayList;
 
 public class Main2 extends Application {
@@ -107,13 +101,6 @@ public class Main2 extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        StackPane rootPane = new StackPane();
-//        SplitPane splitPane = new SplitPane();
-//        ReactionsPane reactionsPane = new ReactionsPane();
-//        reactionsPane.setMinSize(700.0, 500.0);
-//        splitPane.getItems().addAll(reactionsPane, new TextArea("Empty Area"));
-//        rootPane.getChildren().addAll(splitPane);
-
     }
 
     public static void main(String[] args) {
