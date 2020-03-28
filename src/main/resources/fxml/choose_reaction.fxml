@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane fx:id="anchorPane" minHeight="0.0" minWidth="0.0" prefHeight="207.0" prefWidth="243.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ComboBox fx:id="comboBox" layoutX="23.0" layoutY="38.0" prefHeight="37.0" prefWidth="206.0" promptText="Выберите реакцию" />
+      <Button fx:id="btnAddNew" layoutX="23.0" layoutY="118.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="108.0" text="Добавить новую" />
+      <Button fx:id="btnOK" layoutX="173.0" layoutY="118.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="56.0" text="OK" />
+   </children>
+</AnchorPane>

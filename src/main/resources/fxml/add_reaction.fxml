@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="272.0" prefWidth="392.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Text layoutX="24.0" layoutY="42.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Реакция:" AnchorPane.leftAnchor="10.0" />
+      <TextField fx:id="tfReaction" layoutX="24.0" layoutY="58.0" prefHeight="25.0" prefWidth="329.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" />
+      <Text layoutX="24.0" layoutY="105.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Стадии:" AnchorPane.leftAnchor="10.0" />
+      <Button fx:id="btnCancel" layoutX="216.0" layoutY="221.0" mnemonicParsing="false" text="Отмена" />
+      <Button fx:id="btnSave" layoutX="304.0" layoutY="221.0" mnemonicParsing="false" text="Сохранить" AnchorPane.rightAnchor="14.0" />
+      <Button fx:id="btnAdd" layoutX="10.0" layoutY="124.0" mnemonicParsing="false" text="+" />
+   </children>
+</AnchorPane>

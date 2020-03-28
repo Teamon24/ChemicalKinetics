@@ -26,6 +26,7 @@ object ReactionParser {
     val separateByCapital = Regex("(?<=.)(?=\\p{Lu})")
     val separateDigitsAndLetters = Regex("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)")
 
+    @JvmStatic
     fun parse(reaction: String): RawReaction {
         val values = reactionSymbols()
         val symbol = values.first { isContain(reaction, it) }
@@ -52,6 +53,7 @@ object ReactionParser {
         }
     }
 
+    @JvmStatic
     fun convert(rawReaction: RawReaction): Reaction {
         val leftCompounds = ArrayList<Compound>()
         val rightCompounds = ArrayList<Compound>()
