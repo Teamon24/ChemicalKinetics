@@ -1,11 +1,11 @@
 package com.nir;
 
 import com.nir.ui.UiComponents;
-import com.nir.ui.beans.Beans;
-import com.nir.ui.beans.RawReaction;
-import com.nir.ui.beans.ReactionParser;
-import com.nir.ui.utils.CSS;
-import com.nir.ui.utils.Reaction;
+import com.nir.beans.Beans;
+import com.nir.beans.RawStage;
+import com.nir.beans.StageParser;
+import com.nir.utils.CSS;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -15,16 +15,16 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
-import javafx.stage.Stage;
 
 import java.util.ArrayList;
+import javafx.stage.Stage;
 
 public class Main2 extends Application {
     private Scene chooseReactionScene;
     private Scene addReactionScene;
     private Scene mainScene;
     private Stage mainStage;
-    private Stage addReactionStage;
+    private Stage addStageStage;
     private Stage chooseReactionStage;
 
     public static final EventHandler<ActionEvent> EXIT = ignored -> System.exit(0);
@@ -41,15 +41,15 @@ public class Main2 extends Application {
             btnAddNew.setOnMouseClicked(mouseEvent -> showAddReactionForm());
             Button btnOK = (Button) chooseReactionScene.lookup("#btnOK");
             btnOK.setOnMouseClicked(mouseEvent -> {
-                ArrayList<Reaction> reactions = new ArrayList<>();
+                ArrayList<com.nir.ui.dto.Stage> stages = new ArrayList<>();
                 ComboBox comboBox = (ComboBox) chooseReactionScene.lookup("#comboBox");
                 String reactionString = (String) comboBox.getValue();
                 //connect to database
                 //search reaction in db, get id of complex reaction, find reactions with foreign key
                 //for...{
-                    RawReaction rawReaction = ReactionParser.parse(reactionString);
-                    Reaction reaction = ReactionParser.convert(rawReaction);
-                    reactions.add(reaction);
+                    RawStage rawReaction = StageParser.parse(reactionString);
+                    com.nir.ui.dto.Stage stage = StageParser.convert(rawReaction);
+                    stages.add(stage);
                 // }
                 // составляем стехиометрическую матрицу, систему, решаем, получаем результат, открываем мейн форму, отображаем результат
                 showMainForm();
@@ -57,9 +57,7 @@ public class Main2 extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-
-    }
+     }
 
     private void showMainForm() {
         try {
@@ -88,17 +86,17 @@ public class Main2 extends Application {
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/fxml/add_reaction.fxml"));
             addReactionScene = new Scene(fxmlLoader.load());
-            addReactionStage = new Stage();
-            addReactionStage.setScene(addReactionScene);
-            addReactionStage.show();
+            addStageStage = new Stage();
+            addStageStage.setScene(addReactionScene);
+            addStageStage.show();
             Button btnSave = (Button) addReactionScene.lookup("#btnSave");
             btnSave.setOnMouseClicked(mouseEvent1 -> {
                 //update reactions list in chooseReactionScene
-                addReactionStage.close();
+                addStageStage.close();
             });
             Button btnCancel = (Button) addReactionScene.lookup("#btnCancel");
-            btnCancel.setOnMouseClicked(mouseEvent1 -> addReactionStage.close());
-            addReactionStage.setOnHiding(windowEvent -> chooseReactionStage.show());
+            btnCancel.setOnMouseClicked(mouseEvent1 -> addStageStage.close());
+            addStageStage.setOnHiding(windowEvent -> chooseReactionStage.show());
             chooseReactionStage.hide();
         } catch (Exception e) {
             e.printStackTrace();

@@ -1,8 +1,5 @@
 package com.nir.ui;
 
-import com.nir.ui.reaction.PeriodicElementPicker;
-import com.nir.ui.reaction.PeriodicTable;
-
 public final class UiComponents {
 
     public static PeriodicTable periodicTable() {

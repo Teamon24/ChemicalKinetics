@@ -6,22 +6,22 @@ plugins {
 group 'com.home.com.nir'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 11
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
 }
 
-java {
-    sourceSets {
-        'src/main/java'
-    }
+sourceSets {
+    main.java.srcDirs = ['src/main/java', 'src/main/kotlin']
+    main.kotlin.srcDirs = ['src/main/java', 'src/main/kotlin']
+    main.resources.srcDirs = ['src/main/resources']
 }
 
-kotlin {
-    sourceSets {
-        'src/main/kotlin'
-    }
+sourceSets {
+    test.java.srcDirs = ['src/test/java', 'src/test/kotlin']
+    test.kotlin.srcDirs = ['src/test/java', 'src/test/kotlin']
+    test.resources.srcDirs = ['src/test/resources']
 }
 
 dependencies {
@@ -37,14 +37,14 @@ dependencies {
     compile group: 'io.projectreactor', name: 'reactor-core', version: '3.3.0.RELEASE'
     implementation 'de.gsi.chart:chartfx-chart:11.1.3'
 
-    compile group: 'mysql', name: 'mysql-connector-java', version: '5.1.6'
+    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
 }
 
 compileKotlin {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "1.8"
 }
 compileTestKotlin {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "1.8"
 }
 
 test {
