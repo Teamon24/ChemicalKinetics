@@ -10,7 +10,7 @@ typealias R = Array<Double>
  * dr/dt = F
  */
 open class F (vararg val f: (R, T) -> Double) {
-
+    val size: Int = f.size
     operator fun invoke(r: R, t: T): Array<Double> {
         return (f.indices).map { i -> f[i](r, t) }.toTypedArray()
     }
@@ -70,7 +70,7 @@ class Stehiomatrix {
     }
 
     fun transpose(): Stehiomatrix {
-        val transposed = Array(rows) { Array(columns) { 0 } }
+        val transposed = Array(columns) { Array(rows) { 0 } }
         for(row in 0 until rows) {
             for(column in 0 until columns) {
                 transposed[column][row] = elements[row][column]

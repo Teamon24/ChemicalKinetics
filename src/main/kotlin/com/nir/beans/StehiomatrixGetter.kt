@@ -29,7 +29,7 @@ object StehiomatrixGetter {
             throw RuntimeException("Columns amount of matrix and rates vector size should be equal.")
         }
 
-        val f = Array(ratesAmount) { zeroReturn }
+        val f = Array(stehiomatrix.rows) { zeroReturn }
         for (row in stehiomatrix.rowsRange) {
             f[row] = f(row, stehiomatrix, stageRates)
         }
