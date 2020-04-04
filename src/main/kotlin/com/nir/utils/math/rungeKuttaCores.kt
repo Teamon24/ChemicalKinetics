@@ -1,29 +1,45 @@
 package com.nir.utils.math
 
+import com.nir.beans.K
+import com.nir.utils.ArrayUtils
+
 interface RungeKuttaCore {
-    operator fun invoke(k: Array<Array<Double>>,
-                        f: F,
+    operator fun invoke(system: System,
+                        r: R,
                         t: Double,
-                        dt: Double,
-                        coeffs: Array<Double>,
-                        r: R): Array<Double>
+                        dt: Double): Array<Double>
 }
 
-class RungeKutta4Core : RungeKuttaCore {
-    override operator fun invoke(k: Array<Array<Double>>,
-                                 f: F,
-                                 t: Double,
-                                 dt: Double,
-                                 coeffs: Array<Double>,
-                                 r: R): Array<Double> {
-        k[0] = f(r, t)
-        k[1] = f(r + coeffs[1] * k[0], t + coeffs[1])
-        k[2] = f(r + coeffs[1] * k[1], t + coeffs[1])
-        k[3] = f(r + dt * k[2], t + dt)
+class RungeKutta4Core
+constructor(initialData: InitialData) : RungeKuttaCore {
+    private val methodOrder = 4
 
-        val kSum = coeffs[1] * (k[0] + 2 * k[1] + 2 * k[2] + k[3])
+    private var k: Array<K>
+    private var sixth: Double
+    private var half: Double
+
+    init {
+        val dimension = initialData.r0.size
+        val dt = initialData.dt
+        k = init(methodOrder, dimension)
+        half = dt / 2.0
+        sixth = dt / 6.0
+    }
+
+    override operator fun invoke(system: System,
+                                 r: R,
+                                 t: Double,
+                                 dt: Double): Array<Double> {
+        k[0] = system(t, r)
+        k[1] = system(t + half, r + half * k[0])
+        k[2] = system(t + half, r + half * k[1])
+        k[3] = system(t + dt, r + dt * k[2])
+
+        val kSum = sixth * (k[0] + 2 * k[1] + 2 * k[2] + k[3])
         return kSum
     }
 }
+private fun init(N: Int, D: Int) = ArrayUtils.twoDimArray(N to D)
+
 
 

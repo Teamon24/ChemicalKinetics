@@ -9,19 +9,19 @@ typealias R = Array<Double>
 /**
  * dr/dt = F
  */
-open class F (vararg val f: (R, T) -> Double) {
+open class System (vararg val f: (T, R) -> Double) {
     val size: Int = f.size
-    operator fun invoke(r: R, t: T): Array<Double> {
-        return (f.indices).map { i -> f[i](r, t) }.toTypedArray()
+    operator fun invoke(t: T, r: R): Array<Double> {
+        return (f.indices).map { i -> f[i](t, r) }.toTypedArray()
     }
 }
 
-val zeroReturn = { _: R, _:T -> 0.0 }
+val zeroReturn = { _:T, _: R -> 0.0 }
 
 class StageRates {
 
     val size: Int
-    var elements: Array<(R,T)-> Double>
+    var elements: Array<(T, R)-> Double>
 
     constructor(size: Int) {
         this.size = size
@@ -31,11 +31,11 @@ class StageRates {
 
     val sizeRange: IntRange
 
-    constructor(elements: Array<(R,T)-> Double>) : this(elements.size) {
+    constructor(elements: Array<(T, R)-> Double>) : this(elements.size) {
         this.elements = elements
     }
 
-    operator fun get(row: Int): (R,T) -> Double {
+    operator fun get(row: Int): (T, R) -> Double {
         return elements[row]
     }
 }

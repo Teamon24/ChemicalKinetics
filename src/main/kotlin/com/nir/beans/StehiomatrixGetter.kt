@@ -3,7 +3,7 @@ package com.nir.beans
 import com.nir.ui.dto.Compounds
 import com.nir.ui.dto.Reaction
 import com.nir.ui.dto.Stage
-import com.nir.utils.math.F
+import com.nir.utils.math.System
 import com.nir.utils.math.Stehiomatrix
 import com.nir.utils.math.R
 import com.nir.utils.math.StageRates
@@ -23,7 +23,7 @@ typealias StagesAndItsReagentsIndices = ArrayList<StageAndItsReagentsIndices>
 object StehiomatrixGetter {
 
     @JvmStatic
-    fun times(stehiomatrix: Stehiomatrix, stageRates: StageRates): F {
+    fun times(stehiomatrix: Stehiomatrix, stageRates: StageRates): System {
         val ratesAmount = stageRates.size
         if (stehiomatrix.columns != ratesAmount) {
             throw RuntimeException("Columns amount of matrix and rates vector size should be equal.")
@@ -34,19 +34,19 @@ object StehiomatrixGetter {
             f[row] = f(row, stehiomatrix, stageRates)
         }
 
-        return F(*f)
+        return System(*f)
     }
 
-    private fun f(row: Int, stehiomatrix: Stehiomatrix, stageRates: StageRates): (R, T) -> Double {
+    private fun f(row: Int, stehiomatrix: Stehiomatrix, stageRates: StageRates): (T, R) -> Double {
         val row = stehiomatrix[row]
-        val res = ArrayList<(R,T)-> Double>()
+        val res = ArrayList<(T,R)-> Double>()
         for (column in stehiomatrix.columnsRange) {
             val rate = stageRates[column]
             val coeff = row[column]
-            res.add { r, t -> coeff * rate(r, t) }
+            res.add { t, r -> coeff * rate(t, r) }
         }
 
-        return { r, t -> res.fold(0.0) {acc, next -> acc + next(r,t) } }
+        return { t, r -> res.fold(0.0) {acc, next -> acc + next(t, r) } }
     }
 
     @JvmStatic
@@ -88,7 +88,7 @@ object StehiomatrixGetter {
         assert(k.size == stagesAndItsReagentsIndices.size)
         val rates =
                 stagesAndItsReagentsIndices
-                        .map { (i, indices) -> { r: R, _: T -> rate(k, r, i, indices) } }
+                        .map { (i, indices) -> { _: T, r: R -> rate(k, r, i, indices) } }
                         .toTypedArray()
 
         return StageRates(rates)

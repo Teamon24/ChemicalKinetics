@@ -6,11 +6,11 @@ import javafx.stage.Stage;
 
 import java.util.Map;
 
-public class PeriodicElementPicker extends Stage {
+public class PeriodicTableStage extends Stage {
     private PeriodicTable periodicTable = UiComponents.periodicTable();
     private int pickedElementNumber = 0;
 
-    public PeriodicElementPicker() {
+    public PeriodicTableStage() {
         super();
         Scene scene = new Scene(periodicTable);
         scene.getStylesheets().add(CSS.elementsType());

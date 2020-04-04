@@ -38,22 +38,23 @@ class StehiomatrixGetterTest {
     fun testGetRates() {
         datasForTestGetRates().forEach {
             val reaction = it[0] as Reaction
-            val k = it[1] as K
+            val k = it[1] as Array<Double>
             val r = it[2] as R
             val expectedRatesValues = it[3] as Array<Double>
             val rates = StehiomatrixGetter.getRates(reaction, k)
-            val result = rates.elements.map { action -> action(r, 0.0) }
+            val result = rates.elements.map { action -> action(0.0, r) }
             Assert.assertArrayEquals(expectedRatesValues, result.toTypedArray())
         }
     }
 
-    @Ignore
+
     @Test
+    //TODO проверить значения F после подстановки r0 и t0
     fun testSystemCreation() {
         datasForCheck().forEach {
             val stages = it[0] as Reaction
             val k = it[1] as K
-            val size = it[2] as K
+            val size = it[2] as Int
             val stehiomatrix = StehiomatrixGetter.getMatrix(stages)
             val rates = StehiomatrixGetter.getRates(stages, k)
             val transposed = stehiomatrix.transpose()
@@ -74,6 +75,7 @@ class StehiomatrixGetterTest {
 
 
     private fun datasForCheck(): Array<Array<out Any>> {
+        datasForTestGetRates()
         val coeff1 = stehCoeff1.array()
         val transpose = StehiomatrixGetter.getMatrix(reaction1()).transpose()
         val expectedValues1 = arrayOf(
@@ -128,8 +130,8 @@ class StehiomatrixGetterTest {
         w2 = arrayOf(w21, w22)
         val expectedRatesValues2 = k2.array() * w2
         return arrayOf(
-                arrayOf(stg1, k1, r10, expectedRatesValues1),
-                arrayOf(stg2, k2, r20, expectedRatesValues2)
+                arrayOf(stg1, k1.array(), r10.array(), expectedRatesValues1),
+                arrayOf(stg2, k2.array(), r20.array(), expectedRatesValues2)
         )
     }
 

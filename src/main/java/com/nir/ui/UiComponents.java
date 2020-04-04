@@ -6,7 +6,7 @@ public final class UiComponents {
         return new PeriodicTable();
     }
 
-    public static PeriodicElementPicker periodicElementPicker() {
-        return new PeriodicElementPicker();
+    public static PeriodicTableStage periodicElementsStage() {
+        return new PeriodicTableStage();
     }
 }
