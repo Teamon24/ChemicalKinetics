@@ -30,7 +30,7 @@ public class SolutionFlowPlotCheck extends Application {
 
         //Запуск решения системы уравнений
         final InitialData initialData = system.initialData();
-        final Method method = new RungeKutta(4, initialData);
+        final Method method = new RungeKutta(4);
         final SolutionFlow solutionFlow =
             Solution
                 .method(method)

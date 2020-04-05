@@ -27,7 +27,7 @@ public class SolutionPlotCheck extends Application {
 
         //Запуск решения системы уравнений
         final InitialData initialData = system.initialData();
-        final Method method = new RungeKutta(4, initialData);
+        final Method method = new RungeKutta(4);
         final Runnable runnable =
             Solution
                 .method(method)
