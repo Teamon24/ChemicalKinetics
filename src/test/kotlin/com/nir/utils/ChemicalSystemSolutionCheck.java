@@ -56,13 +56,13 @@ public class ChemicalSystemSolutionCheck extends Application {
         //Составление объекта с настройками решения
         final System system = getSystem(chemicalReaction, stages);
         method.init(initialData.getR0().length, initialData.getDt());
-        final Runnable solutionFlow =
+        final SolutionFlow solutionFlow =
             Solution
                 .method(method)
                 .system(system)
                 .initialData(initialData)
                 .datasets(dataSets)
-                .task();
+                .flow();
 
         //Запуск решения системы уравнений - на этом моменте времене в графики будут добавляться точки решения
         PlatformUtils.runLater(solutionFlow);
