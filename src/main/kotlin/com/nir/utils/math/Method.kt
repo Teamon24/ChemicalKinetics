@@ -7,6 +7,10 @@ import com.nir.utils.ArrayUtils
  * Метод решения системы уравнений.
  */
 sealed class Method {
+    abstract val name: String
+
+    abstract fun init(dimension: Int, dt: T)
+
     abstract operator fun invoke(system: System,
                                  r0: R,
                                  t0: T,
@@ -20,6 +24,9 @@ sealed class Method {
 }
 
 object Euler : Method() {
+    override val name: String get() = "Euler"
+    override fun init(dimension: Int, dt: T) {}
+
     override fun invoke(system: System,
                         r0: R,
                         t0: T,
@@ -48,11 +55,16 @@ object Euler : Method() {
 /**
  * Метод решения системы уравенений "Рунге-Кутта".
  */
-class RungeKutta(order: Int, initialData: InitialData): Method() {
+class RungeKutta(private val order: Int): Method() {
 
     private val core: RungeKuttaCore = when (order) {
-        4 -> RungeKutta4Core(initialData)
+        4 -> RungeKutta4Core()
         else -> throw RuntimeException("For order='$order' no Runge-Kutta method")
+    }
+    override val name: String get() = "Runge-Kutta ${order}-order"
+
+    override fun init(dimension: Int, dt: T) {
+        core.init(dimension, dt)
     }
 
     override operator fun invoke(system: System,

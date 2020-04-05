@@ -1,6 +1,6 @@
 package com.nir.beans;
 
-import com.nir.utils.PeriodicElement;
+import com.nir.ui.dto.PeriodicElement;
 
 import java.util.List;
 

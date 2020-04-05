@@ -1,7 +1,7 @@
 package com.nir.ui;
 
-import com.nir.utils.PeriodicElement;
-import com.nir.utils.PeriodicElementType;
+import com.nir.ui.dto.PeriodicElement;
+import com.nir.ui.dto.PeriodicElementType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;
@@ -16,7 +16,7 @@ public class ElementPane extends GridPane {
     public ElementPane(PeriodicElement element) {
         super();
         int size = 30;
-        this.setMinHeight(size + 40);
+        this.setMinHeight(size + 20);
 
         Label number = new Label("" + element.getNumber());
         Label symbol = new Label(element.getSymbol());
@@ -40,8 +40,8 @@ public class ElementPane extends GridPane {
         String classOfType = periodicElementType.getClassBy(type);
         this.getStyleClass().add(classOfType);
 
-        this.setHgap(5);
-        this.setVgap(5);
+        this.setHgap(1);
+        this.setVgap(1);
         this.setFocusTraversable(false);
         this.add(number, 0, 0);
         this.add(symbol, 0, 1);

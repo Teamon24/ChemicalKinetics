@@ -2,7 +2,7 @@ package com.nir.beans;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nir.utils.PeriodicElement;
+import com.nir.ui.dto.PeriodicElement;
 
 import java.io.IOException;
 import java.net.URL;

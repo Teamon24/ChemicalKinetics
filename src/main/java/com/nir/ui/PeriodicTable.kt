@@ -9,8 +9,8 @@ class PeriodicTable : ScrollPane() {
     private val elementsGrid: GridPane = GridPane()
 
     init {
-        elementsGrid.vgap = 8.0
-        elementsGrid.hgap = 8.0
+        elementsGrid.vgap = 6.0
+        elementsGrid.hgap = 6.0
         super.setContent(elementsGrid)
         super.getStyleClass().add("periodicTable")
 

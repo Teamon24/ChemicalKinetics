@@ -3,6 +3,10 @@ package com.nir.utils
 data class Quadruple<out A, out B, out C, out D>
 constructor(val a: A, val b: B, val c: C, val d: D) {
     override fun toString(): String = s(arrayOf(a, b, c, d))
+    companion object {
+        @JvmStatic
+        fun<A, B, C, D> of(a: A, b: B, c: C, d: D): Quadruple<A, B, C, D> = Quadruple(a, b, c, d)
+    }
 }
 
 data class Quintuple<out A, out B, out C, out D, out E>

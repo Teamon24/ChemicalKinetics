@@ -11,3 +11,5 @@ fun String.delete(vararg string: String): String {
     }
     return result
 }
+
+infix fun Boolean.ifTrue(predicate: () -> Any) = if (this) predicate() else {}

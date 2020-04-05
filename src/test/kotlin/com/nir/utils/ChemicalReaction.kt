@@ -18,7 +18,7 @@ data class ChemicalReaction(val N: Int,
     companion object {
         @JvmStatic
         fun chemicalReaction1(): ChemicalReaction {
-            val n = 150000
+            val n = 550000
             val t0 = 0.0
             val dt = 0.000001
             val k = arrayOf(2.0, 1.0)

@@ -76,7 +76,7 @@ object Solution {
                 for (i in 0 until N - 1) {
                     r[1] = method(system, r[0], t, dt)
 
-                    if (i % 2 == 0) {
+                    if (i % 10 == 0) {
                         delay(1)
                     }
 

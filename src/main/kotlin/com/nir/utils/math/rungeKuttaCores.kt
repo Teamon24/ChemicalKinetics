@@ -2,25 +2,25 @@ package com.nir.utils.math
 
 import com.nir.beans.K
 import com.nir.utils.ArrayUtils
+import kotlin.properties.Delegates
 
 interface RungeKuttaCore {
+    fun init(dimension: Int, dt: T)
+
     operator fun invoke(system: System,
                         r: R,
                         t: Double,
                         dt: Double): Array<Double>
 }
 
-class RungeKutta4Core
-constructor(initialData: InitialData) : RungeKuttaCore {
+class RungeKutta4Core: RungeKuttaCore {
     private val methodOrder = 4
 
-    private var k: Array<K>
-    private var sixth: Double
-    private var half: Double
+    private lateinit var k: Array<K>
+    private var sixth by Delegates.notNull<Double>()
+    private var half by Delegates.notNull<Double>()
 
-    init {
-        val dimension = initialData.r0.size
-        val dt = initialData.dt
+    override fun init(dimension: Int, dt: T) {
         k = init(methodOrder, dimension)
         half = dt / 2.0
         sixth = dt / 6.0
@@ -39,6 +39,7 @@ constructor(initialData: InitialData) : RungeKuttaCore {
         return kSum
     }
 }
+
 private fun init(N: Int, D: Int) = ArrayUtils.twoDimArray(N to D)
 
 

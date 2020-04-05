@@ -2,6 +2,7 @@ package com.nir.utils;
 
 import com.nir.beans.StageParser;
 import com.nir.beans.StehiomatrixGetter;
+import com.nir.utils.math.Euler;
 import com.nir.utils.math.InitialData;
 import com.nir.utils.math.Method;
 import com.nir.utils.math.RungeKutta;
@@ -15,6 +16,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -45,10 +47,15 @@ public class ChemicalSystemSolutionCheck extends Application {
         final List<XYChart> charts = PlotUtils.charts(dataSets);
         PlotUtils.show(charts, stage);
 
-        //Составление объекта с настройками решения
+        //Выбор вычислительного метода
         final InitialData initialData = chemicalReaction.initialData();
-        final Method method = new RungeKutta(4, initialData);
+        final List<Method> all = Methods.getAll();
+        final Optional<Method> methods = Methods.getByName(all.get(0).getName());
+        final Method method = methods.get();
+
+        //Составление объекта с настройками решения
         final System system = getSystem(chemicalReaction, stages);
+        method.init(initialData.getR0().length, initialData.getDt());
         final SolutionFlow solutionFlow =
             Solution
                 .method(method)
