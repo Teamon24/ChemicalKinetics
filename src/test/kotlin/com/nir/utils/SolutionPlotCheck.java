@@ -27,6 +27,7 @@ public class SolutionPlotCheck extends Application {
 
         //Запуск решения системы уравнений
         final InitialData initialData = system.initialData();
+        final List<String> methodsName = Methods.getNames();
         final Method method = Methods.getByName("Forward Euler", initialData);
 
         final SolutionFlow runnable =

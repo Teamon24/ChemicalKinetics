@@ -15,7 +15,6 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -48,7 +47,9 @@ public class ChemicalSystemSolutionCheck extends Application {
 
         //Выбор вычислительного метода
         final InitialData initialData = chemicalReaction.initialData();
-        final Method method = Methods.getByName("Forward Euler", initialData);
+        final List<String> methodsName = Methods.getNames();
+        final String methodName = RandomUtils.randomIn(methodsName);
+        final Method method = Methods.getByName(methodName, initialData);
 
         //Составление объекта с настройками решения
         final System system = getSystem(chemicalReaction, stages);

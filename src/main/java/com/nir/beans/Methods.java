@@ -7,20 +7,38 @@ import com.nir.utils.math.MethodInfoJsonPojo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Methods {
 
     private static final MethodInfoRepository methodInfoRepository = Beans.methodInfoRepositoryImpl();
     private static final MethodComponent methodComponent = Beans.methodComponent();
     private static final List<Method> methods = new ArrayList<>();
+    private static final List<MethodInfoJsonPojo> methodsInfos = new ArrayList<>();
+
+    public static List<String> getNames() {
+        initMethodsInfos();
+        return methodsInfos.stream().map(MethodInfoJsonPojo::getName).collect(Collectors.toList());
+    }
 
     public static List<Method> getAll() {
-        List<MethodInfoJsonPojo> methodsInfos = methodInfoRepository.getAll();
+        initMethodsInfos();
+        initMethods();
+        return methods;
+    }
+
+    private static void initMethods() {
         if (methods.isEmpty()) {
             final List<Method> created = methodComponent.createOf(methodsInfos);
             methods.addAll(created);
         }
-        return methods;
+    }
+
+    private static void initMethodsInfos() {
+        if (methodsInfos.isEmpty()) {
+            final List<MethodInfoJsonPojo> all = methodInfoRepository.getAll();
+            methodsInfos.addAll(all);
+        }
     }
 
     public static Method getByName(String name, InitialData initialData) {
