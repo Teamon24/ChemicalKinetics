@@ -16,7 +16,7 @@ public class SolutionPlotCheck extends Application {
     public void start(Stage stage) {
 
         //Система уравнений
-        final LorentzStrangeAttractor system = new LorentzStrangeAttractor();
+        final LorentzStrangeAttractor2 system = new LorentzStrangeAttractor2();
         final List<String> titles = system.titles();
 
         //Подготовка объектов для данных с решением системы
@@ -28,7 +28,9 @@ public class SolutionPlotCheck extends Application {
         //Запуск решения системы уравнений
         final InitialData initialData = system.initialData();
         final List<String> methodsName = Methods.getNames();
-        final Method method = Methods.getByName("Forward Euler", initialData);
+        final String methodName = RandomUtils.randomIn(methodsName);
+        System.out.println(String.format("Numeric Method: \"%s\"", methodName));
+        final Method method = Methods.getByName(methodName, initialData);
 
         final SolutionBatchFlow solution =
             Solution
@@ -36,7 +38,7 @@ public class SolutionPlotCheck extends Application {
                 .system(system)
                 .initialData(initialData)
                 .datasets(dataSets)
-                .batchFlow(50_000);
+                .batchFlow(5_000);
 
         PlatformUtils.runLater(solution);
     }

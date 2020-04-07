@@ -97,7 +97,7 @@ object Solution {
                 (0 until D).forEach { i -> r[0][i] = r0[i] }
 
                 var partT = ArrayList<T>(batchSize)
-                var partR = ListUtils.arrayLists<Double>(r0.size, batchSize)
+                var partR = ListUtils.arrayLists<Double>(D, batchSize)
 
                 for (i in 0 until N - 1) {
                     r[1] = method(system, r[0], t, dt)
@@ -105,7 +105,7 @@ object Solution {
                     if (partT.size == batchSize) {
                         this.emit(partT to partR)
                         partT = ArrayList(batchSize)
-                        partR = ListUtils.arrayLists(3, batchSize)
+                        partR = ListUtils.arrayLists(D, batchSize)
                         delay()
                     } else {
                         partT.add(t)
