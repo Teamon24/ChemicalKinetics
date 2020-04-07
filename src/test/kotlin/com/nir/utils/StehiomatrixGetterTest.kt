@@ -8,8 +8,9 @@ import com.nir.ui.pojos.ElementsAndAmounts
 import com.nir.ui.pojos.Reaction
 import com.nir.ui.pojos.ReactionStage
 import com.nir.utils.math.Integers
-import com.nir.utils.math.R
 import com.nir.utils.math.Matrix
+import com.nir.utils.math.method.Y
+import com.nir.utils.math.times
 import org.junit.Assert
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -40,7 +41,7 @@ class StehiomatrixGetterTest {
         datasForTestGetRates().forEach {
             val reaction = it[0] as Reaction
             val k = it[1] as Array<Double>
-            val r = it[2] as R
+            val r = it[2] as Y
             val expectedRatesValues = it[3] as Array<Double>
             val rates = StehiomatrixGetter.getRates(reaction, k)
             val result = rates.elements.map { action -> action(0.0, r) }
@@ -50,7 +51,7 @@ class StehiomatrixGetterTest {
 
 
     @Test
-    //TODO проверить значения F после подстановки r0 и t0
+    //TODO проверить значения F после подстановки y0 и x0
     fun testSystemCreation() {
         datasForCheck().forEach {
             val stages = it[0] as Reaction
@@ -64,15 +65,15 @@ class StehiomatrixGetterTest {
         }
     }
 
-    val stehCoeff1 = Quintuple(1, 2, 3, 4, 5)
-    private val k1 = Quintuple(1.0, 1.0, 1.0, 1.0, 1.0)
+    val stehCoeff1 = Fivefold(1, 2, 3, 4, 5)
+    private val k1 = Fivefold(1.0, 1.0, 1.0, 1.0, 1.0)
     lateinit var w1: Array<Double>
-    private val r10 = Quintuple(2.0, 3.0, 4.0, 5.0, 6.0)
+    private val r10 = Fivefold(2.0, 3.0, 4.0, 5.0, 6.0)
 
-    private val stehCoeff2 = Quintuple(5, 4, 3, 2, 1)
+    private val stehCoeff2 = Fivefold(5, 4, 3, 2, 1)
     private val k2 = Pair(1.0, 1.0)
     lateinit var w2: Array<Double>
-    private val r20 = Quadruple(2.0, 3.0, 5.0, 7.0)
+    private val r20 = Fourfold(2.0, 3.0, 5.0, 7.0)
 
 
     private fun datasForCheck(): Array<Array<out Any>> {
@@ -145,7 +146,7 @@ class StehiomatrixGetterTest {
         val rows = reactionStages.size
         val columns = expectedCompounds.size
 
-        val expectedStehiomatrix = Matrix(Integers, ListUtils.arrayLists(rows, columns) { 0 })
+        val expectedStehiomatrix = Matrix(Integers, InitUtils.arrayLists(rows, columns) { 0 })
 
         reactionStages.withIndex().forEach { (i, stage) ->
             expectedCompounds.withIndex().forEach { (j, compound) ->
@@ -155,9 +156,6 @@ class StehiomatrixGetterTest {
 
         return expectedCompounds to expectedStehiomatrix
     }
-
-
-
 
     fun reaction1(): List<ReactionStage> {
         val Br2 = mapOf("Br" to 2)
@@ -199,9 +197,6 @@ class StehiomatrixGetterTest {
 }
 
 private fun c(i: Int, H: Map<String, Int>) = Compound(i, ElementsAndAmounts(H))
-private fun c(H: Map<String, Int>) = c(1, ElementsAndAmounts(H))
 
-private operator fun Array<Double>.times(array: Array<Double>): Array<Double> {
-    return this.zip(array).map { it.first * it.second }.toTypedArray()
-}
+
 

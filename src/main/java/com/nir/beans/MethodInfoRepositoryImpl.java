@@ -1,8 +1,7 @@
 package com.nir.beans;
 
-import com.nir.utils.math.MethodInfoJsonPojo;
+import com.nir.utils.math.method.MethodInfoJsonPojo;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class MethodInfoRepositoryImpl implements MethodInfoRepository {

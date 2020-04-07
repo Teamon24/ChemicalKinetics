@@ -1,8 +1,7 @@
 package com.nir.utils
 
-import com.nir.utils.math.System
+import com.nir.utils.math.method.F
 import com.nir.utils.math.InitialData
-import kotlin.math.pow
 
 
 class LorentzStrangeAttractor(
@@ -10,7 +9,7 @@ class LorentzStrangeAttractor(
         private val sigma: Double = 10.0,
         private val R: Double = 28.0)
     :
-        System(
+        F(
                 { t, r -> sigma*(r[1] - r[0]) },
                 { t, r -> r[0]*(R - r[2]) - r[1] },
                 { t, r -> r[0]*r[1] - b*r[2] }
@@ -18,10 +17,10 @@ class LorentzStrangeAttractor(
 
     fun initialData(): InitialData {
         return InitialData(
-                t0 = 0.0,
-                r0 = arrayOf(1.0, 1.0, 1.0),
-                dt = 0.000001,
-                N = 5_250_000
+                x0 = 0.0,
+                y0 = arrayOf(1.0, 1.0, 1.0),
+                dx = 0.00001,
+                n = 10_000_000
         )
     }
 
@@ -35,8 +34,8 @@ class LorentzStrangeAttractor2(
         private val sigma: Double = 10.0,
         private val R: Double = 28.0)
     :
-        System(
-                { t, r -> sigma*(r[1] - r[0])*r[3] },
+        F(
+                { t, r -> sigma*(r[1] - r[0]) + r[3] },
                 { t, r -> r[0]*(R - r[2]) - r[1] },
                 { t, r -> r[0]*r[1] - b*r[2] },
                 { t, r -> r[3]*r[1]-r[2] }
@@ -44,10 +43,10 @@ class LorentzStrangeAttractor2(
 
     fun initialData(): InitialData {
         return InitialData(
-                t0 = 0.0,
-                r0 = Array(4) { -55.0 },
-                dt = 0.000000001,
-                N = 250_00000
+                x0 = 0.0,
+                y0 = Array(4) { -2.0 },
+                dx = 0.000002,
+                n = 20_000_000
         )
     }
 

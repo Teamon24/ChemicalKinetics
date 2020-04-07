@@ -1,0 +1,31 @@
+
+.number     { -fx-font-size: 15px; -fx-font-family: Helvetica; -fx-padding: 0px 0px 0px 3px }
+.symbol     { -fx-font-size: 25px; -fx-font-family: Helvetica; -fx-padding: 0px 0px 0px 3px }
+.name       { -fx-font-size: 10px; -fx-font-family: Helvetica; -fx-padding: 0px 0px 0px 3px }
+.atomicMass { -fx-font-size: 10px; -fx-font-family: Helvetica; -fx-padding: 0px 0px 0px 3px }
+
+.postTransitionMetal { -fx-background-color: #20ffb5}
+.diatomicNonmetal { -fx-background-color: #3f7efc; -fx-text-fill: white }
+.alkalineEarthMetal { -fx-background-color: #ff958c}
+.polyatomicNonmetal { -fx-background-color: #e7e000}
+.alkaliMetal { -fx-background-color: #ff5f58; -fx-text-fill: white}
+.metalloid { -fx-background-color: #12dce9}
+.transitionMetal { -fx-background-color: #82ade7}
+.nobleGas { -fx-background-color: #d691ff}
+.unknown { -fx-background-color: #6a6a6a; -fx-text-fill: white}
+
+.lanthanide { -fx-background-color: #63c570}
+.actinide { -fx-background-color: #c29e3a}
+
+.postTransitionMetal:hover { -fx-background-color: white}
+.diatomicNonmetal:hover { -fx-background-color: white; }
+.alkalineEarthMetal:hover { -fx-background-color: white}
+.polyatomicNonmetal:hover { -fx-background-color: white}
+.alkaliMetal:hover { -fx-background-color: white;}
+.metalloid:hover { -fx-background-color: white}
+.transitionMetal:hover { -fx-background-color: white}
+.nobleGas:hover { -fx-background-color: white}
+.unknown:hover { -fx-background-color: white}
+
+.lanthanide:hover { -fx-background-color: white}
+.actinide:hover { -fx-background-color: white}

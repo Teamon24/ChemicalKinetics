@@ -5,11 +5,11 @@ import com.nir.beans.StageParser;
 import com.nir.beans.StehiomatrixGetter;
 import com.nir.ui.pojos.ReactionStage;
 import com.nir.utils.math.InitialData;
-import com.nir.utils.math.Method;
-import com.nir.utils.math.Solution;
+import com.nir.utils.math.method.Method;
+import com.nir.utils.math.solution.Solution;
 import com.nir.ui.pojos.StageRates;
 import com.nir.utils.math.Matrix;
-import com.nir.utils.math.System;
+import com.nir.utils.math.method.F;
 import de.gsi.chart.XYChart;
 import de.gsi.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
@@ -55,11 +55,11 @@ public class ChemicalSystemSolutionCheck extends Application {
         final Method method = Methods.getByName(methodName, initialData);
 
         //Составление объекта с настройками решения
-        final System system = getSystem(chemicalReaction, reactionStages);
+        final F f = getSystem(chemicalReaction, reactionStages);
         final Runnable solutionFlow =
             Solution
                 .method(method)
-                .system(system)
+                .system(f)
                 .initialData(initialData)
                 .datasets(dataSets)
                 .task();
@@ -68,7 +68,7 @@ public class ChemicalSystemSolutionCheck extends Application {
         PlatformUtils.runLater(solutionFlow);
     }
 
-    private System getSystem(ChemicalReaction chemicalReaction, List<ReactionStage> reactionStages) {
+    private F getSystem(ChemicalReaction chemicalReaction, List<ReactionStage> reactionStages) {
         final Matrix<Integer> matrix = StehiomatrixGetter.getMatrix(reactionStages);
         Double[] k = chemicalReaction.getK();
         final StageRates rates = StehiomatrixGetter.getRates(reactionStages, k);

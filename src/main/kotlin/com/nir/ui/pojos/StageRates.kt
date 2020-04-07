@@ -1,13 +1,15 @@
 package com.nir.ui.pojos
 
-import com.nir.utils.math.R
-import com.nir.utils.math.T
-import com.nir.utils.math.emptyFunc
+import com.nir.beans.C
+import com.nir.beans.T
+import com.nir.utils.math.method.X
+import com.nir.utils.math.method.Y
+import com.nir.utils.math.method.emptyFunc
 
 class StageRates {
 
     val size: Int
-    var elements: Array<(T, R)-> Double>
+    var elements: Array<(T, C)-> Double>
 
     constructor(size: Int) {
         this.size = size
@@ -17,11 +19,11 @@ class StageRates {
 
     val sizeRange: IntRange
 
-    constructor(elements: Array<(T, R)-> Double>) : this(elements.size) {
+    constructor(elements: Array<(T, C)-> Double>) : this(elements.size) {
         this.elements = elements
     }
 
-    operator fun get(row: Int): (T, R) -> Double {
+    operator fun get(row: Int): (T, C) -> Double {
         return elements[row]
     }
 }

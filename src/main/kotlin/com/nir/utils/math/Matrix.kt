@@ -1,6 +1,6 @@
 package com.nir.utils.math
 
-import com.nir.utils.ListUtils
+import com.nir.utils.InitUtils
 
 class Matrix<T> {
     val type: Type<T>
@@ -53,7 +53,7 @@ class Matrix<T> {
     }
 
     fun transpose(): Matrix<T> {
-        val transposed = ListUtils.arrayLists(columns, rows) { type.init() }
+        val transposed = InitUtils.arrayLists(columns, rows) { type.init() }
         for(row in 0 until rows) {
             for(column in 0 until columns) {
                 transposed[column][row] = elements[row][column]!!

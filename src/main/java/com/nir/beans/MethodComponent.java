@@ -1,11 +1,10 @@
 package com.nir.beans;
 
-import com.nir.utils.math.ButchersTableJsonPojo;
-import com.nir.utils.math.MethodInfoJsonPojo;
-import com.nir.utils.math.Method;
+import com.nir.utils.math.method.ButchersTableJsonPojo;
+import com.nir.utils.math.method.MethodInfoJsonPojo;
+import com.nir.utils.math.method.Method;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class MethodComponent {

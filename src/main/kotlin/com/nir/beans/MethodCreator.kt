@@ -1,18 +1,14 @@
 package com.nir.beans
 
-import com.nir.utils.math.ButchersTableJsonPojo
-import com.nir.utils.math.MethodInfoJsonPojo
+import com.nir.utils.math.method.ButchersTableJsonPojo
+import com.nir.utils.math.method.MethodInfoJsonPojo
 import com.nir.utils.ExpressionUtils.vals
 import com.nir.utils.ExpressionUtils.vars
 import com.nir.utils.ExpressionUtils.varsAndVals
-import com.nir.utils.math.ButchersTable
-import com.nir.utils.math.ExplicitRungeKutta
-import com.nir.utils.math.Method
-import com.nir.utils.math.R
-import com.nir.utils.math.System
-import com.nir.utils.math.T
+import com.nir.utils.math.method.ButchersTable
+import com.nir.utils.math.method.ExplicitRungeKutta
+import com.nir.utils.math.method.Method
 import net.objecthunter.exp4j.ExpressionBuilder
-import java.awt.Dimension
 
 object MethodCreator {
 
@@ -42,12 +38,7 @@ object MethodCreator {
         val stages = methodInfoJsonPojo.stages.toInt()
         val methodName = methodInfoJsonPojo.name
         val explicit = ExplicitRungeKutta(stages, order, butchersTable, methodName)
-        return object: Method() {
-            override val name: String get() = explicit.name
-            override fun set(dimension: Int, dt: T) { explicit.set(dimension, dt) }
-            override fun invoke(system: System, r0: R, t0: T, dt: T, N: Int): Array<R> { return explicit(system, r0, t0, dt, N) }
-            override fun invoke(system: System, r: R, t: T, dt: T): R { return explicit(system, r, t, dt) }
-        }
+        return Method.from(explicit)
     }
 
     private fun getButcherTable(butchersTableJsonPojo: ButchersTableJsonPojo): ButchersTable {
@@ -56,8 +47,8 @@ object MethodCreator {
                 ButcherTableConverter.convert(butchersTableJsonPojo)
             }
 
-            butchersTableJsonPojo.hasVariablesExpression() -> throw UnsupportedOperationException("No logic for general method with parameterized butcher's tables")
-            else -> throw IllegalStateException("Case that was forgotten to consider.")
+            butchersTableJsonPojo.hasVariablesExpression() -> throw UnsupportedOperationException("No butcher's talbe creation logic for generalized (parameterized) numeric method")
+            else -> throw IllegalStateException("Butcher's Table case that was forgotten to consider.")
         }
     }
 }

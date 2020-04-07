@@ -1,8 +1,13 @@
 package com.nir.utils.math
 
+import com.nir.utils.math.method.N
+import com.nir.utils.math.method.X
+import com.nir.utils.math.method.Y
+import com.nir.utils.math.method.dX
+
 data class InitialData(
-        val t0: Double,
-        val r0: Array<Double>,
-        val dt: Double,
-        val N: Int
+        val x0: X,
+        val y0: Y,
+        val dx: dX,
+        val n: N
 )

@@ -1,6 +1,9 @@
 package com.nir.utils
 
 import com.nir.ui.UiComponents
+import com.nir.utils.math.method.N
+import com.nir.utils.math.method.X0
+import com.nir.utils.math.method.dX
 import de.gsi.chart.XYChart
 import de.gsi.chart.axes.spi.DefaultNumericAxis
 import de.gsi.dataset.spi.DoubleDataSet
@@ -66,12 +69,12 @@ object PlotUtils {
         stage.show()
     }
 
-    fun series(t0: Double, n: Int, dt: Double): DoubleArray {
+    fun series(x0: X0, n: N, dx: dX): DoubleArray {
         val series = DoubleArray(n)
-        var t = t0
+        var t = x0
         for (i in 0 until n) {
             series[i] = t
-            t += dt
+            t += dx
         }
         return series
     }

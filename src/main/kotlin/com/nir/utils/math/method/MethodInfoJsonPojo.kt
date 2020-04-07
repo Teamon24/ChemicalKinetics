@@ -1,4 +1,4 @@
-package com.nir.utils.math
+package com.nir.utils.math.method
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty

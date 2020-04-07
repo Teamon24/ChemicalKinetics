@@ -1,4 +1,6 @@
-package com.nir.utils.math
+package com.nir.utils.math.method
+
+import com.nir.utils.math.Matrix
 
 class ButchersTable(
         val c: Array<Double>,

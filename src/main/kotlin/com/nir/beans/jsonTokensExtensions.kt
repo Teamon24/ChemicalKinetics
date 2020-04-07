@@ -39,9 +39,6 @@ fun StringBuilder.addEndArray() {
     this.append("]")
 }
 
-
-
-
 fun nextToken(jsonParser: JsonParser): JsonToken = jsonParser.nextToken() ?: jsonParser.nextToken()
 
 fun JsonToken.isFieldName(stringBuilder: StringBuilder, jsonParser: JsonParser) {

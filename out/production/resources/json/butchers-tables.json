@@ -1,0 +1,249 @@
+[
+    {
+        "name": "Forward Euler",
+        "type": "explicit",
+        "order": 1,
+        "stages": 1,
+        "butchers_table": {
+            "c": [   0   ],
+            "A": [ [ 0 ] ],
+            "b": [   1   ]
+        }
+    },
+    {
+        "name": "Explicit midpoint method",
+        "type": "explicit",
+        "order": 2,
+        "stages": 2,
+        "butchers_table": {
+            "c": [
+                0,
+                0.5
+            ],
+            "A": [
+                [ 0,   0 ],
+                [ 0.5, 0 ]
+            ],
+            "b": [ 0, 1 ]
+        }
+    },
+    {
+        "name": "Heun's method",
+        "type": "explicit",
+        "order": 2,
+        "stages": 2,
+        "butchers_table": {
+            "c": [
+                0,
+                1
+            ],
+            "A": [
+                [0, 0],
+                [1, 0]
+            ],
+            "b": [ 0.5, 0.5 ]
+        }
+    },
+    {
+        "name": "Ralston's method",
+        "type": "explicit",
+        "order": 2,
+        "stages": 2,
+        "butchers_table": {
+            "expression": {
+                "type": "numeric"
+            },
+            "c": [
+                0,
+                "2/3"
+            ],
+            "A": [
+                [0,     0],
+                ["2/3", 0]
+            ],
+            "b": [ 0.25, 0.75 ]
+        }
+    },
+    {
+        "name": "Generic 2nd-order method",
+        "type": "explicit",
+        "order": 2,
+        "stages": 2,
+        "butchers_table": {
+            "expression": {
+                "type": "symbolic",
+                "vars": [
+                    { "name": "a" }
+                ]
+            },
+            "c": [
+                0,
+                "a"
+            ],
+            "A": [
+                [0,   0],
+                ["a", 0]
+            ],
+            "b": [ "1-1/(2*a)", "1/(2*a)" ]
+        }
+    },
+    {
+        "name": "Kutta's 3rd-order method",
+        "type": "explicit",
+        "order": 3,
+        "stages": 3,
+        "butchers_table": {
+            "expression": {
+                "type": "numeric"
+            },
+            "c": [
+                0,
+                0.5,
+                1
+            ],
+            "A": [
+                [0,     0,      0],
+                [0.5,   0,      0],
+                [-1,    2,      0]
+            ],
+            "b": [ "1/6", "2/3", "1/6" ]
+        }
+    },
+    {
+        "name": "Generic third-order method",
+        "type": "explicit",
+        "order": 3,
+        "stages": 3,
+        "butchers_table": {
+            "expression": {
+                "type": "symbolic",
+                "vars": [
+                    { "name": "a", "excluded_values": [0, "2/3", 1] }
+                ]
+            },
+            "c": [
+                0,
+                "a",
+                1
+            ],
+            "A": [
+                [0,                         0,                          0],
+                ["a",                       0,                          0],
+                ["1+(1-a)/(a*(3*a-2))",     "-(1-a)/(a*(3*a-2))",       0]
+            ],
+            "b": [ "1/6", "2/3", "1/6" ]
+        }
+    },
+    {
+        "name": "Heun's 3rd-order method",
+        "type": "explicit",
+        "order": 3,
+        "stages": 3,
+        "butchers_table": {
+            "expression": {
+                "type": "numeric"
+            },
+            "c": [
+                0,
+                "1/3",
+                "2/3"
+            ],
+            "A": [
+                [0,         0,      0],
+                ["1/3",     0,      0],
+                [0,         "2/3",  0]
+            ],
+            "b": [ 0.25, 0, 0.75 ]
+        }
+    },
+    {
+        "name": "Ralston's 3rd-order method",
+        "type": "explicit",
+        "order": 3,
+        "stages": 3,
+        "butchers_table": {
+            "expression": {
+                "type": "numeric"
+            },
+            "c": [
+                0,
+                0.5,
+                0.75
+            ],
+            "A": [
+                [0,         0,      0],
+                [0.5,       0,      0],
+                [0,         0.75,   0]
+            ],
+            "b": [ "2/9",   "1/3",  "4/9"]
+        }
+    },
+    {
+        "name": "3rd-order Strong Stability Preserving Runge-Kutta (SSPRK3)",
+        "type": "explicit",
+        "order": 3,
+        "stages": 3,
+        "butchers_table": {
+            "expression": {
+                "type": "numeric"
+            },
+            "c": [
+                0,
+                1,
+                0.5
+            ],
+            "A": [
+                [0,     0,      0],
+                [1,     0,      0],
+                [0.25,  0.25,   0]
+            ],
+            "b": [ "1/6",   "1/6",  "2/3"]
+        }
+    },
+    {
+        "name": "Ralston's 4th-order method",
+        "info": "This 4th order method has minimum truncation error.\nRalston, Anthony (1962). \"Runge-Kutta Methods with Minimum Error Bounds\". Math. Comput. 16: 431–437.",
+        "type": "explicit",
+        "order": 4,
+        "stages": 4,
+        "butchers_table": {
+            "c": [
+                0,
+                0.45573725,
+                0.5,
+                1
+            ],
+            "A": [
+                [0,             0,              0,          0],
+                [0.4,           0,              0,          0],
+                [0.29697761,    0.15875964,     0,          0],
+                [0.21810040,    -3.05096516,   3.83286476,  0]
+            ],
+            "b": [ 0.17476028,   -0.55178066,  1.20553560,  0.17118478]
+        }
+    },
+    {
+        "name": "3/8-rule 4th-order method",
+        "type": "explicit",
+        "order": 4,
+        "stages": 4,
+        "butchers_table": {
+            "expression": {
+                "type": "numeric"
+            },
+            "c": [
+                0,
+                "1/3",
+                "2/3",
+                1
+            ],
+            "A": [
+                [0,         0,      0,      0],
+                ["1/3",     0,      0,      0],
+                ["-1/3",    1,      0,      0],
+                [1,        -1,      1,      0]
+            ],
+            "b": [ 0.125,   0.375,  0.375, 0.125]
+        }
+    }
+]

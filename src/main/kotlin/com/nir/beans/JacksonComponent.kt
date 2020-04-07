@@ -3,9 +3,7 @@ package com.nir.beans
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
-import com.fasterxml.jackson.core.type.TypeReference
-import com.fasterxml.jackson.databind.type.CollectionType
-import com.nir.utils.math.MethodInfoJsonPojo
+import com.nir.utils.math.method.MethodInfoJsonPojo
 import com.nir.utils.ifTrue
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect

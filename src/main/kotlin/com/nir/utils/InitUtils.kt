@@ -1,6 +1,11 @@
 package com.nir.utils
 
-object ListUtils {
+object InitUtils {
+
+    @JvmStatic
+    fun doubleArrays(n: Int, m: Int): Array<DoubleArray> {
+        return Array(n) { DoubleArray(m) }
+    }
 
     @JvmStatic
     fun <T> arrayLists(n: Int, m: Int): ArrayList<ArrayList<T>> {

@@ -3,21 +3,23 @@ package com.nir.beans
 import com.nir.ui.pojos.Compounds
 import com.nir.ui.pojos.Reaction
 import com.nir.ui.pojos.ReactionStage
-import com.nir.utils.math.System
 import com.nir.utils.math.Matrix
-import com.nir.utils.math.R
 import com.nir.ui.pojos.StageRates
-import com.nir.utils.ListUtils
+import com.nir.utils.InitUtils
 import com.nir.utils.math.Integers
-import com.nir.utils.math.T
-import com.nir.utils.math.emptyFunc
+import com.nir.utils.math.method.F
+import com.nir.utils.math.method.Y
+import com.nir.utils.math.method.emptyFunc
 import kotlin.math.pow
 
-/**
- * Константы скорости реакции.
- */
+/** Константы скорости реакции. */
 typealias k = Array<Double>
 
+/** Время */
+typealias T = Double
+
+/** Вектор концентраций */
+typealias C = Array<Double>
 
 typealias StageAndItsReagentsIndices = Pair<Int, List<Int>>
 typealias StagesAndItsReagentsIndices = ArrayList<StageAndItsReagentsIndices>
@@ -25,7 +27,7 @@ typealias StagesAndItsReagentsIndices = ArrayList<StageAndItsReagentsIndices>
 object StehiomatrixGetter {
 
     @JvmStatic
-    fun times(stehiomatrix: Matrix<Int>, stageRates: StageRates): System {
+    fun times(stehiomatrix: Matrix<Int>, stageRates: StageRates): F {
         val ratesAmount = stageRates.size
         if (stehiomatrix.columns != ratesAmount) {
             throw RuntimeException("Columns amount of matrix and rates vector size should be equal.")
@@ -36,19 +38,19 @@ object StehiomatrixGetter {
             f[row] = f(row, stehiomatrix, stageRates)
         }
 
-        return System(*f)
+        return F(*f)
     }
 
-    private fun f(row: Int, stehiomatrix: Matrix<Int>, stageRates: StageRates): (T, R) -> Double {
+    private fun f(row: Int, stehiomatrix: Matrix<Int>, stageRates: StageRates): (T, C) -> Double {
         val row = stehiomatrix[row]
-        val sum = ArrayList<(T, R)-> Double>()
+        val sum = ArrayList<(T, C)-> Double>()
         for (column in stehiomatrix.columnsRange) {
             val rate = stageRates[column]
             val coeff = row[column]
-            sum.add { t, r -> coeff * rate(t, r) }
+            sum.add { t, C -> coeff * rate(t, C) }
         }
 
-        return { t, r -> sum.fold(0.0) { acc, next -> acc + next(t, r) } }
+        return { t, C -> sum.fold(0.0) { acc, next -> acc + next(t, C) } }
     }
 
     @JvmStatic
@@ -57,7 +59,7 @@ object StehiomatrixGetter {
         val rows = reaction.size
         val columns = compounds.size
 
-        val elements = ListUtils.arrayLists(rows, columns) { 0 }
+        val elements = InitUtils.arrayLists(rows, columns) { 0 }
 
         reaction.withIndex().forEach { (i, stage) ->
             compounds.withIndex().forEach { (j, compound) ->
@@ -91,13 +93,13 @@ object StehiomatrixGetter {
         assert(k.size == stagesAndItsReagentsIndices.size)
         val rates =
                 stagesAndItsReagentsIndices
-                        .map { (i, indices) -> { _: T, r: R -> rate(k, r, i, indices) } }
+                        .map { (i, indices) -> { _: T, c: C -> rate(k, c, i, indices) } }
                         .toTypedArray()
 
         return StageRates(rates)
     }
 
-    private fun rate(k: k, r: R, i: Int, indices: List<Int>) = k[i] * r.filterBy(indices).productAs(indices)
+    private fun rate(k: k, c: C, i: Int, indices: List<Int>) = k[i] * c.filterBy(indices).productAs(indices)
 
     private fun Reaction.getUniques(getCompounds: (ReactionStage) -> Compounds): List<String> {
         return this.flatMap(getCompounds).map { it.elements.toString() }
@@ -120,7 +122,7 @@ object StehiomatrixGetter {
         return indexes
     }
 
-    private fun R.filterBy(indices: List<Int>): List<Double> {
+    private fun Y.filterBy(indices: List<Int>): List<Double> {
         val filteredByIndices = this.withIndex().filter { it.index in indices }.map { it.value }
         return filteredByIndices
     }

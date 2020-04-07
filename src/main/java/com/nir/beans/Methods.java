@@ -1,8 +1,8 @@
 package com.nir.beans;
 
 import com.nir.utils.math.InitialData;
-import com.nir.utils.math.Method;
-import com.nir.utils.math.MethodInfoJsonPojo;
+import com.nir.utils.math.method.Method;
+import com.nir.utils.math.method.MethodInfoJsonPojo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,15 +16,15 @@ public class Methods {
     private static final List<Method> methods = new ArrayList<>();
     private static final List<MethodInfoJsonPojo> methodsInfos = new ArrayList<>();
 
-    public static List<String> getNames() {
-        initMethodsInfos();
-        return methodsInfos.stream().map(MethodInfoJsonPojo::getName).collect(Collectors.toList());
-    }
-
     public static List<Method> getAll() {
         initMethodsInfos();
         initMethods();
         return methods;
+    }
+
+    public static List<String> getNames() {
+        initMethodsInfos();
+        return methodsInfos.stream().map(MethodInfoJsonPojo::getName).collect(Collectors.toList());
     }
 
     private static void initMethods() {
@@ -45,9 +45,9 @@ public class Methods {
         final List<Method> all = getAll();
         final Optional<Method> first = all.stream().filter(it -> it.getName().equals(name)).findFirst();
         final Method method = first.get();
-        final int dimension = initialData.getR0().length;
-        final double dt = initialData.getDt();
-        method.set(dimension, dt);
+        final int d = initialData.getY0().length;
+        final double dx = initialData.getDx();
+        method.set(d, dx);
         return method;
     }
 }

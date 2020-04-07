@@ -2,8 +2,9 @@ package com.nir.utils;
 
 import com.nir.beans.Methods;
 import com.nir.utils.math.InitialData;
-import com.nir.utils.math.Method;
-import com.nir.utils.math.Solution;
+import com.nir.utils.math.method.Method;
+import com.nir.utils.math.solution.Solution;
+import com.nir.utils.math.solution.SolutionBatchFlow;
 import de.gsi.chart.XYChart;
 import de.gsi.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
@@ -38,7 +39,7 @@ public class SolutionPlotCheck extends Application {
                 .system(system)
                 .initialData(initialData)
                 .datasets(dataSets)
-                .batchFlow(5_000);
+                .batchFlow();
 
         PlatformUtils.runLater(solution);
     }
