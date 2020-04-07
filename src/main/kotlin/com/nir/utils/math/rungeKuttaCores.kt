@@ -1,7 +1,6 @@
 package com.nir.utils.math
 
-import com.nir.beans.K
-import com.nir.utils.ArrayUtils
+import com.nir.beans.k
 import kotlin.properties.Delegates
 
 interface RungeKuttaCore {
@@ -16,7 +15,7 @@ interface RungeKuttaCore {
 class RungeKutta4Core: RungeKuttaCore {
     private val methodOrder = 4
 
-    private lateinit var k: Array<K>
+    private lateinit var k: Array<k>
     private var sixth by Delegates.notNull<Double>()
     private var half by Delegates.notNull<Double>()
 

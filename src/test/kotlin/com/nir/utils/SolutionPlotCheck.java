@@ -1,8 +1,8 @@
 package com.nir.utils;
 
+import com.nir.beans.Methods;
 import com.nir.utils.math.InitialData;
 import com.nir.utils.math.Method;
-import com.nir.utils.math.RungeKutta;
 import com.nir.utils.math.Solution;
 import de.gsi.chart.XYChart;
 import de.gsi.dataset.spi.DoubleDataSet;
@@ -27,14 +27,15 @@ public class SolutionPlotCheck extends Application {
 
         //Запуск решения системы уравнений
         final InitialData initialData = system.initialData();
-        final Method method = new RungeKutta(4);
-        final Runnable runnable =
+        final Method method = Methods.getByName("Forward Euler", initialData);
+
+        final SolutionFlow runnable =
             Solution
                 .method(method)
                 .system(system)
                 .initialData(initialData)
                 .datasets(dataSets)
-                .task();
+                .flow();
 
         PlatformUtils.runLater(runnable);
     }

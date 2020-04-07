@@ -93,5 +93,5 @@ fun compounds(compounds: List<String>): String {
 }
 
 fun rawReaction(leftCompounds: List<String>, symbol: RawStageType, rightCompounds: List<String>): String {
-    return """{"reagents": ${compounds(leftCompounds)},"stage_type":"$symbol","products": ${compounds(rightCompounds)}}""".delete("\n", " ")
+    return """{"reagents": ${compounds(leftCompounds)},"stageType":"$symbol","products": ${compounds(rightCompounds)}}""".delete("\n", " ")
 }

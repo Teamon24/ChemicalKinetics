@@ -16,66 +16,6 @@ open class System (vararg val f: (T, R) -> Double) {
     }
 }
 
-val zeroReturn = { _:T, _: R -> 0.0 }
+val emptyFunc = { _:T, _: R -> 0.0 }
+val emptyKFunc = { system: System, x: X, y: Y -> Array(y.size) { 0.0 } }
 
-class StageRates {
-
-    val size: Int
-    var elements: Array<(T, R)-> Double>
-
-    constructor(size: Int) {
-        this.size = size
-        this.sizeRange = 0 until size
-        this.elements = Array(size) { zeroReturn }
-    }
-
-    val sizeRange: IntRange
-
-    constructor(elements: Array<(T, R)-> Double>) : this(elements.size) {
-        this.elements = elements
-    }
-
-    operator fun get(row: Int): (T, R) -> Double {
-        return elements[row]
-    }
-}
-
-class Stehiomatrix {
-    val rows: Int
-    val columns: Int
-
-    val rowsRange: IntRange
-    val columnsRange: IntRange
-
-    var elements: Array<Array<Int>>
-
-    constructor(rows: Int, columns: Int) {
-        this.rows = rows
-        this.columns = columns
-        this.rowsRange = 0 until rows
-        this.columnsRange = 0 until columns
-        this.elements = Array(rows) { Array(columns) { 0 } }
-    }
-
-    constructor(elements: Array<Array<Int>>)  {
-        this.rows = elements.size
-        this.columns = elements[0].size
-        this.rowsRange = 0 until rows
-        this.columnsRange = 0 until columns
-        this.elements = elements
-    }
-
-    operator fun get(row: Int): Array<Int> {
-        return elements[row]
-    }
-
-    fun transpose(): Stehiomatrix {
-        val transposed = Array(columns) { Array(rows) { 0 } }
-        for(row in 0 until rows) {
-            for(column in 0 until columns) {
-                transposed[column][row] = elements[row][column]
-            }
-        }
-        return Stehiomatrix(transposed)
-    }
-}

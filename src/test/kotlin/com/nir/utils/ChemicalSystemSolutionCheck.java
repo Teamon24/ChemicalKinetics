@@ -1,14 +1,13 @@
 package com.nir.utils;
 
+import com.nir.beans.Methods;
 import com.nir.beans.StageParser;
 import com.nir.beans.StehiomatrixGetter;
-import com.nir.utils.math.Euler;
 import com.nir.utils.math.InitialData;
 import com.nir.utils.math.Method;
-import com.nir.utils.math.RungeKutta;
 import com.nir.utils.math.Solution;
-import com.nir.utils.math.StageRates;
-import com.nir.utils.math.Stehiomatrix;
+import com.nir.ui.pojos.StageRates;
+import com.nir.utils.math.Matrix;
 import com.nir.utils.math.System;
 import de.gsi.chart.XYChart;
 import de.gsi.dataset.spi.DoubleDataSet;
@@ -30,10 +29,10 @@ public class ChemicalSystemSolutionCheck extends Application {
     public void start(Stage stage) {
 
         //Берем одну из реакций
-        final ChemicalReaction chemicalReaction = ChemicalReaction.chemicalReaction1();
+        final ChemicalReaction chemicalReaction = ChemicalReaction.chemicalReaction2();
         final Stream<String> reaction = chemicalReaction.getReaction();
 
-        final List<com.nir.ui.dto.Stage> stages =
+        final List<com.nir.ui.pojos.Stage> stages =
             reaction
             .map(StageParser::parse)
             .map(StageParser::convert)
@@ -49,27 +48,24 @@ public class ChemicalSystemSolutionCheck extends Application {
 
         //Выбор вычислительного метода
         final InitialData initialData = chemicalReaction.initialData();
-        final List<Method> all = Methods.getAll();
-        final Optional<Method> methods = Methods.getByName(all.get(0).getName());
-        final Method method = methods.get();
+        final Method method = Methods.getByName("Forward Euler", initialData);
 
         //Составление объекта с настройками решения
         final System system = getSystem(chemicalReaction, stages);
-        method.init(initialData.getR0().length, initialData.getDt());
-        final SolutionFlow solutionFlow =
+        final Runnable solutionFlow =
             Solution
                 .method(method)
                 .system(system)
                 .initialData(initialData)
                 .datasets(dataSets)
-                .flow();
+                .task();
 
         //Запуск решения системы уравнений - на этом моменте времене в графики будут добавляться точки решения
         PlatformUtils.runLater(solutionFlow);
     }
 
-    private System getSystem(ChemicalReaction chemicalReaction, List<com.nir.ui.dto.Stage> stages) {
-        final Stehiomatrix matrix = StehiomatrixGetter.getMatrix(stages);
+    private System getSystem(ChemicalReaction chemicalReaction, List<com.nir.ui.pojos.Stage> stages) {
+        final Matrix<Integer> matrix = StehiomatrixGetter.getMatrix(stages);
         Double[] k = chemicalReaction.getK();
         final StageRates rates = StehiomatrixGetter.getRates(stages, k);
         return StehiomatrixGetter.times(matrix.transpose(), rates);

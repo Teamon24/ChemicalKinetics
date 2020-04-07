@@ -1,7 +1,7 @@
 package com.nir.ui;
 
-import com.nir.ui.dto.PeriodicElement;
-import com.nir.ui.dto.PeriodicElementType;
+import com.nir.ui.pojos.PeriodicElement;
+import com.nir.ui.pojos.PeriodicElementType;
 import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.TextAlignment;

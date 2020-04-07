@@ -18,9 +18,9 @@ data class ChemicalReaction(val N: Int,
     companion object {
         @JvmStatic
         fun chemicalReaction1(): ChemicalReaction {
-            val n = 550000
+            val n = 600000
             val t0 = 0.0
-            val dt = 0.000001
+            val dt = 0.00001
             val k = arrayOf(2.0, 1.0)
             val r0 = arrayOf(15.5, 15.5, 0.0, 0.0)
             val reaction = Stream.of(
@@ -32,9 +32,9 @@ data class ChemicalReaction(val N: Int,
 
         @JvmStatic
         fun chemicalReaction2(): ChemicalReaction {
-            val n = 15000
+            val n = 500000
             val t0 = 0.0
-            val dt = 0.0002
+            val dt = 0.001
             val k = arrayOf(1.0, 1.0, 15.0, 1.0, 1.0)
             val r0 = arrayOf(5.5, 0.0, 12.0, 0.0, 50.0)
             val reaction = Stream.of(

@@ -1,15 +1,13 @@
 package com.nir.utils.math
 
-import com.nir.utils.ArrayUtils
-
 
 /**
  * Метод решения системы уравнений.
  */
-sealed class Method {
+abstract class Method {
     abstract val name: String
 
-    abstract fun init(dimension: Int, dt: T)
+    abstract fun set(dimension: Int, dt: T)
 
     abstract operator fun invoke(system: System,
                                  r0: R,
@@ -23,9 +21,13 @@ sealed class Method {
                                  dt: T): R
 }
 
+abstract class GeneralMethod : Method() {
+    abstract fun setParamsValues(paramsAndValues: HashMap<String, Double>)
+}
+
 object Euler : Method() {
     override val name: String get() = "Euler"
-    override fun init(dimension: Int, dt: T) {}
+    override fun set(dimension: Int, dt: T) {}
 
     override fun invoke(system: System,
                         r0: R,
@@ -63,7 +65,7 @@ class RungeKutta(private val order: Int): Method() {
     }
     override val name: String get() = "Runge-Kutta ${order}-order"
 
-    override fun init(dimension: Int, dt: T) {
+    override fun set(dimension: Int, dt: T) {
         core.init(dimension, dt)
     }
 

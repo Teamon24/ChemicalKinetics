@@ -28,7 +28,30 @@ class SolutionFlow(private val collectTo: List<DoubleDataSet>,
     }
 }
 
+class SolutionPartialFlow(private val collectTo: List<DoubleDataSet>,
+                          private val flow: Flow<List<Pair<T, R>>>) {
+
+    suspend fun collect() {
+        this.flow.collect { pairs ->
+            collectTo.withIndex().forEach { (index, dataSet) ->
+                pairs.forEach { (t, r) ->
+                    dataSet.add(t, r[index])
+                }
+            }
+        }
+    }
+}
+
 object PlatformUtils {
+
+    @JvmStatic
+    fun runLater(flow: SolutionPartialFlow) {
+        Platform.runLater() {
+            CoroutineScope(Dispatchers.IO).launch {
+                flow.collect()
+            }
+        }
+    }
 
     @JvmStatic
     fun runLater(flow: SolutionFlow) {

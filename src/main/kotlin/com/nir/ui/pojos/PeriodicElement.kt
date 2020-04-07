@@ -1,4 +1,4 @@
-package com.nir.ui.dto
+package com.nir.ui.pojos
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize

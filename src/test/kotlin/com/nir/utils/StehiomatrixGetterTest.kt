@@ -1,16 +1,17 @@
 package com.nir.utils
 
-import com.nir.beans.K
+import com.nir.beans.k
 import com.nir.beans.StehiomatrixGetter
-import com.nir.ui.dto.Compound
-import com.nir.ui.dto.Compounds
-import com.nir.ui.dto.ElementsAndAmounts
-import com.nir.ui.dto.Reaction
-import com.nir.ui.dto.Stage
+import com.nir.ui.pojos.Compound
+import com.nir.ui.pojos.Compounds
+import com.nir.ui.pojos.ElementsAndAmounts
+import com.nir.ui.pojos.Reaction
+import com.nir.ui.pojos.Stage
+import com.nir.utils.math.Integers
 import com.nir.utils.math.R
-import com.nir.utils.math.Stehiomatrix
+import com.nir.utils.math.Matrix
 import org.junit.Assert
-import org.junit.Ignore
+import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
 import kotlin.math.pow
 
@@ -24,13 +25,13 @@ class StehiomatrixGetterTest {
     fun testGetMatrix() {
         datasForTestGetMatrix().forEach { data ->
             val expectedCompounds = data[0] as List<String>
-            val expectedStehiomatrix = data[1] as Stehiomatrix
+            val expectedStehiomatrix = data[1] as Matrix<Integer>
             val stages = data[2] as Reaction
             val actualCompounds = StehiomatrixGetter.getCompounds(stages)
             val actualMatrix = StehiomatrixGetter.getMatrix(stages)
 
             Assert.assertArrayEquals(expectedCompounds.toTypedArray(), actualCompounds.toTypedArray())
-            Assert.assertArrayEquals(expectedStehiomatrix.elements, actualMatrix.elements)
+            Assertions.assertIterableEquals(expectedStehiomatrix.elements, actualMatrix.elements)
         }
     }
 
@@ -53,7 +54,7 @@ class StehiomatrixGetterTest {
     fun testSystemCreation() {
         datasForCheck().forEach {
             val stages = it[0] as Reaction
-            val k = it[1] as K
+            val k = it[1] as k
             val size = it[2] as Int
             val stehiomatrix = StehiomatrixGetter.getMatrix(stages)
             val rates = StehiomatrixGetter.getRates(stages, k)
@@ -135,16 +136,16 @@ class StehiomatrixGetterTest {
         )
     }
 
-    private fun createDatas(stages: List<Stage>): Pair<List<String>, Stehiomatrix> {
+    private fun createDatas(stages: List<Stage>): Pair<List<String>, Matrix<Int>> {
         val expectedCompounds: List<String> = stages
                 .flatMap { it.reagents + it.products }
                 .distinctBy { it.elements.toString() }
                 .map { it.elements.toString() }
 
-        val m = stages.size
-        val n = expectedCompounds.size
+        val rows = stages.size
+        val columns = expectedCompounds.size
 
-        val expectedStehiomatrix = Stehiomatrix(Array(m) { Array(n) { 0 } })
+        val expectedStehiomatrix = Matrix(Integers, ListUtils.arrayLists(rows, columns) { 0 })
 
         stages.withIndex().forEach { (i, stage) ->
             expectedCompounds.withIndex().forEach { (j, compound) ->

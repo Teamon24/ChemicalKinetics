@@ -11,6 +11,10 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.Set;
 
+import static com.nir.utils.ExpressionUtils.vals;
+import static com.nir.utils.ExpressionUtils.vars;
+import static com.nir.utils.ExpressionUtils.varsAndVals;
+
 public class Exp4JTest {
 
     @Test
@@ -23,10 +27,11 @@ public class Exp4JTest {
             final Set<String> variables = variablesAndValues.keySet();
             final Expression expression = expressionBuilder.variables(variables).build();
             expression.setVariables(variablesAndValues);
+            final double actual = expression.evaluate();
+            final double expected = triple.getRight();
 
             try {
-                final double expected = triple.getRight();
-                Assertions.assertEquals(expected, expression.evaluate());
+                Assertions.assertEquals(expected, actual);
             } catch (Exception ignored) {
                 throw ignored;
             }
@@ -40,20 +45,5 @@ public class Exp4JTest {
             Triple.of(expression, varsAndVals(vars("a"), vals(2.0)), 0.875),
             Triple.of(expression, varsAndVals(vars("a"), vals(5.0)), 0.9384615384615385)
         );
-    }
-
-    private Double[] vals(Double... doubles) {
-        return doubles;
-    }
-
-    private String[] vars(String ... strings) {
-        return strings;
-    }
-
-    private Map<String, Double> varsAndVals(
-        final String[] variables,
-        final Double[] value
-    ) {
-        return ZipUtils.zipToMap(variables, value);
     }
 }

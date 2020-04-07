@@ -1,20 +1,22 @@
 package com.nir.beans
 
-import com.nir.ui.dto.Compounds
-import com.nir.ui.dto.Reaction
-import com.nir.ui.dto.Stage
+import com.nir.ui.pojos.Compounds
+import com.nir.ui.pojos.Reaction
+import com.nir.ui.pojos.Stage
 import com.nir.utils.math.System
-import com.nir.utils.math.Stehiomatrix
+import com.nir.utils.math.Matrix
 import com.nir.utils.math.R
-import com.nir.utils.math.StageRates
+import com.nir.ui.pojos.StageRates
+import com.nir.utils.ListUtils
+import com.nir.utils.math.Integers
 import com.nir.utils.math.T
-import com.nir.utils.math.zeroReturn
+import com.nir.utils.math.emptyFunc
 import kotlin.math.pow
 
 /**
  * Константы скорости реакции.
  */
-typealias K = Array<Double>
+typealias k = Array<Double>
 
 
 typealias StageAndItsReagentsIndices = Pair<Int, List<Int>>
@@ -23,13 +25,13 @@ typealias StagesAndItsReagentsIndices = ArrayList<StageAndItsReagentsIndices>
 object StehiomatrixGetter {
 
     @JvmStatic
-    fun times(stehiomatrix: Stehiomatrix, stageRates: StageRates): System {
+    fun times(stehiomatrix: Matrix<Int>, stageRates: StageRates): System {
         val ratesAmount = stageRates.size
         if (stehiomatrix.columns != ratesAmount) {
             throw RuntimeException("Columns amount of matrix and rates vector size should be equal.")
         }
 
-        val f = Array(stehiomatrix.rows) { zeroReturn }
+        val f = Array(stehiomatrix.rows) { emptyFunc }
         for (row in stehiomatrix.rowsRange) {
             f[row] = f(row, stehiomatrix, stageRates)
         }
@@ -37,24 +39,25 @@ object StehiomatrixGetter {
         return System(*f)
     }
 
-    private fun f(row: Int, stehiomatrix: Stehiomatrix, stageRates: StageRates): (T, R) -> Double {
+    private fun f(row: Int, stehiomatrix: Matrix<Int>, stageRates: StageRates): (T, R) -> Double {
         val row = stehiomatrix[row]
-        val res = ArrayList<(T,R)-> Double>()
+        val sum = ArrayList<(T, R)-> Double>()
         for (column in stehiomatrix.columnsRange) {
             val rate = stageRates[column]
             val coeff = row[column]
-            res.add { t, r -> coeff * rate(t, r) }
+            sum.add { t, r -> coeff * rate(t, r) }
         }
 
-        return { t, r -> res.fold(0.0) {acc, next -> acc + next(t, r) } }
+        return { t, r -> sum.fold(0.0) { acc, next -> acc + next(t, r) } }
     }
 
     @JvmStatic
-    fun getMatrix(reaction: Reaction): Stehiomatrix {
+    fun getMatrix(reaction: Reaction): Matrix<Int> {
         val compounds = getCompounds(reaction)
-        val m = reaction.size
-        val n = compounds.size
-        val elements = Array(m) { Array(n) { 0 } }
+        val rows = reaction.size
+        val columns = compounds.size
+
+        val elements = ListUtils.arrayLists(rows, columns) { 0 }
 
         reaction.withIndex().forEach { (i, stage) ->
             compounds.withIndex().forEach { (j, compound) ->
@@ -62,7 +65,7 @@ object StehiomatrixGetter {
             }
         }
 
-        return Stehiomatrix(elements)
+        return Matrix(Integers, elements)
     }
 
     @JvmStatic
@@ -73,7 +76,7 @@ object StehiomatrixGetter {
     }
 
     @JvmStatic
-    fun getRates(reaction: Reaction, k: K): StageRates {
+    fun getRates(reaction: Reaction, k: k): StageRates {
         val compounds = this.getCompounds(reaction)
         val stageNumberAndReagentsIndexes = StagesAndItsReagentsIndices()
         reaction.withIndex().forEach { (index, stage) ->
@@ -84,7 +87,7 @@ object StehiomatrixGetter {
         return getRates(stageNumberAndReagentsIndexes, k)
     }
 
-    private fun getRates(stagesAndItsReagentsIndices: StagesAndItsReagentsIndices, k: K): StageRates {
+    private fun getRates(stagesAndItsReagentsIndices: StagesAndItsReagentsIndices, k: k): StageRates {
         assert(k.size == stagesAndItsReagentsIndices.size)
         val rates =
                 stagesAndItsReagentsIndices
@@ -94,7 +97,7 @@ object StehiomatrixGetter {
         return StageRates(rates)
     }
 
-    private fun rate(k: K, r: R, i: Int, indices: List<Int>) = k[i] * r.filterBy(indices).productAs(indices)
+    private fun rate(k: k, r: R, i: Int, indices: List<Int>) = k[i] * r.filterBy(indices).productAs(indices)
 
     private fun Reaction.getUniques(getCompounds: (Stage) -> Compounds): List<String> {
         return this.flatMap(getCompounds).map { it.elements.toString() }

@@ -1,8 +1,8 @@
 package com.nir.utils.math
 
-import com.nir.utils.ArrayUtils
 import com.nir.utils.PlotUtils
 import com.nir.utils.SolutionFlow
+import com.nir.utils.SolutionPartialFlow
 import de.gsi.dataset.spi.DoubleDataSet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
@@ -76,7 +76,7 @@ object Solution {
                 for (i in 0 until N - 1) {
                     r[1] = method(system, r[0], t, dt)
 
-                    if (i % 10 == 0) {
+                    if (i % 15 == 0) {
                         delay(1)
                     }
 
@@ -86,6 +86,38 @@ object Solution {
                 }
             }
             return SolutionFlow(this.info.dataSets, flow)
+        }
+
+        fun partialFlow(partial: Int): SolutionPartialFlow {
+            val flow = flow {
+                val (t0, r0, dt, N) = info.initialData
+                val system = info.system
+                val method = info.method
+                val D = r0.size
+                var t = t0
+
+                val r = ArrayUtils.twoDimArray(2 to D)
+                (0 until D).forEach { i -> r[0][i] = r0[i] }
+
+                var counter = 0;
+
+                val part = ArrayList<Pair<T, R>>(partial)
+                for (i in 0 until N - 1) {
+                    r[1] = method(system, r[0], t, dt)
+
+                    if (counter == partial) {
+                        this.emit(part)
+                        counter == 0
+                        part.clear()
+                    } else {
+                        part.add(t to r[1])
+                        counter++
+                    }
+                    t += dt
+                    r[0] = r[1]
+                }
+            }
+            return SolutionPartialFlow(this.info.dataSets, flow)
         }
 
         private fun rToStr(r: Array<Double>) = r.withIndex().joinToString(separator = ", ", truncated = "") { (index, value) -> "r${index + 1} = $value" }

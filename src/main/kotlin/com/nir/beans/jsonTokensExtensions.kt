@@ -1,7 +1,8 @@
-package com.nir.utils
+package com.nir.beans
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
+import com.nir.utils.delete
 
 /**
  *

@@ -1,57 +1,72 @@
-package com.nir.utils
+package com.nir.beans
 
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.nir.beans.Beans
-import com.nir.ui.dto.MethodInfo
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.type.CollectionType
+import com.nir.utils.math.MethodInfoJsonPojo
+import com.nir.utils.ifTrue
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 import java.io.File
+import kotlinx.coroutines.flow.Flow
 
 fun main() = runBlocking {
     val filename = "json/butchers-tables.json"
-    val flow = JacksonFlow(filename, MethodInfo::class.java).flow()
+    val jacksonComponent = JacksonComponent(filename, MethodInfoJsonPojo::class.java)
+    val flow = jacksonComponent.flow()
 
     flow.collect {
         println(it)
     }
+
+    val all = jacksonComponent.readAll()
+    println(all)
 }
 
-class JacksonFlow<T : Any>(filename: String, private val type: Class<T>) {
-    private val codec: ObjectMapper
-    private val jsonParser: JsonParser
+class JacksonComponent<T : Any>(filename: String, private val type: Class<T>) {
+    private var file: File
+    private val codec = Beans.kotlinObjectMapper()
 
     init {
-        val resource = JacksonFlow::class.java.classLoader.getResource(filename)!!
-        val file = File(resource.toURI())
-        jsonParser = JsonFactory().createParser(file)
-        codec = Beans.kotlinObjectMapper()
+        val resource = JacksonComponent::class.java.classLoader.getResource(filename)!!
+        file = File(resource.toURI())
+    }
+
+    private fun createParser(file: File): JsonParser {
+        val jsonParser = JsonFactory().createParser(file)
         jsonParser.codec = codec
+        return jsonParser
     }
 
-    fun flow() = generateSequence { this.next() }.asFlow()
+    fun flow(): Flow<T> {
+        val jsonParser = createParser(file)
+        return generateSequence { this.next(jsonParser) }.asFlow()
+    }
+
+    fun readAll(): List<T> {
+        val javaType = codec.typeFactory.constructCollectionType(List::class.java, type);
+        return codec.readValue(file, javaType);
+    }
 
 
-    operator fun next(): T? {
+    fun next(jsonParser: JsonParser): T? {
         val stringBuilder = StringBuilder()
-        return parseNext(stringBuilder)
+        return parseNext(stringBuilder, jsonParser)
     }
 
-    private fun parseNext(stringBuilder: StringBuilder): T? {
+    private fun parseNext(stringBuilder: StringBuilder, jsonParser: JsonParser): T? {
         val token = nextToken(jsonParser)
         if (token.isArrayStart()) {
             if (nextToken(jsonParser).isObjectStart()) {
-                return parse(stringBuilder)
+                return parse(stringBuilder, jsonParser)
             }
         }
 
         if (token.isObjectStart()) {
-            return parse(stringBuilder)
+            return parse(stringBuilder, jsonParser)
         }
 
         if (token.isScalarValue) {
@@ -64,7 +79,7 @@ class JacksonFlow<T : Any>(filename: String, private val type: Class<T>) {
         throw RuntimeException("Token is not Array, not object, not scalar. What type is it?")
     }
 
-    private fun parse(stringBuilder: StringBuilder): T {
+    private fun parse(stringBuilder: StringBuilder, jsonParser: JsonParser): T {
         parseObject(stringBuilder, jsonParser)
         val toString = stringBuilder.toString()
         return codec.readValue(toString, type)
@@ -117,7 +132,7 @@ class JacksonFlow<T : Any>(filename: String, private val type: Class<T>) {
             token.isFieldName(stringBuilder, jsonParser)
             token.areValues(stringBuilder, jsonParser)
             token.isObjectStart().ifTrue {
-                parseObject(stringBuilder, this.jsonParser)
+                parseObject(stringBuilder, jsonParser)
             }
         } while (counterOfStart != counterOfEnd)
     }

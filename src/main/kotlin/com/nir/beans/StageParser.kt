@@ -1,11 +1,11 @@
 package com.nir.beans
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.nir.ui.dto.Compound
-import com.nir.ui.dto.Compounds
-import com.nir.ui.dto.ElementsAndAmounts
-import com.nir.ui.dto.Stage
-import com.nir.ui.dto.ReactionType.Companion.stageSymbols
+import com.nir.ui.pojos.Compound
+import com.nir.ui.pojos.Compounds
+import com.nir.ui.pojos.ElementsAndAmounts
+import com.nir.ui.pojos.Stage
+import com.nir.ui.pojos.ReactionType.Companion.stageSymbols
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 

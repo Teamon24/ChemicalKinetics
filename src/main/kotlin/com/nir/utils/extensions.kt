@@ -13,3 +13,9 @@ fun String.delete(vararg string: String): String {
 }
 
 infix fun Boolean.ifTrue(predicate: () -> Any) = if (this) predicate() else {}
+
+fun Any?.ifNotNull(action: () -> Any) {
+    if (this != null) {
+        action()
+    }
+}

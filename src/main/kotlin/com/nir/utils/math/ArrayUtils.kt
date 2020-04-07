@@ -1,4 +1,4 @@
-package com.nir.utils
+package com.nir.utils.math
 
 
 object ArrayUtils {
