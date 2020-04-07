@@ -19,8 +19,8 @@ class LorentzStrangeAttractor(
         return InitialData(
                 t0 = 0.0,
                 r0 = arrayOf(1.0, 1.0, 1.0),
-                dt = 0.001,
-                N = 250000
+                dt = 0.00002,
+                N = 1_250_000
         )
     }
 

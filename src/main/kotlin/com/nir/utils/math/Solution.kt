@@ -1,8 +1,9 @@
 package com.nir.utils.math
 
+import com.nir.utils.ListUtils
 import com.nir.utils.PlotUtils
 import com.nir.utils.SolutionFlow
-import com.nir.utils.SolutionPartialFlow
+import com.nir.utils.SolutionBatchFlow
 import de.gsi.dataset.spi.DoubleDataSet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
@@ -75,20 +76,16 @@ object Solution {
 
                 for (i in 0 until N - 1) {
                     r[1] = method(system, r[0], t, dt)
-
-                    if (i % 15 == 0) {
-                        delay(1)
-                    }
-
                     this.emit(t to r[1])
                     t += dt
                     r[0] = r[1]
+                    delay(1)
                 }
             }
             return SolutionFlow(this.info.dataSets, flow)
         }
 
-        fun partialFlow(partial: Int): SolutionPartialFlow {
+        fun batchFlow(batchSize: Int): SolutionBatchFlow {
             val flow = flow {
                 val (t0, r0, dt, N) = info.initialData
                 val system = info.system
@@ -99,25 +96,36 @@ object Solution {
                 val r = ArrayUtils.twoDimArray(2 to D)
                 (0 until D).forEach { i -> r[0][i] = r0[i] }
 
-                var counter = 0;
+                var partT = ArrayList<T>(batchSize)
+                var partR = ListUtils.arrayLists<Double>(r0.size, batchSize)
 
-                val part = ArrayList<Pair<T, R>>(partial)
                 for (i in 0 until N - 1) {
                     r[1] = method(system, r[0], t, dt)
 
-                    if (counter == partial) {
-                        this.emit(part)
-                        counter == 0
-                        part.clear()
+                    if (partT.size == batchSize) {
+                        this.emit(partT to partR)
+                        partT = ArrayList(batchSize)
+                        partR = ListUtils.arrayLists(3, batchSize)
+                        delay()
                     } else {
-                        part.add(t to r[1])
-                        counter++
+                        partT.add(t)
+                        partR.withIndex().forEach {
+                            it.value.add(r[1][it.index])
+                        }
                     }
                     t += dt
                     r[0] = r[1]
                 }
+
+                if (partT.isNotEmpty()) {
+                    this.emit(partT to partR)
+                }
             }
-            return SolutionPartialFlow(this.info.dataSets, flow)
+            return SolutionBatchFlow(this.info.dataSets, flow)
+        }
+
+        private suspend fun delay() {
+            delay(1)
         }
 
         private fun rToStr(r: Array<Double>) = r.withIndex().joinToString(separator = ", ", truncated = "") { (index, value) -> "r${index + 1} = $value" }

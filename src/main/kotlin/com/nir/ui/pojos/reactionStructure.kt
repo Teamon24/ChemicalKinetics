@@ -1,6 +1,6 @@
 package com.nir.ui.pojos
 
-typealias Reaction = Collection<Stage>
+typealias Reaction = Collection<ReactionStage>
 class Compounds(): ArrayList<Compound>() {
     constructor(vararg compounds: Compound): this() {
         this.addAll(compounds)
@@ -16,7 +16,7 @@ typealias ElementSymbol = String
 /**
  * Стадия химической реакции.
  */
-data class Stage
+data class ReactionStage
 constructor(
         val reagents: Compounds = Compounds(),
         val type: String,

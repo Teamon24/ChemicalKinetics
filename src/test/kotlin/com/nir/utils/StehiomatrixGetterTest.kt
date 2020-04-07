@@ -6,7 +6,7 @@ import com.nir.ui.pojos.Compound
 import com.nir.ui.pojos.Compounds
 import com.nir.ui.pojos.ElementsAndAmounts
 import com.nir.ui.pojos.Reaction
-import com.nir.ui.pojos.Stage
+import com.nir.ui.pojos.ReactionStage
 import com.nir.utils.math.Integers
 import com.nir.utils.math.R
 import com.nir.utils.math.Matrix
@@ -136,18 +136,18 @@ class StehiomatrixGetterTest {
         )
     }
 
-    private fun createDatas(stages: List<Stage>): Pair<List<String>, Matrix<Int>> {
-        val expectedCompounds: List<String> = stages
+    private fun createDatas(reactionStages: List<ReactionStage>): Pair<List<String>, Matrix<Int>> {
+        val expectedCompounds: List<String> = reactionStages
                 .flatMap { it.reagents + it.products }
                 .distinctBy { it.elements.toString() }
                 .map { it.elements.toString() }
 
-        val rows = stages.size
+        val rows = reactionStages.size
         val columns = expectedCompounds.size
 
         val expectedStehiomatrix = Matrix(Integers, ListUtils.arrayLists(rows, columns) { 0 })
 
-        stages.withIndex().forEach { (i, stage) ->
+        reactionStages.withIndex().forEach { (i, stage) ->
             expectedCompounds.withIndex().forEach { (j, compound) ->
                 expectedStehiomatrix[i][j] = stage.getAmountOf(compound)
             }
@@ -159,7 +159,7 @@ class StehiomatrixGetterTest {
 
 
 
-    fun reaction1(): List<Stage> {
+    fun reaction1(): List<ReactionStage> {
         val Br2 = mapOf("Br" to 2)
         val Br = mapOf("Br" to 1)
         val H2 = mapOf("H" to 2)
@@ -169,18 +169,18 @@ class StehiomatrixGetterTest {
         val (a, b, c, d, e) = stehCoeff1
 
         /*** НЕ МЕНЯЙТЕ РЕАКЦИИ ***/
-        val stage1 = Stage(Compounds(c(a, Br2)), "->", Compounds(c(b, Br)))
-        val stage2 = Stage(Compounds(c(a, Br), c(a, H2)), "->", Compounds(c(a, HBr), c(a, H)))
-        val stage3 = Stage(Compounds(c(e, HBr), c(b, H), c(c, Br)), "->", Compounds(c(b, H2), c(d, Br2)))
-        val stage4 = Stage(Compounds(c(a, H), c(a, HBr)), "->", Compounds(c(a, Br), c(a, H2)))
-        val stage5 = Stage(Compounds(c(b, Br)), "->", Compounds(c(a, Br2)))
+        val stage1 = ReactionStage(Compounds(c(a, Br2)), "->", Compounds(c(b, Br)))
+        val stage2 = ReactionStage(Compounds(c(a, Br), c(a, H2)), "->", Compounds(c(a, HBr), c(a, H)))
+        val stage3 = ReactionStage(Compounds(c(e, HBr), c(b, H), c(c, Br)), "->", Compounds(c(b, H2), c(d, Br2)))
+        val stage4 = ReactionStage(Compounds(c(a, H), c(a, HBr)), "->", Compounds(c(a, Br), c(a, H2)))
+        val stage5 = ReactionStage(Compounds(c(b, Br)), "->", Compounds(c(a, Br2)))
         /*** НЕ МЕНЯЙТЕ РЕАКЦИИ ***/
         val stages = listOf(stage1, stage2, stage3, stage4, stage5)
 
         return stages
     }
 
-    fun reaction2(): List<Stage> {
+    fun reaction2(): List<ReactionStage> {
         val A = mapOf("A" to 1)
         val B = mapOf("B" to 1)
         val Q = mapOf("Q" to 1)
@@ -188,8 +188,8 @@ class StehiomatrixGetterTest {
 
         val (a1, a2, bi, q, z) = stehCoeff2
         /*** НЕ МЕНЯЙТЕ РЕАКЦИИ ***/
-        val stage1 = Stage(Compounds(c(a1, A), c(bi, B)), "->", Compounds(c(q, Q)))
-        val stage2 = Stage(Compounds(c(a2, A), c(q, Q)), "->", Compounds(c(z, Z)))
+        val stage1 = ReactionStage(Compounds(c(a1, A), c(bi, B)), "->", Compounds(c(q, Q)))
+        val stage2 = ReactionStage(Compounds(c(a2, A), c(q, Q)), "->", Compounds(c(z, Z)))
         /*** НЕ МЕНЯЙТЕ РЕАКЦИИ ***/
         val stages = listOf(stage1, stage2)
 

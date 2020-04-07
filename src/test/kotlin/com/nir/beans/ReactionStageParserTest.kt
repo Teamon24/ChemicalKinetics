@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 /**
  * Test for class [StageParser].
  */
-class StageParserTest {
+class ReactionStageParserTest {
 
     private val kotlinObjectMapper = Beans.kotlinObjectMapper()
     private val reactionParser = StageParser

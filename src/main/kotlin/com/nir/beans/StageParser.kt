@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.nir.ui.pojos.Compound
 import com.nir.ui.pojos.Compounds
 import com.nir.ui.pojos.ElementsAndAmounts
-import com.nir.ui.pojos.Stage
+import com.nir.ui.pojos.ReactionStage
 import com.nir.ui.pojos.ReactionType.Companion.stageSymbols
 import java.util.regex.Matcher
 import java.util.regex.Pattern
@@ -56,7 +56,7 @@ object StageParser {
     }
 
     @JvmStatic
-    fun convert(rawStage: RawStage): Stage {
+    fun convert(rawStage: RawStage): ReactionStage {
         val leftCompounds = ArrayList<Compound>()
         val rightCompounds = ArrayList<Compound>()
 
@@ -67,7 +67,7 @@ object StageParser {
         val reagents = Compounds(lefts)
         val products = Compounds(rights)
 
-        return Stage(reagents, stageTypeSymbol, products)
+        return ReactionStage(reagents, stageTypeSymbol, products)
     }
 
     private fun separateAmountFromCompound(amountsAndCompounds: String): Map<String, Int> {

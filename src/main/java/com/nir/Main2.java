@@ -41,15 +41,15 @@ public class Main2 extends Application {
             btnAddNew.setOnMouseClicked(mouseEvent -> showAddReactionForm());
             Button btnOK = (Button) chooseReactionScene.lookup("#btnOK");
             btnOK.setOnMouseClicked(mouseEvent -> {
-                ArrayList<com.nir.ui.pojos.Stage> stages = new ArrayList<>();
+                ArrayList<com.nir.ui.pojos.ReactionStage> reactionStages = new ArrayList<>();
                 ComboBox comboBox = (ComboBox) chooseReactionScene.lookup("#comboBox");
                 String reactionString = (String) comboBox.getValue();
                 //connect to database
                 //search reaction in db, get id of complex reaction, find reactions with foreign key
                 //for...{
                     RawStage rawReaction = StageParser.parse(reactionString);
-                    com.nir.ui.pojos.Stage stage = StageParser.convert(rawReaction);
-                    stages.add(stage);
+                    com.nir.ui.pojos.ReactionStage reactionStage = StageParser.convert(rawReaction);
+                    reactionStages.add(reactionStage);
                 // }
                 // составляем стехиометрическую матрицу, систему, решаем, получаем результат, открываем мейн форму, отображаем результат
                 showMainForm();

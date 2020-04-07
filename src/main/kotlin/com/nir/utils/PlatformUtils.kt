@@ -6,12 +6,8 @@ import de.gsi.dataset.spi.DoubleDataSet
 import javafx.application.Platform
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.launch
 
 class SolutionFlow(private val collectTo: List<DoubleDataSet>,
@@ -28,15 +24,15 @@ class SolutionFlow(private val collectTo: List<DoubleDataSet>,
     }
 }
 
-class SolutionPartialFlow(private val collectTo: List<DoubleDataSet>,
-                          private val flow: Flow<List<Pair<T, R>>>) {
+class SolutionBatchFlow(private val collectTo: List<DoubleDataSet>,
+                        private val flow: Flow<Pair<ArrayList<T>, ArrayList<ArrayList<Double>>>>) {
 
     suspend fun collect() {
         this.flow.collect { pairs ->
             collectTo.withIndex().forEach { (index, dataSet) ->
-                pairs.forEach { (t, r) ->
-                    dataSet.add(t, r[index])
-                }
+                val toDoubleArray = pairs.first.toDoubleArray()
+                val toDoubleArray2 = pairs.second[index].toDoubleArray()
+                dataSet.add(toDoubleArray, toDoubleArray2)
             }
         }
     }
@@ -45,10 +41,10 @@ class SolutionPartialFlow(private val collectTo: List<DoubleDataSet>,
 object PlatformUtils {
 
     @JvmStatic
-    fun runLater(flow: SolutionPartialFlow) {
+    fun runLater(flowSolutionBatchFlow: SolutionBatchFlow) {
         Platform.runLater() {
             CoroutineScope(Dispatchers.IO).launch {
-                flow.collect()
+                flowSolutionBatchFlow.collect()
             }
         }
     }

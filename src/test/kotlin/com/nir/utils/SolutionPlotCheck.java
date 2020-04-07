@@ -30,15 +30,15 @@ public class SolutionPlotCheck extends Application {
         final List<String> methodsName = Methods.getNames();
         final Method method = Methods.getByName("Forward Euler", initialData);
 
-        final SolutionFlow runnable =
+        final SolutionBatchFlow solution =
             Solution
                 .method(method)
                 .system(system)
                 .initialData(initialData)
                 .datasets(dataSets)
-                .flow();
+                .batchFlow(50_000);
 
-        PlatformUtils.runLater(runnable);
+        PlatformUtils.runLater(solution);
     }
 
     public static void main(String[] args) {

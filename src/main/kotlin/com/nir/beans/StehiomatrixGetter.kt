@@ -2,7 +2,7 @@ package com.nir.beans
 
 import com.nir.ui.pojos.Compounds
 import com.nir.ui.pojos.Reaction
-import com.nir.ui.pojos.Stage
+import com.nir.ui.pojos.ReactionStage
 import com.nir.utils.math.System
 import com.nir.utils.math.Matrix
 import com.nir.utils.math.R
@@ -99,7 +99,7 @@ object StehiomatrixGetter {
 
     private fun rate(k: k, r: R, i: Int, indices: List<Int>) = k[i] * r.filterBy(indices).productAs(indices)
 
-    private fun Reaction.getUniques(getCompounds: (Stage) -> Compounds): List<String> {
+    private fun Reaction.getUniques(getCompounds: (ReactionStage) -> Compounds): List<String> {
         return this.flatMap(getCompounds).map { it.elements.toString() }
     }
 
