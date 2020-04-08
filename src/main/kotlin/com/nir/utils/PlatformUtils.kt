@@ -10,6 +10,28 @@ import kotlinx.coroutines.launch
 object PlatformUtils {
 
     @JvmStatic
+    fun runLater(vararg solutionFlows: SolutionFlow) {
+        Platform.runLater() {
+            solutionFlows.forEach {
+                CoroutineScope(Dispatchers.IO).launch {
+                    it.collect()
+                }
+            }
+        }
+    }
+
+    @JvmStatic
+    fun runLater(vararg solutionBatchFlows: SolutionBatchFlow) {
+        Platform.runLater() {
+                solutionBatchFlows.forEach {
+                    CoroutineScope(Dispatchers.IO).launch {
+                        it.collect()
+                    }
+                }
+        }
+    }
+
+    @JvmStatic
     fun runLater(flowSolutionBatchFlow: SolutionBatchFlow) {
         Platform.runLater() {
             CoroutineScope(Dispatchers.IO).launch {

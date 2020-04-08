@@ -67,7 +67,7 @@ class TypeStep(private val info: Solution.Info) {
                 if (counter == batchSize) {
                     val duration = timer.end()
                     batchesCounter++
-                    println("Batch #$batchesCounter with size '$batchSize' was emitted. Duration: $duration ms")
+                    println(""""${info.method.name}": batch #$batchesCounter with size '$batchSize' was emitted. Duration: $duration ms""")
                     this.emit(partT to partR)
                     counter = 0
                     oneDelay()
