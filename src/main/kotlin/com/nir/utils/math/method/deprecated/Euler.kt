@@ -11,9 +11,12 @@ import com.nir.utils.math.method.Y
 import com.nir.utils.math.method.dX
 import com.nir.utils.math.plus
 
-object Euler : Method() {
+object Euler : DeprecatedMethod() {
     override val name: String get() = "Euler"
     override fun set(d: D, dx: dX) {}
+    override fun set(dx: dX) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun invoke(f: F,
                         y0: Y,

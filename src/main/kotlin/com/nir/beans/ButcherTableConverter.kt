@@ -10,11 +10,11 @@ object ButcherTableConverter {
         val c = butchersTableJsonPojo.c
         val A = butchersTableJsonPojo.A
         val b = butchersTableJsonPojo.b
-        val bCorrect = butchersTableJsonPojo.bCorrect
-        val doubledA = toDouble(A)
+        val b2 = butchersTableJsonPojo.b2
+       val doubledA = toDouble(A)
         val doubledB = b.map { toDouble(it) }.toTypedArray()
         val doubledC = c.map { toDouble(it) }.toTypedArray()
-        val doubledBCorrect = bCorrect.map { toDouble(it) }.toTypedArray()
+        val doubledBCorrect = b2.map { toDouble(it) }.toTypedArray()
         return ButchersTable(
                 doubledC,
                 Matrix(Doubles, doubledA),

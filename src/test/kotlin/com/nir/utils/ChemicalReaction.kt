@@ -1,5 +1,6 @@
 package com.nir.utils
 
+import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialData
 import java.util.stream.Stream
 
@@ -11,9 +12,8 @@ data class ChemicalReaction(val N: Int,
                             val reaction: Stream<String>
 ) {
 
-    fun initialData(): InitialData {
-        return InitialData(t0, C0, dt, N)
-    }
+    val initialData = InitialData(t0, C0)
+    val computationConfigs = ComputationConfigs(dt, N)
 
     companion object {
         @JvmStatic

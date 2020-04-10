@@ -4,6 +4,7 @@ import com.nir.beans.Methods;
 import com.nir.beans.StageParser;
 import com.nir.beans.StehiomatrixGetter;
 import com.nir.ui.pojos.ReactionStage;
+import com.nir.utils.math.ComputationConfigs;
 import com.nir.utils.math.InitialData;
 import com.nir.utils.math.method.Method;
 import com.nir.utils.math.solution.Solution;
@@ -49,17 +50,19 @@ public class ChemicalSystemSolutionCheck extends Application {
         PlotUtils.show(charts, stage);
 
         //Выбор вычислительного метода
-        final InitialData initialData = chemicalReaction.initialData();
+        final InitialData initialData = chemicalReaction.getInitialData();
+        final ComputationConfigs computationConfigs = chemicalReaction.getComputationConfigs();
         final List<String> methodsName = Methods.getNames();
         final String methodName = RandomUtils.randomIn(methodsName);
-        final Method method = Methods.getByName(methodName, initialData);
+        final Method method = Methods.getByName(methodName, computationConfigs.getDx());
 
         //Составление объекта с настройками решения
-        final F f = getSystem(chemicalReaction, reactionStages);
+        final F system = getSystem(chemicalReaction, reactionStages);
         final Runnable solutionFlow =
             Solution
                 .method(method)
-                .system(f)
+                .computationConfigs(computationConfigs)
+                .system(system)
                 .initialData(initialData)
                 .datasets(dataSets)
                 .task();

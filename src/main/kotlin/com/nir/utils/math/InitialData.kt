@@ -7,7 +7,10 @@ import com.nir.utils.math.method.dX
 
 data class InitialData(
         val x0: X,
-        val y0: Y,
+        val y0: Y
+)
+
+data class ComputationConfigs(
         val dx: dX,
         val n: N
 )

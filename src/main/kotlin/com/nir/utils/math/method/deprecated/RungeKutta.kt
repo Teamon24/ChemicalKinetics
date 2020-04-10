@@ -14,13 +14,17 @@ import com.nir.utils.math.plus
 /**
  * Метод решения системы уравенений "Рунге-Кутта".
  */
-class RungeKutta(private val order: Int): Method() {
+class RungeKutta(private val order: Int): DeprecatedMethod() {
 
     private val core: RungeKuttaCore = when (order) {
         4 -> RungeKutta4Core()
         else -> throw RuntimeException("For order='$order' no Runge-Kutta method")
     }
     override val name: String get() = "Runge-Kutta ${order}-order"
+
+    override fun set(dx: dX) {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    }
 
     override fun set(d: D, dx: dX) {
         core.init(d, dx)

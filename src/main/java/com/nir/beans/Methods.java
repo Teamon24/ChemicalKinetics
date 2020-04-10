@@ -1,6 +1,5 @@
 package com.nir.beans;
 
-import com.nir.utils.math.InitialData;
 import com.nir.utils.math.method.Method;
 import com.nir.utils.math.method.MethodInfoJsonPojo;
 
@@ -41,13 +40,11 @@ public class Methods {
         }
     }
 
-    public static Method getByName(String name, InitialData initialData) {
+    public static Method getByName(String name, double dx) {
         final List<Method> all = getAll();
         final Optional<Method> first = all.stream().filter(it -> it.getName().equals(name)).findFirst();
         final Method method = first.get();
-        final int d = initialData.getY0().length;
-        final double dx = initialData.getDx();
-        method.set(d, dx);
+        method.set(dx);
         return method;
     }
 }

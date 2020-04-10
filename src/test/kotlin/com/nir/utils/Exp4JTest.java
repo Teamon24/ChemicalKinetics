@@ -14,8 +14,18 @@ import java.util.Set;
 import static com.nir.utils.ExpressionUtils.vals;
 import static com.nir.utils.ExpressionUtils.vars;
 import static com.nir.utils.ExpressionUtils.varsAndVals;
+import static java.lang.Math.sqrt;
 
 public class Exp4JTest {
+
+    @Test
+    public void sqrtTestForExp4J() {
+        final double s = 9.0;
+        final ExpressionBuilder expressionBuilder = new ExpressionBuilder("2sqrt(" + s + ")");
+        final Expression expression = expressionBuilder.build();
+        final double actual = expression.evaluate();
+        Assertions.assertEquals(2*sqrt(9.0), actual);
+    }
 
     @Test
     public void testForExp4J() {
@@ -30,11 +40,7 @@ public class Exp4JTest {
             final double actual = expression.evaluate();
             final double expected = triple.getRight();
 
-            try {
-                Assertions.assertEquals(expected, actual);
-            } catch (Exception ignored) {
-                throw ignored;
-            }
+            Assertions.assertEquals(expected, actual);
         });
     }
 

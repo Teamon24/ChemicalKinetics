@@ -18,10 +18,7 @@ class LorentzStrangeAttractor(
     fun initialData(): InitialData {
         return InitialData(
                 x0 = 0.0,
-                y0 = arrayOf(1.0, 1.0, 1.0),
-                dx = 0.00001,
-                n = 10_000_000
-        )
+                y0 = arrayOf(1.0, 1.0, 1.0))
     }
 
     fun titles(): List<String> {
@@ -44,9 +41,7 @@ class LorentzStrangeAttractor2(
     fun initialData(): InitialData {
         return InitialData(
                 x0 = 0.0,
-                y0 = Array(4) { -2.0 },
-                dx = 0.000002,
-                n = 20_000_000
+                y0 = Array(4) { -2.0 }
         )
     }
 

@@ -21,10 +21,10 @@ data class ButchersTableJsonPojo(
         val c: List<*>,
         val A: List<*>,
         val b: List<*>,
-        val bCorrect: List<*> = ArrayList<Any>()
+        val b2: List<*> = ArrayList<Any>()
 ) {
         fun isAdaptive(): Boolean {
-                return bCorrect.isNotEmpty()
+                return b2.isNotEmpty()
         }
 
         fun hasNoExpression(): Boolean {

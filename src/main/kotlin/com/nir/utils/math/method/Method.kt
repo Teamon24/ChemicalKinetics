@@ -33,7 +33,7 @@ val emptyKFunc = { f: F, x: X, y: Y -> Array(y.size) { 0.0 } }
 abstract class Method {
     abstract val name: String
 
-    abstract fun set(d: D, dx: dX)
+    abstract fun set(dx: dX)
 
     abstract operator fun invoke(f: F,
                                  y0: Y,
@@ -52,8 +52,8 @@ abstract class Method {
 
                 override val name: String get() = explicit.name
 
-                override fun set(d: D, dx: dX) {
-                    explicit.set(d, dx)
+                override fun set(dx: dX) {
+                    explicit.set(dx)
                 }
 
                 override fun invoke(f: F, y0: Y0, x0: X0, dx: dX, n: N): Array<Y> {

@@ -39,17 +39,16 @@ class ExplicitRungeKutta(
         }
     }
 
-
     private fun initCore() {
         val b = butchersTable.b
         core = {
             f: F, x: X, y: Y
             ->
-            dx() * sum(stages, b, K)(f, x, y)
+            dx() * sumOfProd(stages, b, K)(f, x, y)
         }
     }
 
-    override fun set(d: D, dx: dX) {
+    override fun set(dx: dX) {
         this.step = dx
     }
 
@@ -79,32 +78,30 @@ class ExplicitRungeKutta(
                      Ks: ArrayList<kFunc>): (F, X, Y) -> k
     {
         val Ai = A[i].toTypedArray()
-        val sum = sum(i, Ai, Ks)
+        val sum = sumOfProd(i, Ai, Ks)
         return { f: F, x: X, y: Y
             ->
             f(x + c[i] * dx(), y + dx() * sum(f, x, y))
         }
-                     }
+    }
 
-    private fun sum(
-            i: Int,
-            Ai: Array<Double>,
-            Ks: ArrayList<kFunc>
-    )
-            : kFunc
+    private fun sumOfProd(i: Int, first: Array<Double>, second: ArrayList<kFunc>): kFunc
     {
         if (i == 0) return emptyKFunc
 
         val adds = Array(i) { emptyKFunc }
         for (j in 0 until i) {
-            adds[j] = {
-                f: F, x: X, y: Y
-                ->
-                Ai[j] * Ks[j](f, x, y)
+            if (first[j] == 0.0) {
+                adds[j] = emptyKFunc
+            } else {
+                adds[j] = {
+                    f: F, x: X, y: Y
+                    ->
+                    first[j] * second[j](f, x, y)
+                }
             }
-        }
 
-        fun initial(y: Y) = Array(y.size) { 0.0 }
+        }
 
         return {
             f: F, x: X, y: Y
@@ -113,5 +110,5 @@ class ExplicitRungeKutta(
         }
     }
 
-
+    private fun initial(y: Y) = Array(y.size) { 0.0 }
 }

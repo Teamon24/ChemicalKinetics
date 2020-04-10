@@ -2,21 +2,33 @@ package com.nir.utils.math.solution
 
 import com.nir.utils.InitUtils
 import com.nir.utils.PlotUtils
+import com.nir.utils.Timer
 import com.nir.utils.math.ArrayUtils
 import com.nir.utils.math.method.D
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.*
+
 
 class TypeStep(private val info: Solution.Info) {
 
 
+    private val decimalFormat: DecimalFormat
+
+    init{
+        val nf = NumberFormat.getNumberInstance(Locale.US)
+        nf.maximumFractionDigits = 2
+        decimalFormat = nf as DecimalFormat
+    }
+
     fun task(): Runnable {
         return Runnable {
             val (method, system, dataSets, y0, x0, dx, n, _) = info.datas()
-            var x = x0
             val series = PlotUtils.series(x0, n, dx)
             val timer = Timer().start()
             val solution = method(system, y0, x0, dx, n)
-            timer.end()
-            println("Calculation was ended in runnable task. Duration: ${timer.whole()} ")
+            timer.stop()
+            println("Calculation was ended in runnable task. Duration: ${timer.total()} ")
             dataSets.withIndex().forEach { (index, dataSet) ->
                 dataSet.add(series, solution.map { it[index] }.toDoubleArray())
             }
@@ -43,7 +55,7 @@ class TypeStep(private val info: Solution.Info) {
     }
 
     fun batchFlow(): SolutionBatchFlow {
-        val batchSize = this.info.initialData.n / 10
+        val batchSize = 3000
         return batchFlow(batchSize)
     }
 
@@ -56,8 +68,9 @@ class TypeStep(private val info: Solution.Info) {
 
             val partT = initPartT(batchSize)
             val partR = initPartR(d, batchSize)
-            var counter = 0;
-            var batchesCounter = 0;
+            var counter = 0
+            var totalCounter = 0L
+            var batchesCounter = 0
 
             val timer = Timer()
             timer.start()
@@ -65,9 +78,10 @@ class TypeStep(private val info: Solution.Info) {
                 r[1] = method(system, r[0], t, dx)
 
                 if (counter == batchSize) {
-                    val duration = timer.end()
+                    val duration = timer.stop()
+                    val spentTime = timer.total()
                     batchesCounter++
-                    println(""""${info.method.name}": batch #$batchesCounter with size '$batchSize' was emitted. Duration: $duration ms""")
+                    println(message(batchesCounter, batchSize, duration, spentTime, n, totalCounter))
                     this.emit(partT to partR)
                     counter = 0
                     oneDelay()
@@ -78,6 +92,7 @@ class TypeStep(private val info: Solution.Info) {
                         it.value[counter] = r[1][it.index]
                     }
                     counter++
+                    totalCounter++
                 }
                 t += dx
                 r[0] = r[1]
@@ -87,10 +102,16 @@ class TypeStep(private val info: Solution.Info) {
                 this.emit(partT to partR)
                 println("The last batch with size '$counter' was emitted")
             }
-            println("Batch flow ended its emissions. Whole duration: ${timer.whole()}")
+            println("Batch flow ended its emissions. Whole duration: ${timer.total()}")
         }
         return SolutionBatchFlow(this.info.dataSets, flow)
     }
+
+    private fun message(batchesCounter: Int, batchSize: Int, duration: Long, totalTime: Long, n: Int, totalCounter: Long) =
+                    """"${info.method.name}": batch #$batchesCounter with size '$batchSize' was emitted. Duration: ${Timer.formatMillis(duration)}. Total time: ${Timer.formatMillis(totalTime)}. Counted ${totalCounter.separate1000()} from ${n.separate1000()}."""
+
+    private fun Int.separate1000() = decimalFormat.format(this)
+    private fun Long.separate1000() = decimalFormat.format(this)
 
     private fun initPartR(d: D, batchSize: Int) = InitUtils.doubleArrays(d, batchSize)
 
