@@ -29,13 +29,15 @@ public class SolutionPlotCheck extends Application {
         //Запуск решения системы уравнений
         final InitialData initialData = system.initialData();
         final List<String> methodsName = Methods.getNames();
-        final Method method = Methods.getByName("Runge-Kutta 4th-order: v.2", initialData.getDx(), initialData.getY0().length);
+        final double dx = 0.000002;
+        final Method method = Methods.getByName("Runge-Kutta 4th-order: v.2");
+        method.set(dx);
         System.out.println(String.format("Numeric Method: \"%s\"", method.getName()));
 
         final SolutionBatchFlow solution =
             Solution
                 .method(method)
-                .computation(0.000002, 20_000_000)
+                .computation(dx, 222_000)
                 .system(system)
                 .initialData(initialData)
                 .datasets(dataSets)

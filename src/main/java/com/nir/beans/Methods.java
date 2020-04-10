@@ -40,11 +40,10 @@ public class Methods {
         }
     }
 
-    public static Method getByName(String name, double dx) {
+    public static Method getByName(String name) {
         final List<Method> all = getAll();
         final Optional<Method> first = all.stream().filter(it -> it.getName().equals(name)).findFirst();
         final Method method = first.get();
-        method.set(dx);
         return method;
     }
 }

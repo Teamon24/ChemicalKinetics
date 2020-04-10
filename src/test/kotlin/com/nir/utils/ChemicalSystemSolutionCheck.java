@@ -52,9 +52,8 @@ public class ChemicalSystemSolutionCheck extends Application {
         //Выбор вычислительного метода
         final InitialData initialData = chemicalReaction.getInitialData();
         final ComputationConfigs computationConfigs = chemicalReaction.getComputationConfigs();
-        final List<String> methodsName = Methods.getNames();
-        final String methodName = RandomUtils.randomIn(methodsName);
-        final Method method = Methods.getByName(methodName, computationConfigs.getDx());
+        final Method method = Methods.getByName("Runge-Kutta 4th-order: v.1");
+        method.set(computationConfigs.getDx());
 
         //Составление объекта с настройками решения
         final F system = getSystem(chemicalReaction, reactionStages);

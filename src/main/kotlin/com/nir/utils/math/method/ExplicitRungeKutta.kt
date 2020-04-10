@@ -6,7 +6,7 @@ import com.nir.utils.math.ArrayUtils
 import com.nir.utils.math.Matrix
 import com.nir.utils.math.plus
 import com.nir.utils.math.times
-
+import java.lang.IllegalStateException
 
 
 typealias kFunc = (f: F, x: X, y: Y) -> k
@@ -20,8 +20,12 @@ class ExplicitRungeKutta(
         override val name: String) : Method() {
 
 
-    var step: Double? = null
-    var dx: () -> Double = { step!! }
+    var dx: Double? = null
+    var getDx: () -> Double = {
+        if(dx == null)
+            throw IllegalStateException("You should set dx to Method before computations")
+        else dx!!
+    }
     private var K = InitUtils.arrayList(stages) { emptyKFunc }
     lateinit var core: (f: F, x: X, y: Y) -> Y
 
@@ -34,7 +38,7 @@ class ExplicitRungeKutta(
         val c = butchersTable.c
         val A = butchersTable.A
         for (i in 0 until stages) {
-            val k = getK(i, dx, c, A, K)
+            val k = getK(i, getDx, c, A, K)
             K[i] = k
         }
     }
@@ -44,12 +48,12 @@ class ExplicitRungeKutta(
         core = {
             f: F, x: X, y: Y
             ->
-            dx() * sumOfProd(stages, b, K)(f, x, y)
+            getDx() * sumOfProd(stages, b, K)(f, x, y)
         }
     }
 
     override fun set(dx: dX) {
-        this.step = dx
+        this.dx = dx
     }
 
     override fun invoke(f: F, y0: Y, x0: X, dx: dX, n: Int): Array<Y> {
