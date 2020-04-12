@@ -47,6 +47,7 @@ abstract class Method {
                                  dx: dX): Y
 
     companion object {
+        @JvmStatic
         fun from(explicit: ExplicitRungeKutta): Method {
             return object : Method() {
 
@@ -67,9 +68,3 @@ abstract class Method {
         }
     }
 }
-
-abstract class GeneralMethod : Method() {
-    abstract fun setParamsValues(paramsAndValues: HashMap<String, Double>)
-}
-
-

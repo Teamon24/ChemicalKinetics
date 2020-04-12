@@ -1,6 +1,5 @@
 package com.nir.utils
 
-import com.nir.beans.k
 import com.nir.beans.StehiomatrixGetter
 import com.nir.ui.pojos.Compound
 import com.nir.ui.pojos.Compounds
@@ -49,55 +48,50 @@ class StehiomatrixGetterTest {
         }
     }
 
-
     @Test
-    //TODO проверить значения F после подстановки y0 и x0
     fun testSystemCreation() {
         datasForCheck().forEach {
-            val stages = it[0] as Reaction
-            val k = it[1] as k
-            val size = it[2] as Int
+            val (stages, k, r0, expectedValues) = it
             val stehiomatrix = StehiomatrixGetter.getMatrix(stages)
             val rates = StehiomatrixGetter.getRates(stages, k)
             val transposed = stehiomatrix.transpose()
             val system = StehiomatrixGetter.times(transposed, rates)
-            Assert.assertEquals(size, system.size)
+            Assert.assertEquals(r0.size, system.size)
+            Assert.assertEquals(r0.size, system.size)
+            val actualValues = system(0.0, r0)
+            val equalsResults = expectedValues.zip(actualValues).map { (expected, actual) ->
+                Triple(expected, actual, expected.equals(actual))
+            }
+            Assertions.assertTrue(equalsResults.fold(true) { acc, triple -> acc && triple.third })
         }
     }
 
-    val stehCoeff1 = Fivefold(1, 2, 3, 4, 5)
-    private val k1 = Fivefold(1.0, 1.0, 1.0, 1.0, 1.0)
-    lateinit var w1: Array<Double>
-    private val r10 = Fivefold(2.0, 3.0, 4.0, 5.0, 6.0)
+    private fun datasForCheck(): Array<Fourfold<Reaction, Array<Double>, Array<Double>, Array<Double>>> {
+        initW1()
+        initW2()
 
-    private val stehCoeff2 = Fivefold(5, 4, 3, 2, 1)
-    private val k2 = Pair(1.0, 1.0)
-    lateinit var w2: Array<Double>
-    private val r20 = Fourfold(2.0, 3.0, 5.0, 7.0)
-
-
-    private fun datasForCheck(): Array<Array<out Any>> {
-        datasForTestGetRates()
-        val coeff1 = stehCoeff1.array()
-        val transpose = StehiomatrixGetter.getMatrix(reaction1()).transpose()
+        val (a, be, c, d, e) = stehCoeff1
         val expectedValues1 = arrayOf(
-                -coeff1[0] * w1[0] + coeff1[3] * w1[2] + coeff1[0]
+                -a * w1[0]             + d * w1[2]             + a  * w1[4],
+                be * w1[0] - a * w1[1] - c * w1[2] + a * w1[3] - be * w1[4],
+                           - a * w1[1] + be* w1[2] + a * w1[3],
+                           + a * w1[1] - e * w1[2] - a * w1[3],
+                           + a * w1[1] - be* w1[2] - a * w1[3]
         )
 
-        val coeff2 = stehCoeff2.array()
+        val (a1, a2, b, q, z) = stehCoeff2
         val expectedValues2 = arrayOf(
-                -coeff2[0] * w2[0] - coeff2[1] * w2[1],
-                -coeff2[2] * w2[0],
-                coeff2[3] * w2[0] - coeff2[3] * w2[1],
-                coeff2[4] * w2[1]
+                -a1 * w2[0] - a2 * w2[1],
+                -b * w2[0],
+                q * (w2[0] - w2[1]),
+                z * w2[1]
         )
 
         return arrayOf(
-                arrayOf(reaction1(), k1.array(), r10.array().size, expectedValues1),
-                arrayOf(reaction2(), k2.array(), r20.array().size, expectedValues2)
+                Fourfold(reaction2(), k2.array(), r20.array(), expectedValues2),
+                Fourfold(reaction1(), k1.array(), r10.array(), expectedValues1)
         )
     }
-
     private fun datasForTestGetMatrix(): List<Array<Any>> {
 
         val reaction1 = reaction1()
@@ -109,32 +103,44 @@ class StehiomatrixGetterTest {
                 arrayOf(expectedCompounds2, expectedStehiomatrix2, reaction2))
     }
 
-
     private fun datasForTestGetRates(): Array<Array<Any>> {
-        val stg1 = reaction1()
-        val (Br2, Br, H2, HBr, H) = r10
 
-        val w11 = Br2.pow(stg1[0].reagents[0].amount)
-        val w12 = Br.pow(stg1[1].reagents[0].amount) * H2.pow(stg1[1].reagents[1].amount)
-        val w13 = HBr.pow(stg1[2].reagents[0].amount) * H.pow(stg1[2].reagents[1].amount) * Br.pow(stg1[2].reagents[2].amount)
-        val w14 = H.pow(stg1[3].reagents[0].amount) * HBr.pow(stg1[3].reagents[1].amount)
-        val w15 = Br.pow(stg1[4].reagents[0].amount)
+        val expectedRatesValues1 = initW1()
+        val expectedRatesValues2 = initW2()
 
-        w1 = arrayOf(w11, w12, w13, w14, w15)
-        val expectedRatesValues1: Array<Double> = k1.array() * w1
-
-        val stg2 = reaction2()
-
-        val (A0, B0, Q0, Z0) = r20
-
-        val w21 = A0.pow(stg2[0].reagents[0].amount) * B0.pow(stg2[0].reagents[1].amount)
-        val w22 = A0.pow(stg2[1].reagents[0].amount) * Q0.pow(stg2[1].reagents[1].amount)
-        w2 = arrayOf(w21, w22)
-        val expectedRatesValues2 = k2.array() * w2
         return arrayOf(
-                arrayOf(stg1, k1.array(), r10.array(), expectedRatesValues1),
-                arrayOf(stg2, k2.array(), r20.array(), expectedRatesValues2)
+                arrayOf(reaction1(), k1.array(), r10.array(), expectedRatesValues1),
+                arrayOf(reaction2(), k2.array(), r20.array(), expectedRatesValues2)
         )
+    }
+
+    val stehCoeff1 = Fivefold(1, 2, 3, 4, 5)
+    private val k1 = Fivefold(1.0, 1.0, 1.0, 1.0, 1.0)
+    lateinit var w1: Array<Double>
+    private val r10 = Fivefold(2.0, 3.0, 4.0, 5.0, 6.0)
+
+    private fun initW1() {
+        val (Br2, Br, H2, HBr, H) = r10
+        val (a, b, c, d, e) = stehCoeff1
+        val w11 = Br2.pow(a)
+        val w12 = Br.pow(a) * H2.pow(a)
+        val w13 = HBr.pow(e) * H.pow(b) * Br.pow(c)
+        val w14 = H.pow(a) * HBr.pow(a)
+        val w15 = Br.pow(b)
+        w1 = k1.array() * arrayOf(w11, w12, w13, w14, w15)
+    }
+
+    private val stehCoeff2 = Fivefold(5, 4, 3, 2, 1)
+    private val k2 = Pair(5.0, 11.0)
+    lateinit var w2: Array<Double>
+    private val r20 = Fourfold(2.0, 3.0, 5.0, 7.0)
+
+    private fun initW2() {
+        val (A0, B0, Q0, Z0) = r20
+        val (a1, a2, b, q, z) = stehCoeff2
+        val w21 = A0.pow(a1) * B0.pow(b)
+        val w22 = A0.pow(a2) * Q0.pow(q)
+        w2 = k2.array() * arrayOf(w21, w22)
     }
 
     private fun createDatas(reactionStages: List<ReactionStage>): Pair<List<String>, Matrix<Int>> {
@@ -184,9 +190,9 @@ class StehiomatrixGetterTest {
         val Q = mapOf("Q" to 1)
         val Z = mapOf("Z" to 1)
 
-        val (a1, a2, bi, q, z) = stehCoeff2
+        val (a1, a2, b, q, z) = stehCoeff2
         /*** НЕ МЕНЯЙТЕ РЕАКЦИИ ***/
-        val stage1 = ReactionStage(Compounds(c(a1, A), c(bi, B)), "->", Compounds(c(q, Q)))
+        val stage1 = ReactionStage(Compounds(c(a1, A), c(b, B)), "->", Compounds(c(q, Q)))
         val stage2 = ReactionStage(Compounds(c(a2, A), c(q, Q)), "->", Compounds(c(z, Z)))
         /*** НЕ МЕНЯЙТЕ РЕАКЦИИ ***/
         val stages = listOf(stage1, stage2)

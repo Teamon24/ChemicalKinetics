@@ -6,15 +6,17 @@ import com.nir.utils.math.Doubles
 import com.nir.utils.math.Matrix
 
 object ButcherTableConverter {
+
+    @JvmStatic
     fun convert(butchersTableJsonPojo: ButchersTableJsonPojo): ButchersTable {
         val c = butchersTableJsonPojo.c
         val A = butchersTableJsonPojo.A
         val b = butchersTableJsonPojo.b
         val b2 = butchersTableJsonPojo.b2
-       val doubledA = toDouble(A)
-        val doubledB = b.map { toDouble(it) }.toTypedArray()
-        val doubledC = c.map { toDouble(it) }.toTypedArray()
-        val doubledBCorrect = b2.map { toDouble(it) }.toTypedArray()
+        val doubledA = toDouble(A)
+        val doubledB = b.map { ExpressionParser.toDouble(it!!) }.toTypedArray()
+        val doubledC = c.map { ExpressionParser.toDouble(it!!) }.toTypedArray()
+        val doubledBCorrect = b2.map { ExpressionParser.toDouble(it!!) }.toTypedArray()
         return ButchersTable(
                 doubledC,
                 Matrix(Doubles, doubledA),
@@ -22,26 +24,11 @@ object ButcherTableConverter {
                 doubledBCorrect
         )
     }
-    fun toDouble(A: List<*>): Array<Array<Double>> {
-        val toTypedArray = A.map { row ->
-            row as List<*>
-            row.map { element ->
-                toDouble(element)
-            }.toTypedArray()
-        }.toTypedArray()
-        return toTypedArray
-    }
 
-    fun toDouble(any: Any?) : Double {
-        return if (any is String) {
-            MethodCreator.ExpressionParser.parse(any)
-        } else {
-            return when (any) {
-                is Int -> any.toDouble()
-                is Double -> any
-                is Float -> any.toDouble()
-                else -> throw RuntimeException("element: $any should be primitive")
-            }
-        }
+    private fun toDouble(A: List<*>): Array<Array<Double>> {
+        return A.map { row ->
+            row as List<*>
+            row.map {ExpressionParser.toDouble(it!!)}.toTypedArray()
+        }.toTypedArray()
     }
 }

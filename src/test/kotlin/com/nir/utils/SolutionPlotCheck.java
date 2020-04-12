@@ -28,7 +28,6 @@ public class SolutionPlotCheck extends Application {
 
         //Запуск решения системы уравнений
         final InitialData initialData = system.initialData();
-        final List<String> methodsName = Methods.getNames();
         final double dx = 0.000002;
         final Method method = Methods.getByName("Runge-Kutta 4th-order: v.2");
         method.set(dx);

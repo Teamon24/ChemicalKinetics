@@ -4,6 +4,6 @@ import com.nir.utils.math.method.MethodInfoJsonPojo;
 
 import java.util.List;
 
-public interface MethodInfoRepository {
+public interface MethodInfoComponent {
     List<MethodInfoJsonPojo> getAll();
 }

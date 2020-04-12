@@ -10,10 +10,10 @@ import java.util.stream.Collectors;
 
 public class Methods {
 
-    private static final MethodInfoRepository methodInfoRepository = Beans.methodInfoRepositoryImpl();
+    private static final MethodInfoComponent methodInfoComponent = Beans.methodInfoComponent();
     private static final MethodComponent methodComponent = Beans.methodComponent();
     private static final List<Method> methods = new ArrayList<>();
-    private static final List<MethodInfoJsonPojo> methodsInfos = new ArrayList<>();
+    private static final List<MethodInfoJsonPojo> methodInfoJsonPojos = new ArrayList<>();
 
     public static List<Method> getAll() {
         initMethodsInfos();
@@ -23,20 +23,23 @@ public class Methods {
 
     public static List<String> getNames() {
         initMethodsInfos();
-        return methodsInfos.stream().map(MethodInfoJsonPojo::getName).collect(Collectors.toList());
+        return methodInfoJsonPojos
+            .stream()
+            .map(MethodInfoJsonPojo::getName)
+            .collect(Collectors.toList());
     }
 
     private static void initMethods() {
         if (methods.isEmpty()) {
-            final List<Method> created = methodComponent.createOf(methodsInfos);
+            final List<Method> created = methodComponent.create(methodInfoJsonPojos);
             methods.addAll(created);
         }
     }
 
     private static void initMethodsInfos() {
-        if (methodsInfos.isEmpty()) {
-            final List<MethodInfoJsonPojo> all = methodInfoRepository.getAll();
-            methodsInfos.addAll(all);
+        if (methodInfoJsonPojos.isEmpty()) {
+            final List<MethodInfoJsonPojo> all = methodInfoComponent.getAll();
+            methodInfoJsonPojos.addAll(all);
         }
     }
 

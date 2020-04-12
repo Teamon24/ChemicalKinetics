@@ -3,8 +3,9 @@ package com.nir.beans
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
-import com.nir.utils.math.method.MethodInfoJsonPojo
+import com.nir.utils.math.method.ExplicitRKMethodJsonPojo
 import com.nir.utils.ifTrue
+import com.nir.utils.math.method.MethodInfoJsonPojo
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
@@ -12,8 +13,8 @@ import java.io.File
 import kotlinx.coroutines.flow.Flow
 
 fun main() = runBlocking {
-    val filename = "json/butchers-tables.json"
-    val jacksonComponent = JacksonComponent(filename, MethodInfoJsonPojo::class.java)
+    val filename = "json/runge-kutta.json"
+    val jacksonComponent = JacksonComponent(filename, ExplicitRKMethodJsonPojo::class.java)
     val flow = jacksonComponent.flow()
 
     flow.collect {
@@ -24,7 +25,7 @@ fun main() = runBlocking {
     println(all)
 }
 
-class JacksonComponent<T : Any>(filename: String, private val type: Class<T>) {
+class JacksonComponent<T : MethodInfoJsonPojo>(filename: String, private val type: Class<out T>) {
     private var file: File
     private val codec = Beans.kotlinObjectMapper()
 

@@ -4,7 +4,20 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
+import com.google.common.collect.Lists;
+import com.nir.utils.ZipUtils;
+import com.nir.utils.math.method.AdamsBashforthMethodJsonPojo;
+import com.nir.utils.math.method.AdamsMoultonMethodJsonPojo;
+import com.nir.utils.math.method.ExplicitRKMethodJsonPojo;
+import com.nir.utils.math.method.Method;
 import com.nir.utils.math.method.MethodInfoJsonPojo;
+import org.apache.commons.lang3.tuple.Pair;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class Beans {
 
@@ -22,16 +35,31 @@ public final class Beans {
         return mapper;
     }
 
-    public static MethodInfoRepositoryImpl methodInfoRepositoryImpl() {
-        String filename = "json/butchers-tables.json";
-        final JacksonComponent<MethodInfoJsonPojo> jacksonComponent = jacksonComponent(filename, MethodInfoJsonPojo.class);
-        return new MethodInfoRepositoryImpl(jacksonComponent);
+    public static MethodInfoComponentImpl methodInfoComponent() {
+        final List<JacksonComponent<MethodInfoJsonPojo>> jacksonComponents =
+            Lists.newArrayList(
+                Pair.of("json/runge-kutta.json", ExplicitRKMethodJsonPojo.class),
+                Pair.of("json/adams-bashforth.json", AdamsBashforthMethodJsonPojo.class),
+                Pair.of("json/adams-multon.json", AdamsMoultonMethodJsonPojo.class)
+            )
+            .stream()
+            .map(Beans::jacksonComponent)
+            .collect(Collectors.toList());
+        return new MethodInfoComponentImpl(jacksonComponents);
     }
 
-    public static <T> JacksonComponent<T> jacksonComponent(String fileName, Class<T> type) {
-        return new JacksonComponent<T>(fileName, type);
+    public static JacksonComponent<MethodInfoJsonPojo> jacksonComponent(
+        Pair<
+            String,
+            ? extends Class<? extends MethodInfoJsonPojo>
+        >
+            jsonAndClass
+    )
+    {
+        final String filename = jsonAndClass.getKey();
+        final Class<? extends MethodInfoJsonPojo> aClass = jsonAndClass.getValue();
+        return new JacksonComponent<>(filename, aClass);
     }
-
     public static MethodComponent methodComponent() {
         return new MethodComponent();
     }
