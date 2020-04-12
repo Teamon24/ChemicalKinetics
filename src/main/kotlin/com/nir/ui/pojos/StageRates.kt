@@ -2,8 +2,6 @@ package com.nir.ui.pojos
 
 import com.nir.beans.C
 import com.nir.beans.T
-import com.nir.utils.math.method.X
-import com.nir.utils.math.method.Y
 import com.nir.utils.math.method.emptyFunc
 
 class StageRates {

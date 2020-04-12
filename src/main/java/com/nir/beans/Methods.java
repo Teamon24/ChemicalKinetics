@@ -29,11 +29,11 @@ public class Methods {
             .collect(Collectors.toList());
     }
 
-    private static void initMethods() {
-        if (methods.isEmpty()) {
-            final List<Method> created = methodComponent.create(methodInfoJsonPojos);
-            methods.addAll(created);
-        }
+    public static Method getByName(String name) {
+        final List<Method> all = getAll();
+        final Optional<Method> first = all.stream().filter(it -> it.getName().equals(name)).findFirst();
+        final Method method = first.get();
+        return method;
     }
 
     private static void initMethodsInfos() {
@@ -43,10 +43,10 @@ public class Methods {
         }
     }
 
-    public static Method getByName(String name) {
-        final List<Method> all = getAll();
-        final Optional<Method> first = all.stream().filter(it -> it.getName().equals(name)).findFirst();
-        final Method method = first.get();
-        return method;
+    private static void initMethods() {
+        if (methods.isEmpty()) {
+            final List<Method> created = methodComponent.create(methodInfoJsonPojos);
+            methods.addAll(created);
+        }
     }
 }

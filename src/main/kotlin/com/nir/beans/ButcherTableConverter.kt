@@ -1,7 +1,7 @@
 package com.nir.beans
 
 import com.nir.utils.math.method.ButchersTable
-import com.nir.utils.math.method.ButchersTableJsonPojo
+import com.nir.utils.math.method.jsonPojos.ButchersTableJsonPojo
 import com.nir.utils.math.Doubles
 import com.nir.utils.math.Matrix
 

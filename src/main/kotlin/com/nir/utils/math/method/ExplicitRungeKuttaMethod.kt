@@ -3,35 +3,63 @@ package com.nir.utils.math.method
 import com.nir.beans.k
 import com.nir.utils.InitUtils
 import com.nir.utils.math.ArrayUtils
+import com.nir.utils.math.ComputationConfigs
+import com.nir.utils.math.InitialData
 import com.nir.utils.math.Matrix
 import com.nir.utils.math.plus
 import com.nir.utils.math.times
 import java.lang.IllegalStateException
 
-
-typealias kFunc = (f: F, x: X, y: Y) -> k
-
-typealias k = Array<Double>
-
-class ExplicitRungeKutta(
+class ExplicitRungeKuttaMethod(
         val stages: Int,
         val order: Int,
         val butchersTable: ButchersTable,
-        override val name: String) : Method() {
+        override val name: String
+) : Method()
+{
 
+    private val emptyKFunc = { f: F, x: X, y: Y -> Array(y.size) { 0.0 } }
 
     var dx: Double? = null
     var getDx: () -> Double = {
         if(dx == null)
-            throw IllegalStateException("You should set dx to Method before computations")
+            throw IllegalStateException("You should set dx to Method before computations by invoking init method.")
         else dx!!
     }
+
     private var K = InitUtils.arrayList(stages) { emptyKFunc }
     lateinit var core: (f: F, x: X, y: Y) -> Y
 
     init {
         initK()
         initCore()
+    }
+
+    override fun init(
+            initialData: InitialData,
+            computationConfig: ComputationConfigs
+    ): Method {
+        this.dx = computationConfig.dx
+        return this
+    }
+
+    override fun invoke(f: F, y0: Y, x0: X, dx: dX, n: Int): Array<Y> {
+        val d = y0.size
+        val y = ArrayUtils.twoDimArray(n to d)
+        var x = x0
+
+        (0 until d).forEach { i -> y[0][i] = y0[i] }
+
+        for (i in 0 until n - 1) {
+            y[i + 1] = this(f, y[i], x, dx)
+            x += dx
+        }
+
+        return y
+    }
+
+    override fun invoke(f: F, y: Y, x: X, dx: dX): Y {
+        return y + core(f, x, y)
     }
 
     private fun initK() {
@@ -50,29 +78,6 @@ class ExplicitRungeKutta(
             ->
             getDx() * sumOfProd(stages, b, K)(f, x, y)
         }
-    }
-
-    override fun set(dx: dX) {
-        this.dx = dx
-    }
-
-    override fun invoke(f: F, y0: Y, x0: X, dx: dX, n: Int): Array<Y> {
-        val d = y0.size
-        val y = ArrayUtils.twoDimArray(n to d)
-        var x = dx
-
-        (0 until d).forEach { i -> y[0][i] = y0[i] }
-
-        for (i in 0 until n - 1) {
-            y[i + 1] = this(f, y[i], x, dx)
-            x += dx
-        }
-
-        return y
-    }
-
-    override fun invoke(f: F, y: Y, x: X, dx: dX): Y {
-        return y + core(f, x, y)
     }
 
     private fun getK(i: Int,

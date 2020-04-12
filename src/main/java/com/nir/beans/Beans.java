@@ -5,18 +5,13 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import com.google.common.collect.Lists;
-import com.nir.utils.ZipUtils;
-import com.nir.utils.math.method.AdamsBashforthMethodJsonPojo;
-import com.nir.utils.math.method.AdamsMoultonMethodJsonPojo;
-import com.nir.utils.math.method.ExplicitRKMethodJsonPojo;
-import com.nir.utils.math.method.Method;
 import com.nir.utils.math.method.MethodInfoJsonPojo;
+import com.nir.utils.math.method.jsonPojos.AdamsBashforthMethodJsonPojo;
+import com.nir.utils.math.method.jsonPojos.AdamsMoultonMethodJsonPojo;
+import com.nir.utils.math.method.jsonPojos.ExplicitRKMethodJsonPojo;
 import org.apache.commons.lang3.tuple.Pair;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public final class Beans {

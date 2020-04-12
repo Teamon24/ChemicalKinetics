@@ -5,7 +5,7 @@ import com.nir.utils.math.method.N
 import com.nir.utils.math.method.dX
 
 class ComputationConfigStep(private val info: Solution.Info) {
-    fun computationConfigs(computationConfigs: ComputationConfigs): SystemStep {
+    fun computation(computationConfigs: ComputationConfigs): SystemStep {
         this.info.computationConfigs = computationConfigs
         return SystemStep(this.info);
     }

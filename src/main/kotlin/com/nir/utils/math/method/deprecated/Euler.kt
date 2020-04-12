@@ -1,20 +1,23 @@
 package com.nir.utils.math.method.deprecated
 
 import com.nir.utils.math.ArrayUtils
+import com.nir.utils.math.ComputationConfigs
+import com.nir.utils.math.InitialData
 import com.nir.utils.math.method.D
-import com.nir.utils.math.method.Method
 import com.nir.utils.math.method.F
+import com.nir.utils.math.method.Method
 import com.nir.utils.math.method.N
 import com.nir.utils.math.method.X
 import com.nir.utils.math.method.X0
 import com.nir.utils.math.method.Y
 import com.nir.utils.math.method.dX
 import com.nir.utils.math.plus
+import com.nir.utils.math.method.times
 
 object Euler : DeprecatedMethod() {
     override val name: String get() = "Euler"
     override fun set(d: D, dx: dX) {}
-    override fun set(dx: dX) {
+    override fun init(initialData: InitialData, computationConfig: ComputationConfigs): Method {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
@@ -39,9 +42,5 @@ object Euler : DeprecatedMethod() {
 
     override fun invoke(f: F, y: Y, x: X, dx: dX): Y {
         return y + dx * f(x, y)
-    }
-
-    operator fun dX.times(other: Array<Double>): Array<Double> {
-        return other.map { it * this }.toTypedArray()
     }
 }

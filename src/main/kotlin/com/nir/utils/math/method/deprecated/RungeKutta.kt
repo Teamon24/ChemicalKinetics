@@ -1,6 +1,8 @@
 package com.nir.utils.math.method.deprecated
 
 import com.nir.utils.math.ArrayUtils
+import com.nir.utils.math.ComputationConfigs
+import com.nir.utils.math.InitialData
 import com.nir.utils.math.method.D
 import com.nir.utils.math.method.F
 import com.nir.utils.math.method.Method
@@ -22,7 +24,7 @@ class RungeKutta(private val order: Int): DeprecatedMethod() {
     }
     override val name: String get() = "Runge-Kutta ${order}-order"
 
-    override fun set(dx: dX) {
+    override fun init(initialData: InitialData, computationConfig: ComputationConfigs): Method {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

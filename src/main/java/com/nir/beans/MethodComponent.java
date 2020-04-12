@@ -1,11 +1,15 @@
 package com.nir.beans;
 
-import com.nir.utils.math.method.AdamsBashforthMethodJsonPojo;
-import com.nir.utils.math.method.AdamsMoultonMethodJsonPojo;
+import com.google.common.collect.Lists;
+import com.nir.utils.math.method.AdamsBashforthMethod;
+import com.nir.utils.math.method.AdamsBashforthMethods;
+import com.nir.utils.math.method.AdamsMoultonMethod;
+import com.nir.utils.math.method.jsonPojos.AdamsBashforthMethodJsonPojo;
+import com.nir.utils.math.method.jsonPojos.AdamsMoultonMethodJsonPojo;
 import com.nir.utils.math.method.ButchersTable;
-import com.nir.utils.math.method.ButchersTableJsonPojo;
-import com.nir.utils.math.method.ExplicitRungeKutta;
-import com.nir.utils.math.method.ExplicitRKMethodJsonPojo;
+import com.nir.utils.math.method.jsonPojos.ButchersTableJsonPojo;
+import com.nir.utils.math.method.ExplicitRungeKuttaMethod;
+import com.nir.utils.math.method.jsonPojos.ExplicitRKMethodJsonPojo;
 import com.nir.utils.math.method.Method;
 import com.nir.utils.math.method.MethodInfoJsonPojo;
 
@@ -52,18 +56,29 @@ public class MethodComponent {
             final int order = explicitRKMethodJsonPojo.getOrder();
             final int stages = explicitRKMethodJsonPojo.getStages();
             final String name = explicitRKMethodJsonPojo.getName();
-            ExplicitRungeKutta explicit = new ExplicitRungeKutta(stages, order, butchersTable, name);
-            return Method.from(explicit);
+            final ExplicitRungeKuttaMethod explicitRKMethod = new ExplicitRungeKuttaMethod(stages, order, butchersTable, name);
+            return explicitRKMethod;
         }
         return null;
     }
 
     private Method create(AdamsBashforthMethodJsonPojo adamsBashforthMethodJsonPojo)  {
-        return null;
+        final String name = adamsBashforthMethodJsonPojo.getName();
+        final int order = adamsBashforthMethodJsonPojo.getK();
+        final Object[] betta = adamsBashforthMethodJsonPojo.getBetta();
+        final Object c = adamsBashforthMethodJsonPojo.getC();
+        final AdamsBashforthMethod adamsBashforthMethod = new AdamsBashforthMethod(name, order, betta, c);
+        AdamsBashforthMethods.set(order, adamsBashforthMethod);
+        return adamsBashforthMethod;
     }
 
     private Method create(AdamsMoultonMethodJsonPojo adamsMoultonMethodJsonPojo)  {
-        return null;
+        final String name = adamsMoultonMethodJsonPojo.getName();
+        final int order = adamsMoultonMethodJsonPojo.getK();
+        final Object[] betta = adamsMoultonMethodJsonPojo.getBetta();
+        final Object c = adamsMoultonMethodJsonPojo.getC();
+        final AdamsMoultonMethod adamsMoultonMethod = new AdamsMoultonMethod(name, order, betta, c);
+        return adamsMoultonMethod;
     }
 
     private boolean isValid(ExplicitRKMethodJsonPojo explicitRKMethodJsonPojo) {

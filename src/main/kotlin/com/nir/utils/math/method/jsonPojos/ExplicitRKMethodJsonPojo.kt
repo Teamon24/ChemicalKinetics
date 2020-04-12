@@ -1,7 +1,8 @@
-package com.nir.utils.math.method
+package com.nir.utils.math.method.jsonPojos
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
+import com.nir.utils.math.method.MethodInfoJsonPojo
 import java.util.ArrayList
 
 enum class ExpressionType { NUMERIC, SYMBOLIC }

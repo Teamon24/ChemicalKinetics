@@ -1,6 +1,7 @@
 package com.nir.utils;
 
 import com.nir.beans.Methods;
+import com.nir.utils.math.ComputationConfigs;
 import com.nir.utils.math.InitialData;
 import com.nir.utils.math.method.Method;
 import com.nir.utils.math.solution.Solution;
@@ -28,15 +29,17 @@ public class SolutionPlotCheck extends Application {
 
         //Запуск решения системы уравнений
         final InitialData initialData = system.initialData();
-        final double dx = 0.000002;
-        final Method method = Methods.getByName("Runge-Kutta 4th-order: v.2");
-        method.set(dx);
+        final ComputationConfigs computationConfigs = new ComputationConfigs(0.000002, 222_000);
+        final Method method =
+            Methods
+                .getByName("Runge-Kutta 4th-order: v.2")
+                .init(initialData, computationConfigs);
         System.out.println(String.format("Numeric Method: \"%s\"", method.getName()));
 
         final SolutionBatchFlow solution =
             Solution
                 .method(method)
-                .computation(dx, 222_000)
+                .computation(computationConfigs)
                 .system(system)
                 .initialData(initialData)
                 .datasets(dataSets)

@@ -15,6 +15,8 @@ public class MethodInfoComponentImpl implements MethodInfoComponent {
     }
 
     public List<MethodInfoJsonPojo> getAll() {
-        return jacksonComponents.stream().map(JacksonComponent<MethodInfoJsonPojo>::readAll).flatMap(Collection::stream).collect(Collectors.toList());
+        return jacksonComponents.stream()
+            .map(JacksonComponent::readAll).flatMap(Collection::stream)
+            .collect(Collectors.toList());
     }
 }
