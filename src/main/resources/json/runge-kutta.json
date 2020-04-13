@@ -295,7 +295,7 @@
         }
     },
     {
-        "name": "Runge-Kutta 5th-order",
+        "name": "Runge-Kutta 5th-order method",
         "type": "explicit",
         "order": 5,
         "stages": 6,

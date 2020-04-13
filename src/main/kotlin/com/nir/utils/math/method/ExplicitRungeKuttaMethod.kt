@@ -3,29 +3,35 @@ package com.nir.utils.math.method
 import com.nir.utils.math.ArrayUtils
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialPoint
-import com.nir.utils.math.Matrix2
 import com.nir.utils.math.plus
 import com.nir.utils.math.times
 
-class ExplicitRungeKuttaMethod(
-        val stages: Int,
-        val order: Int,
-        val butchersTable: ButchersTable,
+class ExplicitRungeKuttaMethod
+/**
+ * @param s количество стадий.
+ * @param p порядок метода.
+ */
+constructor(
+        val s: Int,
+        private val p: Int,
+        private val butchersTable: ButchersTable,
         override val name: String
 ) : Method()
 {
 
     private val emptyKFunc = { _: F, _: X, y: Y -> Array(y.size) { 0.0 } }
 
+    private var d: Int = 1
     private var dx: Double = 0.0
-    private var K = Array(stages) { emptyKFunc }
-    private lateinit var core: (f: F, x: X, y: Y) -> Y
+    private var K = Array(s) { emptyKFunc }
+    private lateinit var core: (f: F, x: X, y: Y, dx: dX) -> Y
 
     override fun init(
             initialPoint: InitialPoint,
             computationConfig: ComputationConfigs
     ): Method {
         this.dx = computationConfig.dx
+        this.d = initialPoint.y0.size
         initK()
         initCore()
         return this
@@ -47,49 +53,36 @@ class ExplicitRungeKuttaMethod(
     }
 
     override fun invoke(f: F, x: X, y: Y, dx: dX): Y {
-        return core(f, x, y)
+        return core(f, x, y, dx)
     }
 
     private fun initK() {
         val c = butchersTable.c
         val A = butchersTable.A
-        for (i in 0 until stages) {
-            val k = getK(i, dx, c, A, K)
-            K[i] = k
+        for (i in 0 until s) {
+            if (i == 0) {
+                K[i] = { f, x, y -> f(x, y) }
+            } else {
+                K[i] = { f, x, y -> f(x + c[i] * dx, y + dx * sumOfProd(i, A[i], K)(f, x, y)) }
+            }
         }
     }
 
     private fun initCore() {
         val b = butchersTable.b
-        val sumOfProd = sumOfProd(stages, b, K)
-        core = { f: F, x: X, y: Y -> y + dx * sumOfProd(f, x, y) }
-    }
-
-    private fun getK(i: Int,
-                     dx: Double,
-                     c: Array<Double>,
-                     A: Matrix2<Double>,
-                     Ks: Array<kFunc>): (F, X, Y) -> k
-    {
-        val Ai = A[i]
-        val sumOfProd = sumOfProd(i, Ai, Ks)
-        val k: (f:F, x:X, y:Y) -> k = { f, x, y -> f(x + c[i] * dx, y + dx * sumOfProd(f, x, y)) }
-        return k
+        core = { f: F, x: X, y: Y, dx: dX -> y + dx * sumOfProd(s, b, K)(f, x, y) }
     }
 
     private fun sumOfProd(i: Int, values: Array<Double>, kFuncs: Array<kFunc>): kFunc
     {
-        if (i == 0) return emptyKFunc
-
-        val adds = Array(i) { emptyKFunc }
+        val count = values.filter { it != 0.0 }.count()
+        val adds = ArrayList<(f: F, x: X, y: Y) -> k>(count)
         for (j in 0 until i) {
             if (values[j] != 0.0) {
-                adds[j] = { f: F, x: X, y: Y -> values[j] * kFuncs[j](f, x, y) }
+                adds.add { f: F, x: X, y: Y -> values[j] * kFuncs[j](f, x, y) }
             }
         }
-
-        return { f: F, x: X, y: Y -> adds.fold(initial(y)) { acc, add -> acc + add(f, x, y) } }
+        val zeros = Array(d) { 0.0 }
+        return { f: F, x: X, y: Y -> adds.fold(zeros) { acc, add -> acc + add(f, x, y) } }
     }
-
-    private fun initial(y: Y) = Array(y.size) { 0.0 }
 }

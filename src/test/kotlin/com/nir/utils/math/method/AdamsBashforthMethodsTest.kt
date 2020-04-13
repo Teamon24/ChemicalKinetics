@@ -3,8 +3,6 @@ package com.nir.utils.math.method
 import com.nir.beans.Methods
 import com.nir.utils.Fivefold
 import com.nir.utils.array
-import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.InitialPoint
 import com.nir.utils.math.minus
 import com.nir.utils.math.plus
 import com.nir.utils.math.times
@@ -16,18 +14,6 @@ class AdamsBashforthMethodsTest {
     init {
         Methods.getAll()
     }
-
-    private val f = F(
-            { _, y -> y[0] * y[0] + y[1] + y[2] },
-            { _, y -> y[1] * y[1] + y[0] + y[2] },
-            { _, y -> y[2] * y[2] + y[0] + y[1] }
-    )
-
-    private val y0 = arrayOf(1.00, 1.00, 1.00)
-    private val x0 = 5.0
-    private val dx = 0.01
-    private val initialPoint = InitialPoint(x0, y0)
-    private val computationConfigs = ComputationConfigs(dx, 1)
 
     private val adamBashforth_1st = adamsBashforth(1)
     private val adamBashforth_2nd = adamsBashforth(2)
@@ -71,7 +57,9 @@ class AdamsBashforthMethodsTest {
     }
 
 
-    private fun adamsBashforth(order: Int) = AdamsBashforthMethods[order].init(initialPoint, computationConfigs)
+    private fun adamsBashforth(order: Int) =
+            AdamsBashforthMethods[order]
+                    .init(initialPoint, computationConfigs)
 
     private fun getExpectedValues(dx: dX, x0: X0, y0: Y0): Fivefold<Y, Y, Y, Y, Y> {
         fun x(i: Int) = x0 + i * dx
