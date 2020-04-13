@@ -5,7 +5,7 @@ import com.nir.beans.StageParser;
 import com.nir.beans.StehiomatrixGetter;
 import com.nir.ui.pojos.ReactionStage;
 import com.nir.utils.math.ComputationConfigs;
-import com.nir.utils.math.InitialData;
+import com.nir.utils.math.InitialPoint;
 import com.nir.utils.math.method.Method;
 import com.nir.utils.math.solution.Solution;
 import com.nir.ui.pojos.StageRates;
@@ -50,11 +50,11 @@ public class ChemicalSystemSolutionCheck extends Application {
         PlotUtils.show(charts, stage);
 
         //Выбор вычислительного метода
-        final InitialData initialData = chemicalReaction.getInitialData();
+        final InitialPoint initialPoint = chemicalReaction.getInitialData();
         final ComputationConfigs computationConfigs = chemicalReaction.getComputationConfigs();
         final Method method = Methods
             .getByName("Runge-Kutta 4th-order: v.1")
-            .init(initialData, computationConfigs);
+            .init(initialPoint, computationConfigs);
 
         //Составление объекта с настройками решения
         final F system = getSystem(chemicalReaction, reactionStages);
@@ -63,7 +63,7 @@ public class ChemicalSystemSolutionCheck extends Application {
                 .method(method)
                 .computation(computationConfigs)
                 .system(system)
-                .initialData(initialData)
+                .initialData(initialPoint)
                 .datasets(dataSets)
                 .task();
 

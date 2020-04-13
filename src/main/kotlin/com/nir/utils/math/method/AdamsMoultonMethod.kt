@@ -1,7 +1,7 @@
 package com.nir.utils.math.method
 
 import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.InitialData
+import com.nir.utils.math.InitialPoint
 
 class AdamsMoultonMethod(
         override val name: String,
@@ -10,15 +10,15 @@ class AdamsMoultonMethod(
         val c: Any
 ) : Method() {
 
-    override fun init(initialData: InitialData, computationConfig: ComputationConfigs): Method {
+    override fun init(initialPoint: InitialPoint, computationConfig: ComputationConfigs): Method {
         TODO("AdamsMoultonMethod has not been implemented yet")
     }
 
-    override fun invoke(f: F, y0: Y, x0: X, dx: dX, n: N): Array<Y> {
+    override fun invoke(f: F, x0: X, y0: Y, dx: dX, n: N): Array<Y> {
         TODO("AdamsMoultonMethod has not been implemented yet")
     }
 
-    override fun invoke(f: F, y: Y, x: X, dx: dX): Y {
+    override fun invoke(f: F, x: X, y: Y, dx: dX): Y {
         TODO("AdamsMoultonMethod has not been implemented yet")
     }
 }

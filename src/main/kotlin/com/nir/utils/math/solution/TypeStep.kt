@@ -26,7 +26,7 @@ class TypeStep(private val info: Solution.Info) {
             val (method, system, dataSets, y0, x0, dx, n, _) = info.datas()
             val series = PlotUtils.series(x0, n, dx)
             val timer = Timer().start()
-            val solution = method(system, y0, x0, dx, n)
+            val solution = method(system, x0, y0, dx, n)
             timer.stop()
             println("Calculation was ended in runnable task. Duration: ${timer.total()} ")
             dataSets.withIndex().forEach { (index, dataSet) ->
@@ -43,7 +43,7 @@ class TypeStep(private val info: Solution.Info) {
             (0 until d).forEach { i -> y[0][i] = y0[i] }
 
             for (i in 0 until n - 1) {
-                y[1] = method(system, y[0], x, dx)
+                y[1] = method(system, x, y[0], dx)
                 this.emit(x to y[1])
                 x += dx
                 y[0] = y[1]
@@ -75,7 +75,7 @@ class TypeStep(private val info: Solution.Info) {
             val timer = Timer()
             timer.start()
             for (i in 0 until n - 1) {
-                r[1] = method(system, r[0], t, dx)
+                r[1] = method(system, t, r[0], dx)
 
                 if (counter == batchSize) {
                     val duration = timer.stop()

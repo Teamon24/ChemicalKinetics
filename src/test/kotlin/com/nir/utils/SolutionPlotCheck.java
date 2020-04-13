@@ -2,8 +2,9 @@ package com.nir.utils;
 
 import com.nir.beans.Methods;
 import com.nir.utils.math.ComputationConfigs;
-import com.nir.utils.math.InitialData;
+import com.nir.utils.math.InitialPoint;
 import com.nir.utils.math.method.Method;
+import com.nir.utils.math.method.deprecated.RungeKutta;
 import com.nir.utils.math.solution.Solution;
 import com.nir.utils.math.solution.SolutionBatchFlow;
 import de.gsi.chart.XYChart;
@@ -28,12 +29,16 @@ public class SolutionPlotCheck extends Application {
         PlotUtils.show(charts, stage);
 
         //Запуск решения системы уравнений
-        final InitialData initialData = system.initialData();
-        final ComputationConfigs computationConfigs = new ComputationConfigs(0.000002, 222_000);
-        final Method method =
-            Methods
-                .getByName("Runge-Kutta 4th-order: v.2")
-                .init(initialData, computationConfigs);
+        final InitialPoint initialPoint = system.initialPoint();
+        final ComputationConfigs computationConfigs = new ComputationConfigs(0.000001, 5_222_000);
+        final String adamBashName = "Adams-Bashforth 1-order method";
+        final String rungeKuttaName = "Runge-Kutta 4th-order: v.1";
+        final String eulerName = "Forward Euler";
+        final RungeKutta rungeKutta = new RungeKutta(4);
+        final Method byName = Methods.getByName(rungeKuttaName);
+        final Method method = byName.init(initialPoint, computationConfigs);
+
+
         System.out.println(String.format("Numeric Method: \"%s\"", method.getName()));
 
         final SolutionBatchFlow solution =
@@ -41,9 +46,9 @@ public class SolutionPlotCheck extends Application {
                 .method(method)
                 .computation(computationConfigs)
                 .system(system)
-                .initialData(initialData)
+                .initialData(initialPoint)
                 .datasets(dataSets)
-                .batchFlow(10_000);
+                .batchFlow(50_000);
 
         PlatformUtils.runLater(solution);
     }

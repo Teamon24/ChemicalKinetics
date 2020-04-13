@@ -2,13 +2,12 @@ package com.nir.utils.math.method.deprecated
 
 import com.nir.utils.math.ArrayUtils
 import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.InitialData
+import com.nir.utils.math.InitialPoint
 import com.nir.utils.math.method.D
 import com.nir.utils.math.method.F
 import com.nir.utils.math.method.Method
 import com.nir.utils.math.method.N
 import com.nir.utils.math.method.X
-import com.nir.utils.math.method.X0
 import com.nir.utils.math.method.Y
 import com.nir.utils.math.method.dX
 import com.nir.utils.math.plus
@@ -24,8 +23,9 @@ class RungeKutta(private val order: Int): DeprecatedMethod() {
     }
     override val name: String get() = "Runge-Kutta ${order}-order"
 
-    override fun init(initialData: InitialData, computationConfig: ComputationConfigs): Method {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun init(initialPoint: InitialPoint, computationConfig: ComputationConfigs): Method {
+        this.set(initialPoint.y0.size, computationConfig.dx)
+        return this
     }
 
     override fun set(d: D, dx: dX) {
@@ -33,8 +33,8 @@ class RungeKutta(private val order: Int): DeprecatedMethod() {
     }
 
     override operator fun invoke(f: F,
+                                 x0: X,
                                  y0: Y,
-                                 x0: X0,
                                  dx: dX,
                                  n: N): Array<Y> {
         val d = y0.size
@@ -45,14 +45,14 @@ class RungeKutta(private val order: Int): DeprecatedMethod() {
         (0 until d).forEach { i -> r[0][i] = y0[i] }
 
         for (i in 0 until n - 1) {
-            r[i + 1] = this(f, r[i], t, dx)
+            r[i + 1] = this(f, t, r[i], dx)
             t += dx
         }
 
         return r
     }
 
-    override fun invoke(f: F, y: Y, x: X, dx: dX): Y {
+    override fun invoke(f: F, x: X, y: Y, dx: dX): Y {
         return y + core(f, y, x, dx)
     }
 

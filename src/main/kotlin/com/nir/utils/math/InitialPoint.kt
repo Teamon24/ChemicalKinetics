@@ -5,10 +5,7 @@ import com.nir.utils.math.method.X
 import com.nir.utils.math.method.Y
 import com.nir.utils.math.method.dX
 
-data class InitialData(
-        val x0: X,
-        val y0: Y
-)
+data class InitialPoint(val x0: X, val y0: Y)
 
 data class ComputationConfigs(
         val dx: dX,

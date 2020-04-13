@@ -2,9 +2,8 @@ package com.nir.utils.math.solution
 
 import com.nir.utils.Eightfold
 import com.nir.utils.Fivefold
-import com.nir.utils.Fourfold
 import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.InitialData
+import com.nir.utils.math.InitialPoint
 import com.nir.utils.math.method.D
 import com.nir.utils.math.method.Method
 import com.nir.utils.math.method.F
@@ -19,12 +18,12 @@ object Solution {
     class Info internal constructor() {
         internal lateinit var method: Method
         internal lateinit var f: F
-        internal lateinit var initialData: InitialData
+        internal lateinit var initialPoint: InitialPoint
         internal lateinit var computationConfigs: ComputationConfigs
         internal lateinit var dataSets: List<DoubleDataSet>
 
-        fun components() : Fivefold<Method, F, InitialData, ComputationConfigs, List<DoubleDataSet>> {
-            return Fivefold(method, f, initialData, computationConfigs, dataSets)
+        fun components() : Fivefold<Method, F, InitialPoint, ComputationConfigs, List<DoubleDataSet>> {
+            return Fivefold(method, f, initialPoint, computationConfigs, dataSets)
         }
 
         fun datas() : Eightfold<Method, F, List<DoubleDataSet>, Y, X0, dX, N, D> {

@@ -1,7 +1,7 @@
 package com.nir.utils
 
 import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.InitialData
+import com.nir.utils.math.InitialPoint
 import java.util.stream.Stream
 
 data class ChemicalReaction(val N: Int,
@@ -12,7 +12,7 @@ data class ChemicalReaction(val N: Int,
                             val reaction: Stream<String>
 ) {
 
-    val initialData = InitialData(t0, C0)
+    val initialData = InitialPoint(t0, C0)
     val computationConfigs = ComputationConfigs(dt, N)
 
     companion object {

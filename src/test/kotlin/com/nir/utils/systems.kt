@@ -1,7 +1,7 @@
 package com.nir.utils
 
 import com.nir.utils.math.method.F
-import com.nir.utils.math.InitialData
+import com.nir.utils.math.InitialPoint
 
 
 class LorentzStrangeAttractor(
@@ -15,8 +15,8 @@ class LorentzStrangeAttractor(
                 { t, r -> r[0]*r[1] - b*r[2] }
         ) {
 
-    fun initialData(): InitialData {
-        return InitialData(
+    fun initialPoint(): InitialPoint {
+        return InitialPoint(
                 x0 = 0.0,
                 y0 = arrayOf(1.0, 1.0, 1.0))
     }
@@ -38,8 +38,8 @@ class LorentzStrangeAttractor2(
                 { t, r -> r[3]*r[1]-r[2] }
         ) {
 
-    fun initialData(): InitialData {
-        return InitialData(
+    fun initialPoint(): InitialPoint {
+        return InitialPoint(
                 x0 = 0.0,
                 y0 = Array(4) { -2.0 }
         )

@@ -4,6 +4,7 @@ import com.nir.utils.math.method.ButchersTable
 import com.nir.utils.math.method.jsonPojos.ButchersTableJsonPojo
 import com.nir.utils.math.Doubles
 import com.nir.utils.math.Matrix
+import com.nir.utils.math.Matrix2
 
 object ButcherTableConverter {
 
@@ -19,7 +20,7 @@ object ButcherTableConverter {
         val doubledBCorrect = b2.map { ExpressionParser.toDouble(it!!) }.toTypedArray()
         return ButchersTable(
                 doubledC,
-                Matrix(Doubles, doubledA),
+                Matrix2(Doubles, doubledA),
                 doubledB,
                 doubledBCorrect
         )
