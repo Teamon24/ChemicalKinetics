@@ -14,6 +14,6 @@ val f = F(
 
 val y0 = arrayOf(1.00, 1.00, 1.00)
 val x0 = 5.0
-val dx = 0.01
+val dx = 0.1
 val initialPoint = InitialPoint(x0, y0)
 val computationConfigs = ComputationConfigs(dx, 1)

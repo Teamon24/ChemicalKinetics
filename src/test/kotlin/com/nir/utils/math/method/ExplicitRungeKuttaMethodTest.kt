@@ -8,19 +8,24 @@ import com.nir.utils.math.plus
 import org.junit.jupiter.api.Test
 import com.nir.utils.math.times
 
-class ExplicitRungeKuttaTest {
+/**
+ * Тест для класса [ExplicitRungeKuttaMethod]
+ */
+class ExplicitRungeKuttaMethodTest {
     init {
         Methods.getAll()
     }
 
     private var k = ArrayUtils.twoDimArray(6 to f.size)
 
+    private val precision = 1E-16
+
     @Test
     fun testRK4th1v() {
         val method = Methods.getByName("Runge-Kutta 4th-order: v.1")
         val expectedY = expctedY1(f, x0, y0, dx)
         val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
-        AssertUtils.assertWithPrecision(expectedY, actualY, 1E-15)
+        AssertUtils.assertWithPrecision(expectedY, actualY, precision)
     }
 
     @Test
@@ -28,7 +33,7 @@ class ExplicitRungeKuttaTest {
         val method = Methods.getByName("Runge-Kutta 4th-order: v.2")
         val expectedY = expectedY2(f, x0, y0, dx)
         val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
-        AssertUtils.assertWithPrecision(expectedY, actualY, 1E-16)
+        AssertUtils.assertWithPrecision(expectedY, actualY, precision)
     }
 
     @Test
@@ -36,7 +41,7 @@ class ExplicitRungeKuttaTest {
         val method = Methods.getByName("3/8-rule 4th-order method")
         val expectedY = expectedY3(f, x0, y0, dx)
         val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
-        AssertUtils.assertWithPrecision(expectedY, actualY, 1E-16)
+        AssertUtils.assertWithPrecision(expectedY, actualY, precision)
     }
 
     @Test
@@ -44,7 +49,7 @@ class ExplicitRungeKuttaTest {
         val method = Methods.getByName("Runge-Kutta 5th-order method")
         val expectedY = expectedY4(f, x0, y0, dx)
         val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
-        AssertUtils.assertWithPrecision(expectedY, actualY, 1E-16)
+        AssertUtils.assertWithPrecision(expectedY, actualY, precision)
     }
 
     private fun expctedY1(f: F, x: X, y: Y, dx: dX): Array<Double> {
