@@ -1,6 +1,6 @@
 package com.nir.beans;
 
-import com.nir.utils.math.method.Method;
+import com.nir.utils.math.method.automatized.Method;
 import com.nir.utils.math.method.MethodInfoJsonPojo;
 
 import java.util.ArrayList;

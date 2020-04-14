@@ -1,11 +1,11 @@
-package com.nir.utils.math.method.deprecated
+package com.nir.utils.math.method.hardcoded
 
 import com.nir.utils.math.ArrayUtils
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialPoint
 import com.nir.utils.math.method.D
 import com.nir.utils.math.method.F
-import com.nir.utils.math.method.Method
+import com.nir.utils.math.method.automatized.Method
 import com.nir.utils.math.method.N
 import com.nir.utils.math.method.X
 import com.nir.utils.math.method.Y
@@ -15,21 +15,18 @@ import com.nir.utils.math.plus
 /**
  * Метод решения системы уравенений "Рунге-Кутта".
  */
-class RungeKutta(private val order: Int): DeprecatedMethod() {
+class RungeKutta(private val order: Int): HardcodedMethod() {
 
     private val core: RungeKuttaCore = when (order) {
         4 -> RungeKutta4Core()
+        5 -> RungeKutta5Core()
         else -> throw RuntimeException("For order='$order' no Runge-Kutta method")
     }
-    override val name: String get() = "Runge-Kutta ${order}-order"
+    override val name: String get() = "Runge-Kutta ${order}-order (Hardcoded)"
 
-    override fun init(initialPoint: InitialPoint, computationConfig: ComputationConfigs): Method {
-        this.set(initialPoint.y0.size, computationConfig.dx)
+    override fun setUp(initialPoint: InitialPoint, computationConfig: ComputationConfigs): Method {
+        core.setUp(initialPoint.y0.size, computationConfig.dx)
         return this
-    }
-
-    override fun set(d: D, dx: dX) {
-        core.init(d, dx)
     }
 
     override operator fun invoke(f: F,
@@ -40,13 +37,13 @@ class RungeKutta(private val order: Int): DeprecatedMethod() {
         val d = y0.size
         val r = init(n, d)
 
-        var t = x0
+        var x = x0
 
         (0 until d).forEach { i -> r[0][i] = y0[i] }
 
         for (i in 0 until n - 1) {
-            r[i + 1] = this(f, t, r[i], dx)
-            t += dx
+            r[i + 1] = this(f, x, r[i], dx)
+            x += dx
         }
 
         return r

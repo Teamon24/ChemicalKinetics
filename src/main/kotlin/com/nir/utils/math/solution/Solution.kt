@@ -5,7 +5,7 @@ import com.nir.utils.Fivefold
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialPoint
 import com.nir.utils.math.method.D
-import com.nir.utils.math.method.Method
+import com.nir.utils.math.method.automatized.Method
 import com.nir.utils.math.method.F
 import com.nir.utils.math.method.N
 import com.nir.utils.math.method.X0

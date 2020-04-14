@@ -19,7 +19,7 @@ class ExplicitRungeKuttaTest {
     fun testRK4th1v() {
         val method = Methods.getByName("Runge-Kutta 4th-order: v.1")
         val expectedY = expctedY1(f, x0, y0, dx)
-        val actualY = method.init(initialPoint, computationConfigs)(f, x0, y0, dx)
+        val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
         AssertUtils.assertWithPrecision(expectedY, actualY, 1E-15)
     }
 
@@ -27,7 +27,7 @@ class ExplicitRungeKuttaTest {
     fun testRK4th2v() {
         val method = Methods.getByName("Runge-Kutta 4th-order: v.2")
         val expectedY = expectedY2(f, x0, y0, dx)
-        val actualY = method.init(initialPoint, computationConfigs)(f, x0, y0, dx)
+        val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
         AssertUtils.assertWithPrecision(expectedY, actualY, 1E-16)
     }
 
@@ -35,7 +35,7 @@ class ExplicitRungeKuttaTest {
     fun testRKThreeEightRule() {
         val method = Methods.getByName("3/8-rule 4th-order method")
         val expectedY = expectedY3(f, x0, y0, dx)
-        val actualY = method.init(initialPoint, computationConfigs)(f, x0, y0, dx)
+        val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
         AssertUtils.assertWithPrecision(expectedY, actualY, 1E-16)
     }
 
@@ -43,7 +43,7 @@ class ExplicitRungeKuttaTest {
     fun testRK5thOrder() {
         val method = Methods.getByName("Runge-Kutta 5th-order method")
         val expectedY = expectedY4(f, x0, y0, dx)
-        val actualY = method.init(initialPoint, computationConfigs)(f, x0, y0, dx)
+        val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
         AssertUtils.assertWithPrecision(expectedY, actualY, 1E-16)
     }
 

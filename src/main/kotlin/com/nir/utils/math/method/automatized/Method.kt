@@ -1,7 +1,12 @@
-package com.nir.utils.math.method
+package com.nir.utils.math.method.automatized
 
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialPoint
+import com.nir.utils.math.method.F
+import com.nir.utils.math.method.N
+import com.nir.utils.math.method.X
+import com.nir.utils.math.method.Y
+import com.nir.utils.math.method.dX
 
 val emptyFunc = { _: X, _: Y -> 0.0 }
 
@@ -11,7 +16,7 @@ val emptyFunc = { _: X, _: Y -> 0.0 }
 abstract class Method {
     abstract val name: String
 
-    abstract fun init(initialPoint: InitialPoint, computationConfig: ComputationConfigs): Method
+    abstract fun setUp(initialPoint: InitialPoint, computationConfig: ComputationConfigs): Method
 
     abstract operator fun invoke(f: F,
                                  x0: X,

@@ -6,7 +6,7 @@ import com.nir.beans.StehiomatrixGetter;
 import com.nir.ui.pojos.ReactionStage;
 import com.nir.utils.math.ComputationConfigs;
 import com.nir.utils.math.InitialPoint;
-import com.nir.utils.math.method.Method;
+import com.nir.utils.math.method.automatized.Method;
 import com.nir.utils.math.solution.Solution;
 import com.nir.ui.pojos.StageRates;
 import com.nir.utils.math.Matrix;
@@ -54,7 +54,7 @@ public class ChemicalSystemSolutionCheck extends Application {
         final ComputationConfigs computationConfigs = chemicalReaction.getComputationConfigs();
         final Method method = Methods
             .getByName("Runge-Kutta 4th-order: v.1")
-            .init(initialPoint, computationConfigs);
+            .setUp(initialPoint, computationConfigs);
 
         //Составление объекта с настройками решения
         final F system = getSystem(chemicalReaction, reactionStages);

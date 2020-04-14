@@ -4,6 +4,7 @@ import com.nir.beans.ExpressionParser
 import com.nir.utils.math.ArrayUtils
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialPoint
+import com.nir.utils.math.method.automatized.Method
 import com.nir.utils.math.times
 import com.nir.utils.math.plus
 import kotlin.properties.Delegates
@@ -22,7 +23,7 @@ class AdamsBashforthMethod internal constructor(
     private val lastIndex = this.order - 1
     private var d by Delegates.notNull<Int>()
 
-    override fun init(
+    override fun setUp(
             initialPoint: InitialPoint,
             computationConfig: ComputationConfigs
     ): Method {
@@ -64,7 +65,7 @@ class AdamsBashforthMethod internal constructor(
             Y[i] = AdamsBashforthMethods[i].calc(xs, ys, f, dx)
         }
 
-        val lastY = Yn(f, dx)
+        val lastY = this.calc(X, Y, f, dx)
         return lastY
     }
 
@@ -79,18 +80,6 @@ class AdamsBashforthMethod internal constructor(
 
         val `Yn-1` = ys[ysLast]
         return `Yn-1` + dx * (bettas * `Fn-1`)
-    }
-
-    private fun Yn(f: F, dx: dX): Array<Double> {
-        val `Fn-1` = (0 until this.order).map { i ->
-            val xi = this.X[lastIndex - i]
-            val yi = this.Y[lastIndex - i]
-            f(xi, yi)
-        }.toTypedArray()
-
-        val `Yn-1` = Y[lastIndex]
-        val Yn = `Yn-1` + dx * (bettas * `Fn-1`)
-        return Yn
     }
 
     /**

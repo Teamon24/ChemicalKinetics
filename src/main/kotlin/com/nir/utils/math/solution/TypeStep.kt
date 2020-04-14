@@ -28,7 +28,7 @@ class TypeStep(private val info: Solution.Info) {
             val timer = Timer().start()
             val solution = method(system, x0, y0, dx, n)
             timer.stop()
-            println("Calculation was ended in runnable task. Duration: ${timer.total()} ")
+            println("Calculation was ended in runnable task. Duration: ${Timer.formatMillis(timer.total())} ")
             dataSets.withIndex().forEach { (index, dataSet) ->
                 dataSet.add(series, solution.map { it[index] }.toDoubleArray())
             }
@@ -84,7 +84,6 @@ class TypeStep(private val info: Solution.Info) {
                     println(message(batchesCounter, batchSize, duration, spentTime, n, totalCounter))
                     this.emit(partT to partR)
                     counter = 0
-                    oneDelay()
                     timer.start()
                 } else {
                     partT[counter] = t
@@ -100,7 +99,7 @@ class TypeStep(private val info: Solution.Info) {
 
             if (partT.isNotEmpty()) {
                 this.emit(partT to partR)
-                println("The last batch with size '$counter' was emitted")
+                println("The last batch with size '${partT.size}' was emitted")
             }
             println("Batch flow ended its emissions. Whole duration: ${timer.total()}")
         }
@@ -116,16 +115,6 @@ class TypeStep(private val info: Solution.Info) {
     private fun initPartR(d: D, batchSize: Int) = InitUtils.doubleArrays(d, batchSize)
 
     private fun initPartT(batchSize: Int) = DoubleArray(batchSize)
-
-    private suspend fun delay(batchSize: Int) {
-        val timeMillis = batchSize / 3_000L
-        println("Delay for millis: $timeMillis")
-        kotlinx.coroutines.delay(timeMillis)
-    }
-
-    private suspend fun oneDelay() {
-        kotlinx.coroutines.delay(1)
-    }
 
     private fun rToStr(r: Array<Double>) = r.withIndex().joinToString(separator = ", ", truncated = "") { (index, value) -> "r${index + 1} = $value" }
 

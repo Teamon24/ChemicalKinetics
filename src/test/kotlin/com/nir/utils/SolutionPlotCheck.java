@@ -3,10 +3,10 @@ package com.nir.utils;
 import com.nir.beans.Methods;
 import com.nir.utils.math.ComputationConfigs;
 import com.nir.utils.math.InitialPoint;
-import com.nir.utils.math.method.Method;
-import com.nir.utils.math.method.deprecated.RungeKutta;
+import com.nir.utils.math.method.automatized.Method;
+import com.nir.utils.math.method.hardcoded.ForwardEuler;
+import com.nir.utils.math.method.hardcoded.RungeKutta;
 import com.nir.utils.math.solution.Solution;
-import com.nir.utils.math.solution.SolutionBatchFlow;
 import de.gsi.chart.XYChart;
 import de.gsi.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
@@ -30,25 +30,27 @@ public class SolutionPlotCheck extends Application {
 
         //Запуск решения системы уравнений
         final InitialPoint initialPoint = system.initialPoint();
-        final ComputationConfigs computationConfigs = new ComputationConfigs(0.000001, 5_222_000);
-        final String adamBashName = "Adams-Bashforth 1-order method";
-        final String rungeKuttaName = "Runge-Kutta 4th-order: v.1";
-        final String eulerName = "Forward Euler";
-        final RungeKutta rungeKutta = new RungeKutta(4);
-        final Method byName = Methods.getByName(rungeKuttaName);
-        final Method method = byName.init(initialPoint, computationConfigs);
+        final ComputationConfigs computationConfigs = new ComputationConfigs(0.000001, 5_000_000);
+        final Method adamBashGeneral = Methods.getByName("Adams-Bashforth 1-order method");
+        final Method rungeKutta4General = Methods.getByName("Runge-Kutta 4th-order: v.1");
+        final Method rungeKutta5General = Methods.getByName("Runge-Kutta 5th-order method");
+
+        final Method eulerGeneral = Methods.getByName("Forward Euler");
+        final RungeKutta rungeKutta4 = new RungeKutta(4);
+        final RungeKutta rungeKutta5 = new RungeKutta(5);
+        final Method method = ForwardEuler.INSTANCE.setUp(initialPoint, computationConfigs);
 
 
         System.out.println(String.format("Numeric Method: \"%s\"", method.getName()));
 
-        final SolutionBatchFlow solution =
+        final Runnable solution =
             Solution
                 .method(method)
                 .computation(computationConfigs)
                 .system(system)
                 .initialData(initialPoint)
                 .datasets(dataSets)
-                .batchFlow(50_000);
+                .task();
 
         PlatformUtils.runLater(solution);
     }

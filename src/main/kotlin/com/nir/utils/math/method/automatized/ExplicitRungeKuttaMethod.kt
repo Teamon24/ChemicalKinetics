@@ -1,8 +1,16 @@
-package com.nir.utils.math.method
+package com.nir.utils.math.method.automatized
 
 import com.nir.utils.math.ArrayUtils
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialPoint
+import com.nir.utils.math.method.ButchersTable
+import com.nir.utils.math.method.F
+import com.nir.utils.math.method.N
+import com.nir.utils.math.method.X
+import com.nir.utils.math.method.Y
+import com.nir.utils.math.method.dX
+import com.nir.utils.math.method.k
+import com.nir.utils.math.method.kFunc
 import com.nir.utils.math.plus
 import com.nir.utils.math.times
 
@@ -26,7 +34,7 @@ constructor(
     private var K = Array(s) { emptyKFunc }
     private lateinit var core: (f: F, x: X, y: Y, dx: dX) -> Y
 
-    override fun init(
+    override fun setUp(
             initialPoint: InitialPoint,
             computationConfig: ComputationConfigs
     ): Method {

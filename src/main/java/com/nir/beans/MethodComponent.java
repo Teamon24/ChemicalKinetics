@@ -1,6 +1,5 @@
 package com.nir.beans;
 
-import com.google.common.collect.Lists;
 import com.nir.utils.math.method.AdamsBashforthMethod;
 import com.nir.utils.math.method.AdamsBashforthMethods;
 import com.nir.utils.math.method.AdamsMoultonMethod;
@@ -8,9 +7,9 @@ import com.nir.utils.math.method.jsonPojos.AdamsBashforthMethodJsonPojo;
 import com.nir.utils.math.method.jsonPojos.AdamsMoultonMethodJsonPojo;
 import com.nir.utils.math.method.ButchersTable;
 import com.nir.utils.math.method.jsonPojos.ButchersTableJsonPojo;
-import com.nir.utils.math.method.ExplicitRungeKuttaMethod;
+import com.nir.utils.math.method.automatized.ExplicitRungeKuttaMethod;
 import com.nir.utils.math.method.jsonPojos.ExplicitRKMethodJsonPojo;
-import com.nir.utils.math.method.Method;
+import com.nir.utils.math.method.automatized.Method;
 import com.nir.utils.math.method.MethodInfoJsonPojo;
 
 import java.util.List;
