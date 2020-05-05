@@ -47,7 +47,7 @@ public class ChemicalSystemSolutionCheck extends Application {
         final List<String> compounds = StehiomatrixGetter.getCompounds(reactionStages);
         final List<DoubleDataSet> dataSets = PlotUtils.dataSets(compounds);
         final List<XYChart> charts = PlotUtils.charts(dataSets);
-        PlotUtils.show(charts, stage);
+//        PlotUtils.show(charts, stage);
 
         //Выбор вычислительного метода
         final InitialPoint initialPoint = chemicalReaction.getInitialData();
