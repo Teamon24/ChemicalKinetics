@@ -1,14 +1,83 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.control.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane fx:id="anchorPane" minHeight="0.0" minWidth="0.0" prefHeight="207.0" prefWidth="243.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ComboBox fx:id="comboBox" layoutX="23.0" layoutY="38.0" prefHeight="37.0" prefWidth="206.0" promptText="Выберите реакцию" />
-      <Button fx:id="btnAddNew" layoutX="23.0" layoutY="118.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="108.0" text="Добавить новую" />
-      <Button fx:id="btnOK" layoutX="173.0" layoutY="118.0" mnemonicParsing="false" prefHeight="37.0" prefWidth="56.0" text="OK" />
+      <HBox>
+         <children>
+            <ComboBox fx:id="comboBox" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="158.0" promptText="Выберите реакцию">
+               <HBox.margin>
+                  <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
+               </HBox.margin>
+            </ComboBox>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Шаг интегрирования:" wrappingWidth="123.0">
+               <HBox.margin>
+                  <Insets bottom="16.0" right="16.0" top="20.0" />
+               </HBox.margin>
+            </Text>
+            <TextField fx:id="tfDt" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="85.0" text="0.00002">
+               <HBox.margin>
+                  <Insets bottom="16.0" right="16.0" top="16.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox>
+         <children>
+            <Button fx:id="btnAddNew" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="158.0" text="Создать реакцию">
+               <HBox.margin>
+                  <Insets left="16.0" />
+               </HBox.margin>
+            </Button>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Кол-во точек:" wrappingWidth="123.0">
+               <HBox.margin>
+                  <Insets left="16.0" top="4.0" />
+               </HBox.margin>
+            </Text>
+            <TextField fx:id="tfN" prefHeight="25.0" prefWidth="85.0" text="10000">
+               <HBox.margin>
+                  <Insets left="16.0" />
+               </HBox.margin>
+            </TextField>
+         </children>
+      </HBox>
+      <HBox>
+         <children>
+            <VBox>
+               <children>
+                  <Text fx:id="labelEq" strokeType="OUTSIDE" strokeWidth="0.0" text="Стадии:" visible="false">
+                     <VBox.margin>
+                        <Insets left="16.0" top="16.0" />
+                     </VBox.margin>
+                  </Text>
+                  <VBox fx:id="eqBox" />
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <Text fx:id="labelC" strokeType="OUTSIDE" strokeWidth="0.0" text="Начальные концентрации:" visible="false">
+                     <VBox.margin>
+                        <Insets left="16.0" top="16.0" />
+                     </VBox.margin>
+                  </Text>
+                  <VBox fx:id="cBox" />
+               </children>
+               <HBox.margin>
+                  <Insets left="24.0" />
+               </HBox.margin>
+            </VBox>
+         </children>
+      </HBox>
+      <Button fx:id="btnOK" alignment="CENTER" mnemonicParsing="false" prefHeight="25.0" prefWidth="56.0" text="OK" textAlignment="CENTER">
+         <VBox.margin>
+            <Insets bottom="16.0" left="353.0" top="16.0" />
+         </VBox.margin>
+      </Button>
    </children>
-</AnchorPane>
+</VBox>

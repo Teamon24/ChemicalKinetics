@@ -1,6 +1,6 @@
 package com.nir.utils
 
-import com.nir.utils.math.System
+import com.nir.utils.math.MySystem
 import com.nir.utils.math.InitialData
 
 
@@ -9,7 +9,7 @@ class LorentzStrangeAttractor(
         private val sigma: Double = 10.0,
         private val R: Double = 28.0)
     :
-        System(
+        MySystem(
                 { t, r -> sigma*(r[1] - r[0]) },
                 { t, r -> r[0]*(R - r[2]) - r[1] },
                 { t, r -> r[0]*r[1] - b*r[2] }

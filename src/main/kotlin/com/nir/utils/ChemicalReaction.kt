@@ -32,7 +32,7 @@ data class ChemicalReaction(val N: Int,
 
         @JvmStatic
         fun chemicalReaction2(): ChemicalReaction {
-            val n = 15000
+            val n = 2000
             val t0 = 0.0
             val dt = 0.0002
             val k = arrayOf(1.0, 1.0, 15.0, 1.0, 1.0)

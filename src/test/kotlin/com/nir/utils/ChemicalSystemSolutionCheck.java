@@ -2,13 +2,8 @@ package com.nir.utils;
 
 import com.nir.beans.StageParser;
 import com.nir.beans.StehiomatrixGetter;
-import com.nir.utils.math.InitialData;
-import com.nir.utils.math.Method;
-import com.nir.utils.math.RungeKutta;
-import com.nir.utils.math.Solution;
-import com.nir.utils.math.StageRates;
-import com.nir.utils.math.Stehiomatrix;
-import com.nir.utils.math.System;
+import com.nir.utils.math.MySystem;
+import com.nir.utils.math.*;
 import de.gsi.chart.XYChart;
 import de.gsi.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
@@ -28,7 +23,7 @@ public class ChemicalSystemSolutionCheck extends Application {
     public void start(Stage stage) {
 
         //Берем одну из реакций
-        final ChemicalReaction chemicalReaction = ChemicalReaction.chemicalReaction1();
+        final ChemicalReaction chemicalReaction = ChemicalReaction.chemicalReaction2();
         final Stream<String> reaction = chemicalReaction.getReaction();
 
         final List<com.nir.ui.dto.Stage> stages =
@@ -48,11 +43,11 @@ public class ChemicalSystemSolutionCheck extends Application {
         //Составление объекта с настройками решения
         final InitialData initialData = chemicalReaction.initialData();
         final Method method = new RungeKutta(4, initialData);
-        final System system = getSystem(chemicalReaction, stages);
+        final MySystem mySystem = getSystem(chemicalReaction, stages);
         final SolutionFlow solutionFlow =
             Solution
                 .method(method)
-                .system(system)
+                .system(mySystem)
                 .initialData(initialData)
                 .datasets(dataSets)
                 .flow();
@@ -61,7 +56,7 @@ public class ChemicalSystemSolutionCheck extends Application {
         PlatformUtils.runLater(solutionFlow);
     }
 
-    private System getSystem(ChemicalReaction chemicalReaction, List<com.nir.ui.dto.Stage> stages) {
+    private MySystem getSystem(ChemicalReaction chemicalReaction, List<com.nir.ui.dto.Stage> stages) {
         final Stehiomatrix matrix = StehiomatrixGetter.getMatrix(stages);
         Double[] k = chemicalReaction.getK();
         final StageRates rates = StehiomatrixGetter.getRates(stages, k);

@@ -9,7 +9,7 @@ typealias R = Array<Double>
 /**
  * dr/dt = F
  */
-open class System (vararg val f: (T, R) -> Double) {
+open class MySystem (vararg val f: (T, R) -> Double) {
     val size: Int = f.size
     operator fun invoke(t: T, r: R): Array<Double> {
         return (f.indices).map { i -> f[i](t, r) }.toTypedArray()

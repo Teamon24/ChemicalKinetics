@@ -3,7 +3,7 @@ package com.nir.beans
 import com.nir.ui.dto.Compounds
 import com.nir.ui.dto.Reaction
 import com.nir.ui.dto.Stage
-import com.nir.utils.math.System
+import com.nir.utils.math.MySystem
 import com.nir.utils.math.Stehiomatrix
 import com.nir.utils.math.R
 import com.nir.utils.math.StageRates
@@ -23,7 +23,7 @@ typealias StagesAndItsReagentsIndices = ArrayList<StageAndItsReagentsIndices>
 object StehiomatrixGetter {
 
     @JvmStatic
-    fun times(stehiomatrix: Stehiomatrix, stageRates: StageRates): System {
+    fun times(stehiomatrix: Stehiomatrix, stageRates: StageRates): MySystem {
         val ratesAmount = stageRates.size
         if (stehiomatrix.columns != ratesAmount) {
             throw RuntimeException("Columns amount of matrix and rates vector size should be equal.")
@@ -34,7 +34,7 @@ object StehiomatrixGetter {
             f[row] = f(row, stehiomatrix, stageRates)
         }
 
-        return System(*f)
+        return MySystem(*f)
     }
 
     private fun f(row: Int, stehiomatrix: Stehiomatrix, stageRates: StageRates): (T, R) -> Double {

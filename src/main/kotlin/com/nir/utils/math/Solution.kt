@@ -11,7 +11,7 @@ object Solution {
 
     class Info internal constructor() {
         internal lateinit var method: Method
-        internal lateinit var system: System
+        internal lateinit var mySystem: MySystem
         internal lateinit var initialData: InitialData
         internal lateinit var dataSets: List<DoubleDataSet>
     }
@@ -24,8 +24,8 @@ object Solution {
     }
 
     class SystemStep(private val info: Info) {
-        fun system(system: System): InitialDataStep {
-            this.info.system = system
+        fun system(mySystem: MySystem): InitialDataStep {
+            this.info.mySystem = mySystem
             return InitialDataStep(this.info);
         }
     }
@@ -52,7 +52,7 @@ object Solution {
         fun task(): Runnable {
             return Runnable {
                 val (t0, r0, dt, N) = info.initialData
-                val system = info.system
+                val system = info.mySystem
                 val method = info.method
                 val series = PlotUtils.series(t0, N, dt)
                 val solution = method(system, r0, t0, dt, N)
@@ -65,7 +65,7 @@ object Solution {
         fun flow(): SolutionFlow {
             val flow = flow {
                 val (t0, r0, dt, N) = info.initialData
-                val system = info.system
+                val system = info.mySystem
                 val method = info.method
                 val D = r0.size
                 var t = t0

@@ -4,7 +4,7 @@ import com.nir.beans.K
 import com.nir.utils.ArrayUtils
 
 interface RungeKuttaCore {
-    operator fun invoke(system: System,
+    operator fun invoke(mySystem: MySystem,
                         r: R,
                         t: Double,
                         dt: Double): Array<Double>
@@ -26,14 +26,14 @@ constructor(initialData: InitialData) : RungeKuttaCore {
         sixth = dt / 6.0
     }
 
-    override operator fun invoke(system: System,
+    override operator fun invoke(mySystem: MySystem,
                                  r: R,
                                  t: Double,
                                  dt: Double): Array<Double> {
-        k[0] = system(t, r)
-        k[1] = system(t + half, r + half * k[0])
-        k[2] = system(t + half, r + half * k[1])
-        k[3] = system(t + dt, r + dt * k[2])
+        k[0] = mySystem(t, r)
+        k[1] = mySystem(t + half, r + half * k[0])
+        k[2] = mySystem(t + half, r + half * k[1])
+        k[3] = mySystem(t + dt, r + dt * k[2])
 
         val kSum = sixth * (k[0] + 2 * k[1] + 2 * k[2] + k[3])
         return kSum

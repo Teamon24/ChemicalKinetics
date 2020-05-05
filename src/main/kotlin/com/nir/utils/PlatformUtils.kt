@@ -43,6 +43,4 @@ object PlatformUtils {
     fun runLater(runnable: Runnable) {
         Platform.runLater(runnable)
     }
-
-
 }
