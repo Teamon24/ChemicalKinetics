@@ -5,6 +5,7 @@ import com.nir.utils.PlatformUtils;
 import com.nir.utils.PlotUtils;
 import com.nir.utils.math.ComputationConfigs;
 import com.nir.utils.math.InitialPoint;
+import com.nir.utils.math.method.hardcoded.AdamBashforth4thMethods;
 import com.nir.utils.math.method.hardcoded.AdamBashforth5thMethods;
 import com.nir.utils.math.solution.Solution;
 import de.gsi.chart.XYChart;
@@ -36,7 +37,7 @@ public class AdamBashforthSolutionPlotCheck extends Application {
         final InitialPoint initialPoint = system.initialPoint();
         final ComputationConfigs computationConfigs = new ComputationConfigs(0.00001, 2000000);
 
-        final AdamBashforth5thMethods method = new AdamBashforth5thMethods();
+        final AdamBashforth4thMethods method = new AdamBashforth4thMethods();
 
         method.setFirstAccelerationPointMethodName("Runge-Kutta 4-order (Hardcoded)");
         method.setUp(initialPoint, computationConfigs);

@@ -35,8 +35,8 @@ public class SolutionPlotCheck extends Application {
         final ComputationConfigs computationConfigs = new ComputationConfigs(0.00001, 2000000);
         final Method rungeKutta4General = Methods.getByName("Runge-Kutta 4th-order: v.1 (Generalized)");
         final Method rungeKutta5General = Methods.getByName("Runge-Kutta 5th-order method (Generalized)");
+        final Method eulerGeneral = Methods.getByName("Forward Euler (Generalized)");
 
-        final Method eulerGeneral = Methods.getByName("Forward Euler");
         final RungeKutta rungeKutta4 = new RungeKutta(4);
         final RungeKutta rungeKutta5 = new RungeKutta(5);
         final Method method = rungeKutta4;
