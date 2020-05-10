@@ -12,10 +12,12 @@ typealias D = Int
 
 typealias dX = X
 typealias X = Double
+typealias Xs = DoubleArray
 typealias X0 = X
 
 /** Y = [y1,y2,y3...yn] */
 typealias Y = Array<Double>
+typealias Ys = Array<Array<Double>>
 
 typealias Y0 = Y
 

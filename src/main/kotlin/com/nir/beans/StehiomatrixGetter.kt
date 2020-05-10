@@ -9,7 +9,7 @@ import com.nir.utils.InitUtils
 import com.nir.utils.math.Integers
 import com.nir.utils.math.method.F
 import com.nir.utils.math.method.Y
-import com.nir.utils.math.method.automatized.emptyFunc
+import com.nir.utils.math.method.emptyFunc
 import kotlin.math.pow
 
 /** Константы скорости реакции. */

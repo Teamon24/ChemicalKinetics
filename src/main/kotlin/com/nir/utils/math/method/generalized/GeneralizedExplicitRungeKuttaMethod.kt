@@ -1,20 +1,22 @@
-package com.nir.utils.math.method.automatized
+package com.nir.utils.math.method.generalized
 
-import com.nir.utils.math.ArrayUtils
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialPoint
 import com.nir.utils.math.method.ButchersTable
 import com.nir.utils.math.method.F
+import com.nir.utils.math.method.Method
 import com.nir.utils.math.method.N
 import com.nir.utils.math.method.X
+import com.nir.utils.math.method.Xs
 import com.nir.utils.math.method.Y
+import com.nir.utils.math.method.Ys
 import com.nir.utils.math.method.dX
 import com.nir.utils.math.method.k
 import com.nir.utils.math.method.kFunc
-import com.nir.utils.math.plus
-import com.nir.utils.math.times
+import com.nir.utils.plus
+import com.nir.utils.times
 
-class ExplicitRungeKuttaMethod
+class GeneralizedExplicitRungeKuttaMethod
 /**
  * @param s количество стадий.
  * @param p порядок метода.
@@ -23,8 +25,9 @@ constructor(
         val s: Int,
         private val p: Int,
         private val butchersTable: ButchersTable,
-        override val name: String
-) : Method()
+        name: String
+)
+    : GeneralizedMethod(name)
 {
 
     private val emptyKFunc = { _: F, _: X, y: Y -> Array(y.size) { 0.0 } }
@@ -45,20 +48,21 @@ constructor(
         return this
     }
 
-    override fun invoke(f: F, x0: X, y0: Y, dx: dX, n: N): Array<Y> {
-        val d = y0.size
-        val y = ArrayUtils.twoDimArray(n to d)
+    override fun invoke(f: F, x0: X, y0: Y, dx: dX, n: N): Pair<Xs, Ys> {
+        val ys = initYs(n, y0)
+        val xs = initXs(n, x0)
         var x = x0
 
-        (0 until d).forEach { i -> y[0][i] = y0[i] }
-
         for (i in 0 until n - 1) {
-            y[i + 1] = this(f, x, y[i], dx)
             x += dx
+            xs[i + 1] = x
+            ys[i + 1] = this(f, x, ys[i], dx)
         }
 
-        return y
+        return xs to ys
     }
+
+
 
     override fun invoke(f: F, x: X, y: Y, dx: dX): Y {
         return core(f, x, y, dx)

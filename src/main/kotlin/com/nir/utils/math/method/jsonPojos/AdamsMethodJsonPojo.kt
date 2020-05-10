@@ -1,19 +1,19 @@
 package com.nir.utils.math.method.jsonPojos
 
-import com.nir.utils.math.method.MethodInfoJsonPojo
+import com.nir.utils.math.method.generalized.GeneralizedMethodInfoJsonPojo
 
 fun adamsBashforthName(k: Int) = "Adams-Bashforth $k-order method"
 fun adamsMoultonName(k: Int) = "Adams-Multon ${k+1}-order method"
 
-data class AdamsBashforthMethodJsonPojo(
+data class AdamsBashforthGeneralizedMethodJsonPojo(
         val k: Int,
         val betta: Array<*>,
         val C: Any
-) : MethodInfoJsonPojo(adamsBashforthName(k))
+) : GeneralizedMethodInfoJsonPojo(adamsBashforthName(k))
 
-data class AdamsMoultonMethodJsonPojo(
+data class AdamsMoultonGeneralizedMethodJsonPojo(
         val info: String?,
         val k: Int,
         val betta: Array<*>,
         val C: Any
-) : MethodInfoJsonPojo(adamsMoultonName(k))
+) : GeneralizedMethodInfoJsonPojo(adamsMoultonName(k))

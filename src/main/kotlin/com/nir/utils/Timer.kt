@@ -23,7 +23,7 @@ class Timer {
     }
 
     companion object {
-        fun <Result> measureMillis(action: () -> Result): Pair<Result, Long> {
+        fun <Result> countMillis(action: () -> Result): Pair<Result, Long> {
             val timer = Timer().start()
             val result = action()
             timer.stop()

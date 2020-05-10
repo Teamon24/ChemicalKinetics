@@ -5,9 +5,9 @@ import com.nir.utils.math.method.F
 import com.nir.utils.math.method.X
 import com.nir.utils.math.method.Y
 import com.nir.utils.math.method.dX
-import com.nir.utils.math.minus
-import com.nir.utils.math.plus
-import com.nir.utils.math.times
+import com.nir.utils.minus
+import com.nir.utils.plus
+import com.nir.utils.times
 
 class RungeKutta5Core: RungeKuttaCore {
     private val stages = 6

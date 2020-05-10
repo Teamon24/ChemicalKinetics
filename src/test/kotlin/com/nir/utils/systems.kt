@@ -40,7 +40,7 @@ class LorentzStrangeAttractor2(
 
     fun initialPoint(): InitialPoint {
         return InitialPoint(
-                x0 = 0.0,
+                x0 = 0.0001,
                 y0 = Array(4) { -2.0 }
         )
     }

@@ -3,17 +3,18 @@ package com.nir.utils.math.method
 import com.nir.beans.Methods
 import com.nir.utils.AssertUtils
 import com.nir.utils.math.ArrayUtils
-import com.nir.utils.math.minus
-import com.nir.utils.math.plus
+import com.nir.utils.minus
+import com.nir.utils.plus
 import org.junit.jupiter.api.Test
-import com.nir.utils.math.times
+import com.nir.utils.times
 
 /**
  * Тест для класса [ExplicitRungeKuttaMethod]
  */
-class ExplicitRungeKuttaMethodTest {
+class GeneralizedExplicitRungeKuttaMethodTest {
     init {
         Methods.getAll()
+        println(Methods.getNames())
     }
 
     private var k = ArrayUtils.twoDimArray(6 to f.size)
@@ -22,7 +23,7 @@ class ExplicitRungeKuttaMethodTest {
 
     @Test
     fun testRK4th1v() {
-        val method = Methods.getByName("Runge-Kutta 4th-order: v.1")
+        val method = Methods.getByName("Runge-Kutta 4th-order: v.1 (Generalized)")
         val expectedY = expctedY1(f, x0, y0, dx)
         val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
         AssertUtils.assertWithPrecision(expectedY, actualY, precision)
@@ -30,7 +31,7 @@ class ExplicitRungeKuttaMethodTest {
 
     @Test
     fun testRK4th2v() {
-        val method = Methods.getByName("Runge-Kutta 4th-order: v.2")
+        val method = Methods.getByName("Runge-Kutta 4th-order: v.2 (Generalized)")
         val expectedY = expectedY2(f, x0, y0, dx)
         val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
         AssertUtils.assertWithPrecision(expectedY, actualY, precision)
@@ -38,7 +39,7 @@ class ExplicitRungeKuttaMethodTest {
 
     @Test
     fun testRKThreeEightRule() {
-        val method = Methods.getByName("3/8-rule 4th-order method")
+        val method = Methods.getByName("3/8-rule 4th-order method (Generalized)")
         val expectedY = expectedY3(f, x0, y0, dx)
         val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
         AssertUtils.assertWithPrecision(expectedY, actualY, precision)
@@ -46,7 +47,7 @@ class ExplicitRungeKuttaMethodTest {
 
     @Test
     fun testRK5thOrder() {
-        val method = Methods.getByName("Runge-Kutta 5th-order method")
+        val method = Methods.getByName("Runge-Kutta 5th-order method (Generalized)")
         val expectedY = expectedY4(f, x0, y0, dx)
         val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
         AssertUtils.assertWithPrecision(expectedY, actualY, precision)

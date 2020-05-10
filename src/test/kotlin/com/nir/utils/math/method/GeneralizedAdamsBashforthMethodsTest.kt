@@ -1,15 +1,16 @@
 package com.nir.utils.math.method
 
 import com.nir.beans.Methods
-import com.nir.utils.Fivefold
-import com.nir.utils.array
-import com.nir.utils.math.minus
-import com.nir.utils.math.plus
-import com.nir.utils.math.times
+import com.nir.utils.math.method.generalized.GeneralizedAdamsBashforthMethods
+import com.nir.utils.minus
+import com.nir.utils.plus
+import com.nir.utils.times
 import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-class AdamsBashforthMethodsTest {
+@Disabled
+class GeneralizedAdamsBashforthMethodsTest {
 
     init {
         Methods.getAll()
@@ -58,7 +59,7 @@ class AdamsBashforthMethodsTest {
 
 
     private fun adamsBashforth(order: Int) =
-            AdamsBashforthMethods[order]
+            GeneralizedAdamsBashforthMethods[order]
                     .setUp(initialPoint, computationConfigs)
 
     private fun getExpectedValues(dx: dX, x0: X0, y0: Y0): Array<Y> {

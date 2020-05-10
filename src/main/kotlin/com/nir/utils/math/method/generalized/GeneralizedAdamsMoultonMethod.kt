@@ -1,21 +1,30 @@
-package com.nir.utils.math.method
+package com.nir.utils.math.method.generalized
 
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialPoint
-import com.nir.utils.math.method.automatized.Method
+import com.nir.utils.math.method.F
+import com.nir.utils.math.method.Method
+import com.nir.utils.math.method.N
+import com.nir.utils.math.method.X
+import com.nir.utils.math.method.Xs
+import com.nir.utils.math.method.Y
+import com.nir.utils.math.method.Ys
+import com.nir.utils.math.method.dX
 
-class AdamsMoultonMethod(
-        override val name: String,
+class GeneralizedAdamsMoultonMethod(
+        name: String,
         val order: Int,
         val betta: Array<Any>,
         val c: Any
-) : Method() {
+)
+    : GeneralizedMethod(name)
+{
 
     override fun setUp(initialPoint: InitialPoint, computationConfig: ComputationConfigs): Method {
         TODO("AdamsMoultonMethod has not been implemented yet")
     }
 
-    override fun invoke(f: F, x0: X, y0: Y, dx: dX, n: N): Array<Y> {
+    override fun invoke(f: F, x0: X, y0: Y, dx: dX, n: N): Pair<Xs, Ys> {
         TODO("AdamsMoultonMethod has not been implemented yet")
     }
 

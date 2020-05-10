@@ -1,7 +1,7 @@
 package com.nir.beans;
 
-import com.nir.utils.math.method.automatized.Method;
-import com.nir.utils.math.method.MethodInfoJsonPojo;
+import com.nir.utils.math.method.Method;
+import com.nir.utils.math.method.generalized.GeneralizedMethodInfoJsonPojo;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,23 +10,30 @@ import java.util.stream.Collectors;
 
 public class Methods {
 
-    private static final MethodInfoComponent methodInfoComponent = Beans.methodInfoComponent();
-    private static final MethodComponent methodComponent = Beans.methodComponent();
-    private static final List<Method> methods = new ArrayList<>();
-    private static final List<MethodInfoJsonPojo> methodInfoJsonPojos = new ArrayList<>();
+    private static final GeneralizedMethodInfoComponent generalizedMethodInfoComponent = Beans.generalizedMethodInfoComponent();
+    private static final GeneralizedMethodComponent generalizedMethodComponent = Beans.generalizedMethodComponent();
+    private static final HardcodedMethodComponent hardcodedMethodComponent = Beans.hardcodedMethodComponent();
+    private static final List<Method> generalizedMethods = new ArrayList<>();
+    private static final List<Method> hardcodedMethods = new ArrayList<>();
+    private static final List<Method> allMethods = new ArrayList<>();
+    private static final List<GeneralizedMethodInfoJsonPojo> generalizedMethodInfoJsonPojos = new ArrayList<>();
 
     public static List<Method> getAll() {
-        initMethodsInfos();
-        initMethods();
-        return methods;
+        initGeneralizedMethods();
+        initHardcodedMethods();
+        initAllMethods();
+        return allMethods;
     }
 
     public static List<String> getNames() {
-        initMethodsInfos();
-        return methodInfoJsonPojos
-            .stream()
-            .map(MethodInfoJsonPojo::getName)
-            .collect(Collectors.toList());
+        return getAll().stream().map(Method::getName).collect(Collectors.toList());
+    }
+
+    private static void initAllMethods() {
+        if(allMethods.isEmpty()) {
+            allMethods.addAll(hardcodedMethods);
+            allMethods.addAll(generalizedMethods);
+        }
     }
 
     public static Method getByName(String name) {
@@ -36,17 +43,25 @@ public class Methods {
         return method;
     }
 
-    private static void initMethodsInfos() {
-        if (methodInfoJsonPojos.isEmpty()) {
-            final List<MethodInfoJsonPojo> all = methodInfoComponent.getAll();
-            methodInfoJsonPojos.addAll(all);
+    private static void initHardcodedMethods() {
+        if (hardcodedMethods.isEmpty()) {
+            final List<Method> created = hardcodedMethodComponent.getAll();
+            hardcodedMethods.addAll(created);
         }
     }
 
-    private static void initMethods() {
-        if (methods.isEmpty()) {
-            final List<Method> created = methodComponent.create(methodInfoJsonPojos);
-            methods.addAll(created);
+    private static void initGeneralizedMethods() {
+        initGeneralizedMethodsInfos();
+        if (generalizedMethods.isEmpty()) {
+            final List<Method> created = generalizedMethodComponent.create(generalizedMethodInfoJsonPojos);
+            generalizedMethods.addAll(created);
+        }
+    }
+
+    private static void initGeneralizedMethodsInfos() {
+        if (generalizedMethodInfoJsonPojos.isEmpty()) {
+            final List<GeneralizedMethodInfoJsonPojo> all = generalizedMethodInfoComponent.getAll();
+            generalizedMethodInfoJsonPojos.addAll(all);
         }
     }
 }

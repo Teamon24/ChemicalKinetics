@@ -1,12 +1,15 @@
-package com.nir.utils;
+package checks;
 
 import com.nir.beans.Methods;
 import com.nir.beans.StageParser;
 import com.nir.beans.StehiomatrixGetter;
 import com.nir.ui.pojos.ReactionStage;
+import com.nir.utils.ChemicalReaction;
+import com.nir.utils.PlatformUtils;
+import com.nir.utils.PlotUtils;
 import com.nir.utils.math.ComputationConfigs;
 import com.nir.utils.math.InitialPoint;
-import com.nir.utils.math.method.automatized.Method;
+import com.nir.utils.math.method.Method;
 import com.nir.utils.math.solution.Solution;
 import com.nir.ui.pojos.StageRates;
 import com.nir.utils.math.Matrix;
@@ -81,5 +84,4 @@ public class ChemicalSystemSolutionCheck extends Application {
     public static void main(String[] args) {
         launch();
     }
-
 }

@@ -3,7 +3,7 @@ package com.nir.beans
 import com.fasterxml.jackson.core.JsonFactory
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.core.JsonToken
-import com.nir.utils.math.method.jsonPojos.ExplicitRKMethodJsonPojo
+import com.nir.utils.math.method.jsonPojos.ExplicitRKGeneralizedMethodJsonPojo
 import com.nir.utils.ifTrue
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.Flow
 
 fun main() = runBlocking {
     val filename = "json/runge-kutta.json"
-    val jacksonComponent = JacksonComponent(filename, ExplicitRKMethodJsonPojo::class.java)
+    val jacksonComponent = JacksonComponent(filename, ExplicitRKGeneralizedMethodJsonPojo::class.java)
     val flow = jacksonComponent.flow()
 
     flow.collect {

@@ -24,13 +24,13 @@ class TypeStep(private val info: Solution.Info) {
     fun task(): Runnable {
         return Runnable {
             val (method, system, dataSets, y0, x0, dx, n, _) = info.datas()
-            val series = PlotUtils.series(x0, n, dx)
-            val timer = Timer().start()
-            val solution = method(system, x0, y0, dx, n)
-            timer.stop()
-            println("Calculation was ended in runnable task. Duration: ${Timer.formatMillis(timer.total())} ")
+            val (solution, total) = Timer.countMillis {
+                method(system, x0, y0, dx, n)
+            }
+
+            println("Calculation was ended in runnable task. Duration: ${Timer.formatMillis(total)} ")
             dataSets.withIndex().forEach { (index, dataSet) ->
-                dataSet.add(series, solution.map { it[index] }.toDoubleArray())
+                dataSet.add(solution.first, solution.second.map { it[index] }.toDoubleArray())
             }
         }
     }
@@ -55,7 +55,7 @@ class TypeStep(private val info: Solution.Info) {
     }
 
     fun batchFlow(): SolutionBatchFlow {
-        val batchSize = 3000
+        val batchSize = this.info.computationConfigs.n/10
         return batchFlow(batchSize)
     }
 

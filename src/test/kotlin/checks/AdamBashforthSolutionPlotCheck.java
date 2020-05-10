@@ -1,11 +1,11 @@
-package com.nir.utils;
+package checks;
 
-import com.nir.beans.Methods;
+import com.nir.utils.LorentzStrangeAttractor2;
+import com.nir.utils.PlatformUtils;
+import com.nir.utils.PlotUtils;
 import com.nir.utils.math.ComputationConfigs;
 import com.nir.utils.math.InitialPoint;
-import com.nir.utils.math.method.automatized.Method;
-import com.nir.utils.math.method.hardcoded.ForwardEuler;
-import com.nir.utils.math.method.hardcoded.RungeKutta;
+import com.nir.utils.math.method.hardcoded.AdamBashforth5thMethods;
 import com.nir.utils.math.solution.Solution;
 import de.gsi.chart.XYChart;
 import de.gsi.dataset.spi.DoubleDataSet;
@@ -14,7 +14,11 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-public class SolutionPlotCheck extends Application {
+public class AdamBashforthSolutionPlotCheck extends Application {
+    public static void main(String[] args) {
+        launch();
+    }
+
     @Override
     public void start(Stage stage) {
 
@@ -30,16 +34,12 @@ public class SolutionPlotCheck extends Application {
 
         //Запуск решения системы уравнений
         final InitialPoint initialPoint = system.initialPoint();
-        final ComputationConfigs computationConfigs = new ComputationConfigs(0.000001, 5_000_000);
-        final Method adamBashGeneral = Methods.getByName("Adams-Bashforth 1-order method");
-        final Method rungeKutta4General = Methods.getByName("Runge-Kutta 4th-order: v.1");
-        final Method rungeKutta5General = Methods.getByName("Runge-Kutta 5th-order method");
+        final ComputationConfigs computationConfigs = new ComputationConfigs(0.00001, 2000000);
 
-        final Method eulerGeneral = Methods.getByName("Forward Euler");
-        final RungeKutta rungeKutta4 = new RungeKutta(4);
-        final RungeKutta rungeKutta5 = new RungeKutta(5);
-        final Method method = ForwardEuler.INSTANCE.setUp(initialPoint, computationConfigs);
+        final AdamBashforth5thMethods method = new AdamBashforth5thMethods();
 
+        method.setFirstAccelerationPointMethodName("Runge-Kutta 4-order (Hardcoded)");
+        method.setUp(initialPoint, computationConfigs);
 
         System.out.println(String.format("Numeric Method: \"%s\"", method.getName()));
 
@@ -55,7 +55,5 @@ public class SolutionPlotCheck extends Application {
         PlatformUtils.runLater(solution);
     }
 
-    public static void main(String[] args) {
-        launch();
-    }
+
 }

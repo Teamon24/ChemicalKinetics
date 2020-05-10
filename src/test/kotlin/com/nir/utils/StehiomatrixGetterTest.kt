@@ -9,7 +9,6 @@ import com.nir.ui.pojos.ReactionStage
 import com.nir.utils.math.Integers
 import com.nir.utils.math.Matrix
 import com.nir.utils.math.method.Y
-import com.nir.utils.math.times
 import org.junit.Assert
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -119,7 +118,7 @@ class StehiomatrixGetterTest {
     lateinit var w1: Array<Double>
     private val r10 = Fivefold(2.0, 3.0, 4.0, 5.0, 6.0)
 
-    private fun initW1() {
+    private fun initW1(): Array<Double> {
         val (Br2, Br, H2, HBr, H) = r10
         val (a, b, c, d, e) = stehCoeff1
         val w11 = Br2.pow(a)
@@ -128,6 +127,7 @@ class StehiomatrixGetterTest {
         val w14 = H.pow(a) * HBr.pow(a)
         val w15 = Br.pow(b)
         w1 = k1.array() * arrayOf(w11, w12, w13, w14, w15)
+        return w1
     }
 
     private val stehCoeff2 = Fivefold(5, 4, 3, 2, 1)
@@ -135,12 +135,13 @@ class StehiomatrixGetterTest {
     lateinit var w2: Array<Double>
     private val r20 = Fourfold(2.0, 3.0, 5.0, 7.0)
 
-    private fun initW2() {
+    private fun initW2(): Array<Double> {
         val (A0, B0, Q0, Z0) = r20
         val (a1, a2, b, q, z) = stehCoeff2
         val w21 = A0.pow(a1) * B0.pow(b)
         val w22 = A0.pow(a2) * Q0.pow(q)
         w2 = k2.array() * arrayOf(w21, w22)
+        return w2
     }
 
     private fun createDatas(reactionStages: List<ReactionStage>): Pair<List<String>, Matrix<Int>> {

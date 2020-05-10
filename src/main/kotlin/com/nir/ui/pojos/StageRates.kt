@@ -2,7 +2,7 @@ package com.nir.ui.pojos
 
 import com.nir.beans.C
 import com.nir.beans.T
-import com.nir.utils.math.method.automatized.emptyFunc
+import com.nir.utils.math.method.emptyFunc
 
 class StageRates {
 

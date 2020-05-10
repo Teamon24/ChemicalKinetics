@@ -5,10 +5,10 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.module.kotlin.KotlinModule;
 import com.google.common.collect.Lists;
-import com.nir.utils.math.method.MethodInfoJsonPojo;
-import com.nir.utils.math.method.jsonPojos.AdamsBashforthMethodJsonPojo;
-import com.nir.utils.math.method.jsonPojos.AdamsMoultonMethodJsonPojo;
-import com.nir.utils.math.method.jsonPojos.ExplicitRKMethodJsonPojo;
+import com.nir.utils.math.method.generalized.GeneralizedMethodInfoJsonPojo;
+import com.nir.utils.math.method.jsonPojos.AdamsBashforthGeneralizedMethodJsonPojo;
+import com.nir.utils.math.method.jsonPojos.AdamsMoultonGeneralizedMethodJsonPojo;
+import com.nir.utils.math.method.jsonPojos.ExplicitRKGeneralizedMethodJsonPojo;
 import org.apache.commons.lang3.tuple.Pair;
 
 import java.util.List;
@@ -30,32 +30,37 @@ public final class Beans {
         return mapper;
     }
 
-    public static MethodInfoComponentImpl methodInfoComponent() {
-        final List<JacksonComponent<MethodInfoJsonPojo>> jacksonComponents =
+    public static GeneralizedMethodInfoComponentImpl generalizedMethodInfoComponent() {
+        final List<JacksonComponent<GeneralizedMethodInfoJsonPojo>> jacksonComponents =
             Lists.newArrayList(
-                Pair.of("json/runge-kutta.json", ExplicitRKMethodJsonPojo.class),
-                Pair.of("json/adams-bashforth.json", AdamsBashforthMethodJsonPojo.class),
-                Pair.of("json/adams-multon.json", AdamsMoultonMethodJsonPojo.class)
+                Pair.of("json/runge-kutta.json", ExplicitRKGeneralizedMethodJsonPojo.class),
+                Pair.of("json/adams-bashforth.json", AdamsBashforthGeneralizedMethodJsonPojo.class),
+                Pair.of("json/adams-multon.json", AdamsMoultonGeneralizedMethodJsonPojo.class)
             )
             .stream()
             .map(Beans::jacksonComponent)
             .collect(Collectors.toList());
-        return new MethodInfoComponentImpl(jacksonComponents);
+        return new GeneralizedMethodInfoComponentImpl(jacksonComponents);
     }
 
-    public static JacksonComponent<MethodInfoJsonPojo> jacksonComponent(
+    public static JacksonComponent<GeneralizedMethodInfoJsonPojo> jacksonComponent(
         Pair<
             String,
-            ? extends Class<? extends MethodInfoJsonPojo>
+            ? extends Class<? extends GeneralizedMethodInfoJsonPojo>
         >
             jsonAndClass
     )
     {
         final String filename = jsonAndClass.getKey();
-        final Class<? extends MethodInfoJsonPojo> aClass = jsonAndClass.getValue();
+        final Class<? extends GeneralizedMethodInfoJsonPojo> aClass = jsonAndClass.getValue();
         return new JacksonComponent<>(filename, aClass);
     }
-    public static MethodComponent methodComponent() {
-        return new MethodComponent();
+
+    public static GeneralizedMethodComponent generalizedMethodComponent() {
+        return new GeneralizedMethodComponent();
+    }
+
+    public static HardcodedMethodComponent hardcodedMethodComponent() {
+        return new HardcodedMethodComponent();
     }
 }
