@@ -9,11 +9,11 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class PeriodicElementsGetterLocal implements PeriodicElementsGetter {
+public final class PeriodicElementsGetterImpl implements PeriodicElementsGetter {
     private static List<PeriodicElement> elements = new ArrayList<>();
     private ObjectMapper objectMapper;
 
-    public PeriodicElementsGetterLocal(ObjectMapper objectMapper) {
+    public PeriodicElementsGetterImpl(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
         this.readElementsIfNoSuch();
     }
@@ -29,7 +29,7 @@ public final class PeriodicElementsGetterLocal implements PeriodicElementsGetter
             try {
                 TypeReference<List<PeriodicElement>> type = new TypeReference<List<PeriodicElement>>() {};
                 List<PeriodicElement> elements = objectMapper.readValue(resource, type);
-                PeriodicElementsGetterLocal.elements.addAll(elements);
+                PeriodicElementsGetterImpl.elements.addAll(elements);
             } catch (IOException e) {
                 String template = "Cant read periodic table elements: %s";
                 throw new RuntimeException(String.format(template, e.getMessage()));

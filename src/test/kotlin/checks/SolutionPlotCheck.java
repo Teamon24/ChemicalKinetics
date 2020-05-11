@@ -50,9 +50,9 @@ public class SolutionPlotCheck extends Application {
                 .method(method)
                 .computation(computationConfigs)
                 .system(system)
-                .initialData(initialPoint)
+                .initialPoint(initialPoint)
                 .datasets(dataSets)
-                .task();
+                .futureTask();
 
         PlatformUtils.runLater(solution);
     }

@@ -1,6 +1,6 @@
 package com.nir.utils
 
-import com.nir.beans.StehiomatrixGetter
+import com.nir.beans.ChemicalReactionComponent
 import com.nir.ui.pojos.Compound
 import com.nir.ui.pojos.Compounds
 import com.nir.ui.pojos.ElementsAndAmounts
@@ -15,19 +15,19 @@ import org.junit.jupiter.api.Test
 import kotlin.math.pow
 
 /**
- * Тест для класса [StehiomatrixGetter].
+ * Тест для класса [ChemicalReactionComponent].
  */
-class StehiomatrixGetterTest {
+class ChemicalReactionComponentTest {
 
-    /** Тест для метода [StehiomatrixGetter.getMatrix]. */
+    /** Тест для метода [ChemicalReactionComponent.getStehiometricMatrix]. */
     @Test
     fun testGetMatrix() {
         datasForTestGetMatrix().forEach { data ->
             val expectedCompounds = data[0] as List<String>
             val expectedStehiomatrix = data[1] as Matrix<Integer>
             val stages = data[2] as Reaction
-            val actualCompounds = StehiomatrixGetter.getCompounds(stages)
-            val actualMatrix = StehiomatrixGetter.getMatrix(stages)
+            val actualCompounds = ChemicalReactionComponent.getCompounds(stages)
+            val actualMatrix = ChemicalReactionComponent.getStehiometricMatrix(stages)
 
             Assert.assertArrayEquals(expectedCompounds.toTypedArray(), actualCompounds.toTypedArray())
             Assertions.assertIterableEquals(expectedStehiomatrix.elements, actualMatrix.elements)
@@ -41,7 +41,7 @@ class StehiomatrixGetterTest {
             val k = it[1] as Array<Double>
             val r = it[2] as Y
             val expectedRatesValues = it[3] as Array<Double>
-            val rates = StehiomatrixGetter.getRates(reaction, k)
+            val rates = ChemicalReactionComponent.getRates(reaction, k)
             val result = rates.elements.map { action -> action(0.0, r) }
             Assert.assertArrayEquals(expectedRatesValues, result.toTypedArray())
         }
@@ -51,10 +51,10 @@ class StehiomatrixGetterTest {
     fun testSystemCreation() {
         datasForCheck().forEach {
             val (stages, k, r0, expectedValues) = it
-            val stehiomatrix = StehiomatrixGetter.getMatrix(stages)
-            val rates = StehiomatrixGetter.getRates(stages, k)
+            val stehiomatrix = ChemicalReactionComponent.getStehiometricMatrix(stages)
+            val rates = ChemicalReactionComponent.getRates(stages, k)
             val transposed = stehiomatrix.transpose()
-            val system = StehiomatrixGetter.times(transposed, rates)
+            val system = ChemicalReactionComponent.times(transposed, rates)
             Assert.assertEquals(r0.size, system.size)
             Assert.assertEquals(r0.size, system.size)
             val actualValues = system(0.0, r0)

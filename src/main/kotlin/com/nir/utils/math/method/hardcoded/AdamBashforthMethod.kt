@@ -52,22 +52,23 @@ abstract class AdamBashforthMethod(
 
         val coeffs2 = dx * coeffs
         val d = y0.size
-        val ys = y0 + this.accelerationPoints + ArrayUtils.twoDimArray(n to d)
-        val xs = initXs(n + this.accelerationPoints.size, x0)
+        val shift = this.accelerationPoints.size + 1
+        val ys = y0 + this.accelerationPoints + ArrayUtils.twoDimArray(n - shift to d)
+        val xs = initXs(n, x0)
 
-        for (j in 0 until this.order) {
+        for (j in this.accelerationPoints.indices) {
             xs[j+1] = xs[j]+dx
         }
 
-        var x = xs[this.order-1]
+        var x = xs[shift - 1]
 
-        for (i in 0 until n - 1) {
+        for (i in 0 until n - shift) {
             x += dx
-            xs[i + this.order] = x
+            xs[i + shift] = x
             val get = ys.get(i, amount = order)
             val fs = (get.map { f(x, it) })
             val core = coeffs2 * fs
-            ys[i + this.order] = ys[i + this.order - 1] + core
+            ys[i + shift] = ys[i + shift - 1] + core
         }
         return xs to ys
     }

@@ -13,29 +13,29 @@ class RungeKutta5Core: RungeKuttaCore {
     private val stages = 6
 
     private lateinit var k: Array<Array<Double>>
-    private var `1-2`      = 0.0
-    private var `1-4`    = 0.0
-    private var `1-6`    = 0.0
-    private var `1-7`    = 0.0
-    private var `1-8`    = 0.0
-    private var `1-16`   = 0.0
-    private var `1-90`   = 0.0
-    private var `3-4`  = 0.0
-    private var `3-7`  = 0.0
-    private var `3-8`  = 0.0
-    private var `3-16` = 0.0
-    private var `6-7` = 0.0
-    private var `8-7` = 0.0
-    private var `12-7` = 0.0
+    private var `1-2`   = 0.0
+    private var `1-4`   = 0.0
+    private var `1-6`   = 0.0
+    private var `1-7`   = 0.0
+    private var `1-8`   = 0.0
+    private var `1-16`  = 0.0
+    private var `1-90`  = 0.0
+    private var `3-4`   = 0.0
+    private var `3-7`   = 0.0
+    private var `3-8`   = 0.0
+    private var `3-16`  = 0.0
+    private var `6-7`   = 0.0
+    private var `8-7`   = 0.0
+    private var `12-7`  = 0.0
     private var `9-16`  = 0.0
     private var `7-90`  = 0.0
-    private var `12-90`  = 0.0
-    private var `32-90`  = 0.0
+    private var `12-90` = 0.0
+    private var `32-90` = 0.0
 
 
     override fun setUp(d: D, dx: dX) {
         k = init(stages, d)
-        `1-2` =  1 / 2.0 * dx
+        `1-2`  =  1 / 2.0 * dx
         `1-4`  = 1 / 4.0 * dx
         `1-6`  = 1 / 6.0 * dx
         `1-7`  = 1 / 7.0 * dx
@@ -49,14 +49,12 @@ class RungeKutta5Core: RungeKuttaCore {
         `3-16` = 3 * `1-16`
 
         `6-7`   = 6 * `1-7`
-        `8-7` = 8 * `1-7`
-
-        `12-7` = 12 * `1-7`
-
-        `9-16` = 9 * `1-16`
+        `8-7`   = 8 * `1-7`
         `7-90`  = 7 * `1-90`
-        `12-90`  = 12 * `1-90`
-        `32-90`  = 32 * `1-90`
+        `9-16`  = 9 * `1-16`
+        `12-7`  = 12 * `1-7`
+        `12-90` = 12 * `1-90`
+        `32-90` = 32 * `1-90`
     }
 
     override operator fun invoke(f: F, y: Y, x: X, dx: dX): Array<Double> {

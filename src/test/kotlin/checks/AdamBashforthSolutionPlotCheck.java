@@ -6,7 +6,6 @@ import com.nir.utils.PlotUtils;
 import com.nir.utils.math.ComputationConfigs;
 import com.nir.utils.math.InitialPoint;
 import com.nir.utils.math.method.hardcoded.AdamBashforth4thMethods;
-import com.nir.utils.math.method.hardcoded.AdamBashforth5thMethods;
 import com.nir.utils.math.solution.Solution;
 import de.gsi.chart.XYChart;
 import de.gsi.dataset.spi.DoubleDataSet;
@@ -49,9 +48,9 @@ public class AdamBashforthSolutionPlotCheck extends Application {
                 .method(method)
                 .computation(computationConfigs)
                 .system(system)
-                .initialData(initialPoint)
+                .initialPoint(initialPoint)
                 .datasets(dataSets)
-                .task();
+                .futureTask();
 
         PlatformUtils.runLater(solution);
     }

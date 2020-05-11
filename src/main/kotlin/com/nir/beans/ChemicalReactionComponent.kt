@@ -1,12 +1,13 @@
 package com.nir.beans
 
+import com.nir.ChemicalReaction
 import com.nir.ui.pojos.Compounds
 import com.nir.ui.pojos.Reaction
 import com.nir.ui.pojos.ReactionStage
-import com.nir.utils.math.Matrix
 import com.nir.ui.pojos.StageRates
 import com.nir.utils.InitUtils
 import com.nir.utils.math.Integers
+import com.nir.utils.math.Matrix
 import com.nir.utils.math.method.F
 import com.nir.utils.math.method.Y
 import com.nir.utils.math.method.emptyFunc
@@ -24,7 +25,16 @@ typealias C = Array<Double>
 typealias StageAndItsReagentsIndices = Pair<Int, List<Int>>
 typealias StagesAndItsReagentsIndices = ArrayList<StageAndItsReagentsIndices>
 
-object StehiomatrixGetter {
+object ChemicalReactionComponent {
+
+    @JvmStatic
+    fun getSystem(chemicalReaction: ChemicalReaction): F {
+        val reactionStages = chemicalReaction.reactionStages
+        val k = chemicalReaction.k
+        val matrix = this.getStehiometricMatrix(reactionStages)
+        val rates: StageRates = this.getRates(reactionStages, k)
+        return times(matrix.transpose(), rates)
+    }
 
     @JvmStatic
     fun times(stehiomatrix: Matrix<Int>, stageRates: StageRates): F {
@@ -54,7 +64,7 @@ object StehiomatrixGetter {
     }
 
     @JvmStatic
-    fun getMatrix(reaction: Reaction): Matrix<Int> {
+    fun getStehiometricMatrix(reaction: Reaction): Matrix<Int> {
         val compounds = getCompounds(reaction)
         val rows = reaction.size
         val columns = compounds.size

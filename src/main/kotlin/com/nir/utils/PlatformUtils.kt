@@ -5,6 +5,8 @@ import com.nir.utils.math.solution.SolutionFlow
 import javafx.application.Platform
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.asFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 object PlatformUtils {
@@ -23,11 +25,11 @@ object PlatformUtils {
     @JvmStatic
     fun runLater(vararg solutionBatchFlows: SolutionBatchFlow) {
         Platform.runLater() {
-                solutionBatchFlows.forEach {
-                    CoroutineScope(Dispatchers.IO).launch {
-                        it.collect()
-                    }
+            solutionBatchFlows.forEach {
+                CoroutineScope(Dispatchers.IO).launch {
+                    it.collect()
                 }
+            }
         }
     }
 
@@ -53,6 +55,4 @@ object PlatformUtils {
     fun runLater(runnable: Runnable) {
         Platform.runLater(runnable)
     }
-
-
 }

@@ -18,7 +18,7 @@ public final class Beans {
 
     public static PeriodicElementsGetter periodicElementsGetter() {
         ObjectMapper kotlinMapper = kotlinObjectMapper();
-        return new PeriodicElementsGetterLocal(kotlinMapper);
+        return new PeriodicElementsGetterImpl(kotlinMapper);
     }
 
     public static ObjectMapper kotlinObjectMapper() {

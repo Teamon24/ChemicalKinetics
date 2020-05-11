@@ -26,14 +26,14 @@ abstract class Method(open val name: String) {
                                  dx: dX): Y
 
     fun initXs(n: N, x0: X): DoubleArray {
-        val doubleArray = DoubleArray(n + 1) { 0.0 }
+        val doubleArray = DoubleArray(n) { 0.0 }
         doubleArray[0] = x0
         return doubleArray
     }
 
     fun initYs(n: N, y0: Y): Array<Array<Double>> {
         val d = y0.size
-        val ys = ArrayUtils.twoDimArray(n + 1 to d)
+        val ys = ArrayUtils.twoDimArray(n to d)
         ys[0] = y0
         return ys
     }

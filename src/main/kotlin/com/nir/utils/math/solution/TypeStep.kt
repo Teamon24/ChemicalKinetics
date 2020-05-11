@@ -1,13 +1,18 @@
 package com.nir.utils.math.solution
 
+import com.nir.beans.FormattedTime
 import com.nir.utils.InitUtils
 import com.nir.utils.PlotUtils
 import com.nir.utils.Timer
+import com.nir.utils.Timer.Companion.formatMillis
 import com.nir.utils.math.ArrayUtils
 import com.nir.utils.math.method.D
 import java.text.DecimalFormat
 import java.text.NumberFormat
 import java.util.*
+import java.util.concurrent.Callable
+import java.util.concurrent.Future
+import java.util.concurrent.FutureTask
 
 
 class TypeStep(private val info: Solution.Info) {
@@ -21,18 +26,23 @@ class TypeStep(private val info: Solution.Info) {
         decimalFormat = nf as DecimalFormat
     }
 
-    fun task(): Runnable {
-        return Runnable {
+    fun futureTask(): FutureTask<Long> {
+        return FutureTask( Callable {
             val (method, system, dataSets, y0, x0, dx, n, _) = info.datas()
-            val (solution, total) = Timer.countMillis {
+            println("${method.name}: started at ${formatMillis(System.currentTimeMillis())}.")
+
+            val (solution, countInfo) = Timer.countMillis {
                 method(system, x0, y0, dx, n)
             }
 
-            println("Calculation was ended in runnable task. Duration: ${Timer.formatMillis(total)} ")
+            val formattedDuration = formatMillis(countInfo.duration)
+            println("${method.name}: runnable calculation was ended. Duration: $formattedDuration")
+
             dataSets.withIndex().forEach { (index, dataSet) ->
                 dataSet.add(solution.first, solution.second.map { it[index] }.toDoubleArray())
             }
-        }
+            countInfo.duration
+        })
     }
 
     fun flow(): SolutionFlow {
@@ -107,7 +117,7 @@ class TypeStep(private val info: Solution.Info) {
     }
 
     private fun message(batchesCounter: Int, batchSize: Int, duration: Long, totalTime: Long, n: Int, totalCounter: Long) =
-                    """"${info.method.name}": batch #$batchesCounter with size '$batchSize' was emitted. Duration: ${Timer.formatMillis(duration)}. Total time: ${Timer.formatMillis(totalTime)}. Counted ${totalCounter.separate1000()} from ${n.separate1000()}."""
+                    """"${info.method.name}": batch #$batchesCounter with size '$batchSize' was emitted. Duration: ${formatMillis(duration)}. Total time: ${formatMillis(totalTime)}. Counted ${totalCounter.separate1000()} from ${n.separate1000()}."""
 
     private fun Int.separate1000() = decimalFormat.format(this)
     private fun Long.separate1000() = decimalFormat.format(this)
