@@ -7,7 +7,9 @@ import com.nir.beans.Methods
 import com.nir.beans.MethodsComparisionComponent
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.method.Method
+import com.nir.utils.math.method.hardcoded.AdamBashforth3thMethods
 import com.nir.utils.math.method.hardcoded.AdamBashforth4thMethods
+import com.nir.utils.math.method.hardcoded.AdamBashforth5thMethods
 import com.nir.utils.math.method.hardcoded.RungeKutta
 
 fun main() {
@@ -21,10 +23,17 @@ fun main() {
     val rungeKutta4 = RungeKutta(4)
     val rungeKutta5 = RungeKutta(5)
     val euler = Methods.getByName("Forward Euler (Hardcoded)")
+
+    val adamBashforth3thMethods = AdamBashforth3thMethods()
+    adamBashforth3thMethods.setFirstAccelerationPointMethod(rungeKutta4)
+
     val adamBashforth4thMethods = AdamBashforth4thMethods()
     adamBashforth4thMethods.setFirstAccelerationPointMethod(rungeKutta4)
 
-    val methods = listOf(euler, rungeKutta4, rungeKutta5)
+    val adamBashforth5thMethods = AdamBashforth5thMethods()
+    adamBashforth5thMethods.setFirstAccelerationPointMethod(rungeKutta4)
+
+    val methods = listOf(euler, rungeKutta4, rungeKutta5, adamBashforth3thMethods, adamBashforth4thMethods, adamBashforth5thMethods)
 
     val comparisions = MethodsComparisionComponent()
             .compare(

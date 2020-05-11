@@ -21,7 +21,7 @@ import kotlin.properties.Delegates
 
 abstract class AdamBashforthMethod(
         val order: Int,
-        private val coeffs: List<Double>) : HardcodedMethod("Adam-Bashforth Method of 4th order")
+        private val coeffs: List<Double>) : HardcodedMethod("Adam-Bashforth Method of ${order}-order")
 {
     private lateinit var firstAccelerationPointMethod: Method
     private lateinit var accelerationPoints : Array<Y>
