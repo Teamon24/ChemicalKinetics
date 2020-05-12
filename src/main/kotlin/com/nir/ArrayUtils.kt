@@ -1,4 +1,4 @@
-package com.nir.utils
+package com.nir
 
 
 object ArrayUtils {

@@ -1,4 +1,4 @@
-package com.nir.utils.math
+package com.nir
 
 /** Time */
 typealias T = Double
@@ -16,7 +16,7 @@ open class MySystem (vararg val f: (T, R) -> Double) {
     }
 }
 
-val zeroReturn = { _:T, _: R -> 0.0 }
+val zeroReturn = { _: T, _: R -> 0.0 }
 
 class StageRates {
 

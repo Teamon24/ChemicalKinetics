@@ -1,4 +1,4 @@
-package com.nir.ui.dto
+package com.nir
 
 typealias Reaction = Collection<Stage>
 class Compounds(): ArrayList<Compound>() {

@@ -1,8 +1,5 @@
-package com.nir.utils.math
+package com.nir
 
-import com.nir.utils.ArrayUtils
-import com.nir.utils.PlotUtils
-import com.nir.utils.SolutionFlow
 import de.gsi.dataset.spi.DoubleDataSet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow

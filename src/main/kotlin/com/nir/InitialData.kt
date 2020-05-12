@@ -1,4 +1,4 @@
-package com.nir.utils.math
+package com.nir
 
 data class InitialData(
         val t0: Double,

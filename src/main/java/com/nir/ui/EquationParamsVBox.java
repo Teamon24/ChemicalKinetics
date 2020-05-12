@@ -53,7 +53,7 @@ public class EquationParamsVBox extends VBox {
             VBox.setMargin(text, new Insets(8, 0, 8, 16));
             getChildren().add(text);
             HBox k0Box = new HBox();
-            Text k0 = new Text("k0 =");
+            Text k0 = new Text("k =");
             k0Box.getChildren().add(k0);
             TextField textField = new TextField();
             textField.setPrefWidth(50);

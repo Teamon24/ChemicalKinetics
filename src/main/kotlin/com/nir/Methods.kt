@@ -1,6 +1,4 @@
-package com.nir.utils.math
-
-import com.nir.utils.ArrayUtils
+package com.nir
 
 
 /**

@@ -1,4 +1,4 @@
-package com.nir.utils.math
+package com.nir
 
 operator fun Double.times(other: Array<Double>): Array<Double> {
     return other.map { it * this }.toTypedArray()

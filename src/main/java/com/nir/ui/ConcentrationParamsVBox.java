@@ -1,8 +1,8 @@
 package com.nir.ui;
 
-import com.nir.beans.StageParser;
-import com.nir.beans.StehiomatrixGetter;
-import com.nir.ui.dto.Stage;
+import com.nir.StageParser;
+import com.nir.StehiomatrixGetter;
+import com.nir.Stage;
 import javafx.geometry.Insets;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;

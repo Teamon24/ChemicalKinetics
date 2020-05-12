@@ -1,11 +1,7 @@
-package com.nir.beans
+package com.nir
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.nir.ui.dto.Compound
-import com.nir.ui.dto.Compounds
-import com.nir.ui.dto.ElementsAndAmounts
-import com.nir.ui.dto.Stage
-import com.nir.ui.dto.ReactionType.Companion.stageSymbols
+import com.nir.ReactionType.Companion.stageSymbols
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -73,7 +69,7 @@ object StageParser {
     private fun separateAmountFromCompound(amountsAndCompounds: String): Map<String, Int> {
         return amountsAndCompounds
                 .split("+")
-                .map(::compoundAndAmount)
+                .map(StageParser::compoundAndAmount)
                 .toMap()
     }
 

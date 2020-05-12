@@ -1,14 +1,13 @@
-package com.nir.utils
+package com.nir
 
-import com.nir.utils.math.InitialData
 import java.util.stream.Stream
 
-data class ChemicalReaction(val N: Int,
-                            val t0: Double,
-                            val dt: Double,
-                            val k: Array<Double>,
-                            val r0: Array<Double>,
-                            val reaction: Stream<String>
+data class ModelingParams(val N: Int,
+                          val t0: Double,
+                          val dt: Double,
+                          val k: Array<Double>,
+                          val r0: Array<Double>,
+                          val reaction: Stream<String>
 ) {
 
     fun initialData(): InitialData {
@@ -17,7 +16,7 @@ data class ChemicalReaction(val N: Int,
 
     companion object {
         @JvmStatic
-        fun chemicalReaction1(): ChemicalReaction {
+        fun chemicalReaction1(): ModelingParams {
             val n = 150000
             val t0 = 0.0
             val dt = 0.000001
@@ -27,11 +26,11 @@ data class ChemicalReaction(val N: Int,
                     "2A+1B->4Q",
                     "1A+4Q->5Z"
             )
-            return ChemicalReaction(n, t0, dt, k, r0, reaction)
+            return ModelingParams(n, t0, dt, k, r0, reaction)
         }
 
         @JvmStatic
-        fun chemicalReaction2(): ChemicalReaction {
+        fun chemicalReaction2(): ModelingParams {
             val n = 2000
             val t0 = 0.0
             val dt = 0.0002
@@ -44,7 +43,7 @@ data class ChemicalReaction(val N: Int,
                     "H+HBr->Br+H2",
                     "2Br->Br2"
             )
-            return ChemicalReaction(n, t0, dt, k, r0, reaction)
+            return ModelingParams(n, t0, dt, k, r0, reaction)
         }
     }
 

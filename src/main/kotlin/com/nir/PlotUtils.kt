@@ -1,10 +1,8 @@
-package com.nir.utils
+package com.nir
 
-import com.nir.Main2
 import de.gsi.chart.XYChart
 import de.gsi.chart.axes.spi.DefaultNumericAxis
 import de.gsi.dataset.spi.DoubleDataSet
-import javafx.collections.ObservableList
 import javafx.scene.Scene
 import javafx.scene.control.Menu
 import javafx.scene.control.MenuBar
@@ -14,7 +12,6 @@ import javafx.scene.layout.FlowPane
 import javafx.scene.layout.StackPane
 import javafx.scene.layout.VBox
 import javafx.stage.Screen
-import javafx.stage.Stage
 import kotlin.system.exitProcess
 
 

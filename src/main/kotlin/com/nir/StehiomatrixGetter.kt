@@ -1,14 +1,5 @@
-package com.nir.beans
+package com.nir
 
-import com.nir.ui.dto.Compounds
-import com.nir.ui.dto.Reaction
-import com.nir.ui.dto.Stage
-import com.nir.utils.math.MySystem
-import com.nir.utils.math.Stehiomatrix
-import com.nir.utils.math.R
-import com.nir.utils.math.StageRates
-import com.nir.utils.math.T
-import com.nir.utils.math.zeroReturn
 import kotlin.math.pow
 
 /**
@@ -39,7 +30,7 @@ object StehiomatrixGetter {
 
     private fun f(row: Int, stehiomatrix: Stehiomatrix, stageRates: StageRates): (T, R) -> Double {
         val row = stehiomatrix[row]
-        val res = ArrayList<(T,R)-> Double>()
+        val res = ArrayList<(T, R)-> Double>()
         for (column in stehiomatrix.columnsRange) {
             val rate = stageRates[column]
             val coeff = row[column]
@@ -74,7 +65,7 @@ object StehiomatrixGetter {
 
     @JvmStatic
     fun getRates(reaction: Reaction, k: K): StageRates {
-        val compounds = this.getCompounds(reaction)
+        val compounds = getCompounds(reaction)
         val stageNumberAndReagentsIndexes = StagesAndItsReagentsIndices()
         reaction.withIndex().forEach { (index, stage) ->
             val reagents = stage.reagents

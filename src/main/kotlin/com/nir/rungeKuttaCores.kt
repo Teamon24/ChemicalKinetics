@@ -1,7 +1,4 @@
-package com.nir.utils.math
-
-import com.nir.beans.K
-import com.nir.utils.ArrayUtils
+package com.nir
 
 interface RungeKuttaCore {
     operator fun invoke(mySystem: MySystem,
