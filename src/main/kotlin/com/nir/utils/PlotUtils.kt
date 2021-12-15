@@ -1,9 +1,9 @@
 package com.nir.utils
 
 import com.nir.ui.UiComponents
-import com.nir.utils.math.method.N
-import com.nir.utils.math.method.X0
-import com.nir.utils.math.method.dX
+import com.nir.utils.math.N
+import com.nir.utils.math.X0
+import com.nir.utils.math.dX
 import de.gsi.chart.XYChart
 import de.gsi.chart.axes.spi.DefaultNumericAxis
 import de.gsi.dataset.spi.DoubleDataSet

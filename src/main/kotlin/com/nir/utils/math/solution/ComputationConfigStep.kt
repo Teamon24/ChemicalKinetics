@@ -1,8 +1,8 @@
 package com.nir.utils.math.solution
 
 import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.method.N
-import com.nir.utils.math.method.dX
+import com.nir.utils.math.N
+import com.nir.utils.math.dX
 
 class ComputationConfigStep(private val info: Solution.Info) {
     fun computation(computationConfigs: ComputationConfigs): SystemStep {

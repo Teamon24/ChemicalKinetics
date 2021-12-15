@@ -1,7 +1,7 @@
 package com.nir.utils.math.solution
 
-import com.nir.utils.math.method.X
-import com.nir.utils.math.method.Y
+import com.nir.utils.math.X
+import com.nir.utils.math.Y
 import de.gsi.dataset.spi.DoubleDataSet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect

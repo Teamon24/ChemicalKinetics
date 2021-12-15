@@ -1,8 +1,8 @@
 package com.nir.utils.math.solution
 
 import com.nir.utils.math.InitialPoint
-import com.nir.utils.math.method.X
-import com.nir.utils.math.method.Y
+import com.nir.utils.math.X
+import com.nir.utils.math.Y
 
 class InitialPointStep(private val info: Solution.Info) {
     fun initialPoint(initialPoint: InitialPoint): DataSetsStep {

@@ -3,9 +3,9 @@ package com.nir.beans
 import com.nir.utils.PlotUtils.dataSets
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialPoint
-import com.nir.utils.math.method.F
-import com.nir.utils.math.method.Method
-import com.nir.utils.math.method.X
+import com.nir.utils.math.F
+import com.nir.beans.method.Method
+import com.nir.utils.math.X
 import com.nir.utils.math.solution.Solution
 import com.nir.utils.to
 import de.gsi.dataset.spi.DoubleDataSet
@@ -42,26 +42,25 @@ data class MethodSolution(
 class MethodsComparisionComponent {
 
     fun compare(
-            titles: List<String>,
-            system: F,
-            initialPoint: InitialPoint,
-            computationConfigs: ComputationConfigs,
-            methods: List<Method>,
-            analyticalSolution: Map<String, (X) -> Double>
+        titles: List<String>,
+        system: F,
+        initialPoint: InitialPoint,
+        computationConfigs: ComputationConfigs,
+        methods: List<Method>,
+        analyticalSolution: Map<String, (X) -> Double>
     ): List<Comparision> {
         methods.forEach { it.setUp(initialPoint, computationConfigs) }
 
         val methodsRunnablesDatasets = methods.map {
             val dataSets = dataSets(titles)
-            it.name to
-            Solution
+            val computation = Solution
                 .method(it)
                 .computation(computationConfigs)
                 .system(system)
                 .initialPoint(initialPoint)
                 .datasets(dataSets)
-                .futureTask() to
-            dataSets
+                .futureTask()
+            it.name to computation to dataSets
         }
 
 
@@ -76,10 +75,10 @@ class MethodsComparisionComponent {
     private fun List<String>.indexNameOf(c: Comparision) = this.indexOf(c.variableName)
 
     private fun createComparisions(
-            dataSetsList: MethodsTasksDatasets,
-            titles: List<String>,
-            analyticalSolution: Map<String, (X) -> Double>,
-            methodsAndExecutionTimes: Map<MethodName, Long>
+        dataSetsList: MethodsTasksDatasets,
+        titles: List<String>,
+        analyticalSolution: Map<String, (X) -> Double>,
+        methodsAndExecutionTimes: Map<MethodName, Long>
     ): List<Comparision> {
         val infos = ArrayList<Triple<VarName, AnalyticalVarValues, Map<MethodName, VarValues>>>()
 

@@ -1,18 +1,15 @@
 package com.nir
 
-import com.nir.beans.C
 import com.nir.beans.StageParser
-import com.nir.beans.T
+import com.nir.beans.reaction.T
 import com.nir.ui.pojos.ReactionStage
 import com.nir.utils.array
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialPoint
-import com.nir.utils.math.method.X
-import com.nir.utils.math.method.Y
+import com.nir.utils.math.X
 import com.nir.utils.to
 import java.util.stream.Stream
 import kotlin.math.exp
-import kotlin.streams.toList
 
 data class ChemicalReaction(val N: Int,
                             val t0: Double,
@@ -70,7 +67,7 @@ data class ChemicalReaction(val N: Int,
 
         @JvmStatic
         fun chemicalReaction3(): ChemicalReaction {
-            val n = 10
+            val n = 100
             val t0 = 0.0
             val dt = 0.1
             val (k1, k2) = 0.5 to 0.2

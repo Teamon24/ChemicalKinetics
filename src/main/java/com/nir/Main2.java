@@ -4,6 +4,7 @@ import com.nir.ui.UiComponents;
 import com.nir.beans.Beans;
 import com.nir.beans.RawStage;
 import com.nir.beans.StageParser;
+import com.nir.ui.pojos.ReactionStage;
 import com.nir.utils.CSS;
 
 import javafx.application.Application;
@@ -16,8 +17,9 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 
-import java.util.ArrayList;
 import javafx.stage.Stage;
+
+import java.util.ArrayList;
 
 public class Main2 extends Application {
     private Scene chooseReactionScene;
@@ -29,6 +31,7 @@ public class Main2 extends Application {
 
     public static final EventHandler<ActionEvent> EXIT = ignored -> System.exit(0);
 
+    @Override
     public void start(Stage primaryStage) {
         chooseReactionStage = primaryStage;
         try {
@@ -41,7 +44,7 @@ public class Main2 extends Application {
             btnAddNew.setOnMouseClicked(mouseEvent -> showAddReactionForm());
             Button btnOK = (Button) chooseReactionScene.lookup("#btnOK");
             btnOK.setOnMouseClicked(mouseEvent -> {
-                ArrayList<com.nir.ui.pojos.ReactionStage> reactionStages = new ArrayList<>();
+                ArrayList<ReactionStage> reactionStages = new ArrayList<>();
                 ComboBox comboBox = (ComboBox) chooseReactionScene.lookup("#comboBox");
                 String reactionString = (String) comboBox.getValue();
                 //connect to database

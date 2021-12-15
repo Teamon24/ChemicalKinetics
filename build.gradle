@@ -1,12 +1,13 @@
 plugins {
-    id 'java'
-    id 'org.jetbrains.kotlin.jvm' version '1.3.70'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.0.10'
+    id 'org.jetbrains.kotlin.jvm' version '1.6.10'
 }
 
 group 'com.home.com.nir'
 version '1.0-SNAPSHOT'
 
-sourceCompatibility = 1.8
+sourceCompatibility = 11
 
 repositories {
     mavenCentral()
@@ -24,26 +25,32 @@ sourceSets {
     test.resources.srcDirs = ['src/test/resources']
 }
 
+def javaFXPlatform = getJavaFXPlatform()
+def javaFXVersion = "17.0.1"
+
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5"
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2'
 
-    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 
-    compile group: 'com.fasterxml.jackson.module', name: 'jackson-module-kotlin', version: '2.10.0'
-    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
-    compile group: 'com.google.guava', name: 'guava', version: '28.1-jre'
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
-    compile group: 'io.projectreactor', name: 'reactor-core', version: '3.3.0.RELEASE'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin:2.13.0'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+    implementation 'com.google.guava:guava:28.1-jre'
+    implementation 'org.apache.commons:commons-lang3:3.9'
+    implementation 'io.projectreactor:reactor-core:3.3.0.RELEASE'
 
     implementation 'de.gsi.chart:chartfx-chart:11.1.3'
-    compile group: 'mysql', name: 'mysql-connector-java', version: '8.0.19'
-    compile group: 'net.objecthunter', name: 'exp4j', version: '0.4.8'
+    implementation 'mysql:mysql-connector-java:8.0.19'
+    implementation 'net.objecthunter:exp4j:0.4.8'
 }
 
 compileKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
+
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
@@ -52,7 +59,28 @@ test {
     useJUnitPlatform()
 }
 
-dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.3.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.3.1'
+/*
+Cross-platform projects and libraries:
+JavaFX modules require native binaries for each platform. The plugin only includes binaries for the platform running
+the build. By declaring the dependency configuration compileOnly, the native binaries will not be included. You will
+need to provide those separately during deployment for each target platform.
+* */
+javafx {
+    version = '17'
+    modules = [ 'javafx.base', 'javafx.controls', 'javafx.fxml', 'javafx.graphics' ]
+    configuration = 'implementation'
 }
+
+private static String getJavaFXPlatform() {
+    def currentOS = org.gradle.nativeplatform.platform.internal.DefaultNativePlatform.currentOperatingSystem;
+    if (currentOS.isWindows()) {
+        return 'win'
+    } else if (currentOS.isLinux()) {
+        return 'linux'
+    } else if (currentOS.isMacOsX()) {
+        return 'mac'
+    }
+    return null
+}
+
+mainClassName = "com.nir.SolutionPlotCheck"

@@ -4,8 +4,8 @@ import de.gsi.dataset.spi.DoubleDataSet
 
 class DataSetsStep(private val info: Solution.Info) {
 
-    fun datasets(dataSets: List<DoubleDataSet>): TypeStep {
+    fun datasets(dataSets: List<DoubleDataSet>): TaskStep {
         this.info.dataSets = dataSets
-        return TypeStep(this.info)
+        return TaskStep(this.info)
     }
 }

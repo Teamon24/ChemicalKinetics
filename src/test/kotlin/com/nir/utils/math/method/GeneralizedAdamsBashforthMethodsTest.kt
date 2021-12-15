@@ -1,7 +1,11 @@
 package com.nir.utils.math.method
 
-import com.nir.beans.Methods
-import com.nir.utils.math.method.generalized.GeneralizedAdamsBashforthMethods
+import com.nir.beans.method.Methods
+import com.nir.beans.method.generalized.GeneralizedAdamsBashforthMethods
+import com.nir.utils.math.X0
+import com.nir.utils.math.Y
+import com.nir.utils.math.Y0
+import com.nir.utils.math.dX
 import com.nir.utils.minus
 import com.nir.utils.plus
 import com.nir.utils.times
@@ -9,7 +13,7 @@ import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
-@Disabled
+@Disabled("This methods are not implemented yet. This test class was created in advance.")
 class GeneralizedAdamsBashforthMethodsTest {
 
     init {

@@ -4,13 +4,13 @@ import com.nir.utils.Eightfold
 import com.nir.utils.Fivefold
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.InitialPoint
-import com.nir.utils.math.method.D
-import com.nir.utils.math.method.Method
-import com.nir.utils.math.method.F
-import com.nir.utils.math.method.N
-import com.nir.utils.math.method.X0
-import com.nir.utils.math.method.Y
-import com.nir.utils.math.method.dX
+import com.nir.utils.math.D
+import com.nir.beans.method.Method
+import com.nir.utils.math.F
+import com.nir.utils.math.N
+import com.nir.utils.math.X0
+import com.nir.utils.math.Y
+import com.nir.utils.math.dX
 import de.gsi.dataset.spi.DoubleDataSet
 
 object Solution {

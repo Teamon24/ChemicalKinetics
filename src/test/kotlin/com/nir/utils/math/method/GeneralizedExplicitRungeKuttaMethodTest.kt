@@ -1,8 +1,12 @@
 package com.nir.utils.math.method
 
-import com.nir.beans.Methods
+import com.nir.beans.method.Methods
 import com.nir.utils.AssertUtils
 import com.nir.utils.math.ArrayUtils
+import com.nir.utils.math.F
+import com.nir.utils.math.X
+import com.nir.utils.math.Y
+import com.nir.utils.math.dX
 import com.nir.utils.minus
 import com.nir.utils.plus
 import org.junit.jupiter.api.Test
@@ -19,13 +23,15 @@ class GeneralizedExplicitRungeKuttaMethodTest {
 
     private var k = ArrayUtils.twoDimArray(6 to f.size)
 
-    private val precision = 1E-16
+    private val precision = 1E-15
 
     @Test
     fun testRK4th1v() {
         val method = Methods.getByName("Runge-Kutta 4th-order: v.1 (Generalized)")
         val expectedY = expctedY1(f, x0, y0, dx)
         val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
+        actualY.println("actualY:")
+        actualY.println("expectedY:")
         AssertUtils.assertWithPrecision(expectedY, actualY, precision)
     }
 
@@ -99,4 +105,9 @@ class GeneralizedExplicitRungeKuttaMethodTest {
         val kSum = dx  * (7/90.0 * k[0] + 0.0 * k[1] + 32/90.0 * k[2] + 12/90.0 * k[3] + 32/90.0 * k[4] + 7/90.0 * k[5])
         return y0 + kSum
     }
+}
+
+private fun <T> Array<T>.println(message: String) {
+    val mapped = this.joinToString(separator = ", ", truncated = "")
+    kotlin.io.println("$message $mapped")
 }

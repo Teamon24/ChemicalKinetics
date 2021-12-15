@@ -1,6 +1,6 @@
 package com.nir.utils
 
-import com.nir.beans.ChemicalReactionComponent
+import com.nir.beans.reaction.ChemicalReactionComponent
 import com.nir.ui.pojos.Compound
 import com.nir.ui.pojos.Compounds
 import com.nir.ui.pojos.ElementsAndAmounts
@@ -8,7 +8,7 @@ import com.nir.ui.pojos.Reaction
 import com.nir.ui.pojos.ReactionStage
 import com.nir.utils.math.Integers
 import com.nir.utils.math.Matrix
-import com.nir.utils.math.method.Y
+import com.nir.utils.math.Y
 import org.junit.Assert
 import org.junit.jupiter.api.Assertions
 import org.junit.jupiter.api.Test
@@ -29,7 +29,7 @@ class ChemicalReactionComponentTest {
             val actualCompounds = ChemicalReactionComponent.getCompounds(stages)
             val actualMatrix = ChemicalReactionComponent.getStehiometricMatrix(stages)
 
-            Assert.assertArrayEquals(expectedCompounds.toTypedArray(), actualCompounds.toTypedArray())
+            Assertions.assertArrayEquals(expectedCompounds.toTypedArray(), actualCompounds.toTypedArray())
             Assertions.assertIterableEquals(expectedStehiomatrix.elements, actualMatrix.elements)
         }
     }
@@ -43,7 +43,7 @@ class ChemicalReactionComponentTest {
             val expectedRatesValues = it[3] as Array<Double>
             val rates = ChemicalReactionComponent.getRates(reaction, k)
             val result = rates.elements.map { action -> action(0.0, r) }
-            Assert.assertArrayEquals(expectedRatesValues, result.toTypedArray())
+            Assertions.assertArrayEquals(expectedRatesValues, result.toTypedArray())
         }
     }
 
