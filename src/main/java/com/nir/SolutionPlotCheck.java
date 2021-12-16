@@ -8,7 +8,7 @@ import com.nir.utils.PlotUtils;
 import com.nir.utils.math.ComputationConfigs;
 import com.nir.utils.math.InitialPoint;
 import com.nir.utils.math.solution.Solution;
-import com.nir.utils.math.solution.SolutionFlowImpl;
+import com.nir.utils.math.solution.SolutionFlow;
 import de.gsi.chart.XYChart;
 import de.gsi.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
@@ -42,27 +42,30 @@ public class SolutionPlotCheck extends Application {
         final List<DoubleDataSet> dataSets = PlotUtils.dataSets(system.titles());
         final List<XYChart> charts = PlotUtils.charts(dataSets);
 
-        SolutionFlowImpl flow = getSolutionFlow(
+        SolutionFlow flow = getSolutionFlow(
             system, dataSets, computationConfigs, initialPoint, methods.get(1));
 
-        SolutionFlowImpl flow2 = getSolutionFlow(
-            system, dataSets, computationConfigs, initialPoint, methods.get(4));
-
-        PlotUtils.show(charts, stage);
+//        PlotUtils.show(charts, stage);
         PlatformUtils.runLater(flow);
-        PlatformUtils.runLater(flow2);
     }
 
     @NotNull
-    private SolutionFlowImpl getSolutionFlow(LorentzStrangeAttractor system, List<DoubleDataSet> dataSets, ComputationConfigs computationConfigs, InitialPoint initialPoint, String methodName) {
+    private SolutionFlow getSolutionFlow(
+        LorentzStrangeAttractor system,
+        List<DoubleDataSet> dataSets,
+        ComputationConfigs computationConfigs,
+        InitialPoint initialPoint,
+        String methodName)
+    {
         System.out.println(String.format("Numeric Method: \"%s\"", methodName));
-        SolutionFlowImpl flow = Solution
+        SolutionFlow flow = Solution
             .system(system)
             .initialPoint(initialPoint)
             .computation(computationConfigs)
             .method(methodName)
             .datasets(dataSets)
-            .flow();
+            .batchFlow(100);
+
         return flow;
     }
 

@@ -75,6 +75,7 @@ class TaskTypeStep(
             for (i in 0 until n - 1) {
                 y[1] = method(system, x, y[0], dx)
                 this.emit(x to y[1])
+                println(message(n, i))
                 x += dx
                 y[0] = y[1]
                 delay(1)
@@ -116,8 +117,8 @@ class TaskTypeStep(
                     val duration = timer.stop()
                     val spentTime = timer.total()
                     batchesCounter++
-                    println(message(batchesCounter, batchSize, duration, spentTime, n, totalCounter))
                     this.emit(partT to partR)
+                    println(message(batchesCounter, batchSize, duration, spentTime, n, totalCounter))
                     counter = 0
                     timer.start()
                 } else {
@@ -136,7 +137,7 @@ class TaskTypeStep(
                 this.emit(partT to partR)
                 println("The last batch with size '${partT.size}' was emitted")
             }
-            println("Batch flow ended its emissions. Whole duration: ${timer.total()}")
+            println("Batch flow ended its emissions. Whole duration: ${formatMillis(timer.total())}")
         }
         return SolutionBatchFlow(DoubleDataSets(dataSets), flow)
     }
@@ -148,6 +149,9 @@ class TaskTypeStep(
 
     private fun message(batchesCounter: Int, batchSize: Int, duration: Long, totalTime: Long, n: Int, totalCounter: Long) =
                     """"${method.name}": batch #$batchesCounter with size '$batchSize' was emitted. Duration: ${formatMillis(duration)}. Total time: ${formatMillis(totalTime)}. Counted ${totalCounter.separate1000()} from ${n.separate1000()}."""
+
+    private fun message(n: Int, totalCounter: Int) =
+        """"${method.name}": value was emitted. Counted ${totalCounter.separate1000()}/${n.separate1000()}."""
 
     private fun Int.separate1000() = decimalFormat.format(this)
     private fun Long.separate1000() = decimalFormat.format(this)

@@ -15,7 +15,7 @@ object PlatformUtils {
                 flow.collect()
             }
         } count {
-            println(duration)
+            println("Start: $start, end: $end. Duration: $duration")
         }
     }
 
