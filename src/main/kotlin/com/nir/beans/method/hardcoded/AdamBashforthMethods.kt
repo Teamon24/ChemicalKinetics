@@ -23,6 +23,15 @@ object AdamBashforthMethods {
         }
     }
 
+    fun getAll(): List<AdamBashforthMethod> {
+        return arrayListOf(
+            AdamBashforth2thMethods(),
+            AdamBashforth3thMethods(),
+            AdamBashforth4thMethods(),
+            AdamBashforth5thMethods()
+        )
+    }
+
     @JvmStatic
     fun getAccelerationPoints(order: Int,
                               firstAccelerationPointMethodName: String,
@@ -44,7 +53,6 @@ object AdamBashforthMethods {
     {
         val dx = computationConfigs.dx
         val x0 = initialPoint.x0
-        firstAccelerationPointMethod.setUp(initialPoint, computationConfigs)
         val y0 = initialPoint.y0
         val y1 = firstAccelerationPointMethod(system, x0, y0, dx)
         val pointsSize: Int = arrayOf(y0, y1).size
@@ -70,4 +78,3 @@ object AdamBashforthMethods {
         return ys[i + 2]
     }
 }
-

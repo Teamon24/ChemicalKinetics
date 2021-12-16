@@ -1,6 +1,8 @@
 package com.nir.utils
 
 
+typealias ResultAndCount<Result> = Pair<Result, Timer.CountInfo>
+
 class Timer {
 
     private var start: Long = 0
@@ -28,7 +30,7 @@ class Timer {
     companion object {
         private const val defaultFormat = "%d:%02d:%02d:%03d"
         private const val format = "%dч. %02dм. %02dс. %03dмс."
-        fun <Result> countMillis(action: () -> Result): Pair<Result, CountInfo> {
+        fun <Result> countMillis(action: () -> Result): ResultAndCount<Result> {
             val timer = Timer().start()
             val result = action()
             timer.stop()

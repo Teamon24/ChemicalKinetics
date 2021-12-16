@@ -1,22 +1,19 @@
 package com.nir;
 
 import com.google.common.collect.Lists;
-import com.nir.beans.method.Methods;
+import com.nir.beans.method.hardcoded.RungeKutta;
 import com.nir.utils.LorentzStrangeAttractor;
 import com.nir.utils.PlatformUtils;
 import com.nir.utils.PlotUtils;
 import com.nir.utils.math.ComputationConfigs;
-import com.nir.beans.method.Method;
-import com.nir.beans.method.hardcoded.RungeKutta;
 import com.nir.utils.math.InitialPoint;
 import com.nir.utils.math.solution.Solution;
-import com.nir.utils.math.solution.SolutionBatchFlow;
-import com.nir.utils.math.solution.SolutionFlow;
-import com.nir.utils.math.solution.TaskStep;
+import com.nir.utils.math.solution.SolutionFlowImpl;
 import de.gsi.chart.XYChart;
 import de.gsi.dataset.spi.DoubleDataSet;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,48 +22,48 @@ public class SolutionPlotCheck extends Application {
     @Override
     public void start(Stage stage) {
 
-        //Система уравнений
         final LorentzStrangeAttractor system = new LorentzStrangeAttractor();
 
-        //Подготовка объектов для данных с решением системы
-        //и открытие графиков
-        final List<DoubleDataSet> dataSets = PlotUtils.dataSets(system.titles());
-        final List<XYChart> charts = PlotUtils.charts(dataSets);
 
-        PlotUtils.show(charts, stage);
-
-        final ArrayList<Method> methods = Lists.newArrayList(
-            Methods.getByName("Runge-Kutta 4th-order: v.1 (Generalized)"),
-            Methods.getByName("Runge-Kutta 5th-order method (Generalized)"),
-            Methods.getByName("Forward Euler (Generalized)"),
-            new RungeKutta(4),
-            new RungeKutta(5)
+        final ArrayList<String> methods = Lists.newArrayList(
+            "Runge-Kutta 4th-order: v.1",
+            "Runge-Kutta 5th-order method",
+            "Forward Euler",
+            new RungeKutta(4).getName(),
+            new RungeKutta(5).getName()
         );
 
         double dx = 0.000001;
-        int N = 2000000;
+        int N = 10000;
 
         final ComputationConfigs computationConfigs = new ComputationConfigs(dx, N);
         final InitialPoint initialPoint = system.initialPoint();
 
-        final Method method = methods.get(3);
-        method.setUp(initialPoint, computationConfigs);
+        final List<DoubleDataSet> dataSets = PlotUtils.dataSets(system.titles());
+        final List<XYChart> charts = PlotUtils.charts(dataSets);
 
-        System.out.println(String.format("Numeric Method: \"%s\"", method.getName()));
+        SolutionFlowImpl flow = getSolutionFlow(
+            system, dataSets, computationConfigs, initialPoint, methods.get(1));
 
+        SolutionFlowImpl flow2 = getSolutionFlow(
+            system, dataSets, computationConfigs, initialPoint, methods.get(4));
 
-        TaskStep datasets = Solution
-            .method(method)
-            .computation(computationConfigs)
+        PlotUtils.show(charts, stage);
+        PlatformUtils.runLater(flow);
+        PlatformUtils.runLater(flow2);
+    }
+
+    @NotNull
+    private SolutionFlowImpl getSolutionFlow(LorentzStrangeAttractor system, List<DoubleDataSet> dataSets, ComputationConfigs computationConfigs, InitialPoint initialPoint, String methodName) {
+        System.out.println(String.format("Numeric Method: \"%s\"", methodName));
+        SolutionFlowImpl flow = Solution
             .system(system)
             .initialPoint(initialPoint)
-            .datasets(dataSets);
-
-        final Runnable solution = datasets.futureTask();
-        final SolutionFlow flow = datasets.flow();
-        final SolutionBatchFlow batchFlow = datasets.batchFlow(20);
-
-        PlatformUtils.runLater(batchFlow);
+            .computation(computationConfigs)
+            .method(methodName)
+            .datasets(dataSets)
+            .flow();
+        return flow;
     }
 
     public static void main(String[] args) {

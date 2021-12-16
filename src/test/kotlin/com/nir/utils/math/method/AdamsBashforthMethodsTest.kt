@@ -1,7 +1,6 @@
 package com.nir.utils.math.method
 
-import com.nir.beans.method.Methods
-import com.nir.beans.method.generalized.GeneralizedAdamsBashforthMethods
+import com.nir.beans.method.generalized.AdamsBashforthMethods
 import com.nir.utils.math.X0
 import com.nir.utils.math.Y
 import com.nir.utils.math.Y0
@@ -14,11 +13,7 @@ import org.junit.jupiter.api.Disabled
 import org.junit.jupiter.api.Test
 
 @Disabled("This methods are not implemented yet. This test class was created in advance.")
-class GeneralizedAdamsBashforthMethodsTest {
-
-    init {
-        Methods.getAll()
-    }
+class AdamsBashforthMethodsTest {
 
     private val adamBashforth_1st = adamsBashforth(1)
     private val adamBashforth_2nd = adamsBashforth(2)
@@ -63,8 +58,7 @@ class GeneralizedAdamsBashforthMethodsTest {
 
 
     private fun adamsBashforth(order: Int) =
-            GeneralizedAdamsBashforthMethods[order]
-                    .setUp(initialPoint, computationConfigs)
+        AdamsBashforthMethods[order].setUp(computationConfigs.dx, initialPoint.y0.size)
 
     private fun getExpectedValues(dx: dX, x0: X0, y0: Y0): Array<Y> {
         fun x(i: Int) = x0 + i * dx

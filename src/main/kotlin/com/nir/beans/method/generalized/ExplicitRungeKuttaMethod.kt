@@ -1,10 +1,9 @@
 package com.nir.beans.method.generalized
 
-import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.InitialPoint
 import com.nir.beans.method.ButchersTable
 import com.nir.utils.math.F
 import com.nir.beans.method.Method
+import com.nir.utils.math.D
 import com.nir.utils.math.N
 import com.nir.utils.math.X
 import com.nir.utils.math.Xs
@@ -16,7 +15,7 @@ import com.nir.utils.math.kFunc
 import com.nir.utils.plus
 import com.nir.utils.times
 
-class GeneralizedExplicitRungeKuttaMethod
+class ExplicitRungeKuttaMethod
 /**
  * @param s количество стадий.
  * @param p порядок метода.
@@ -27,7 +26,7 @@ constructor(
     private val butchersTable: ButchersTable,
     name: String
 )
-    : GeneralizedMethod(name)
+    : Method("$name (Generalized)")
 {
 
     private val emptyKFunc = { _: F, _: X, y: Y -> Array(y.size) { 0.0 } }
@@ -37,12 +36,9 @@ constructor(
     private var K = Array(s) { emptyKFunc }
     private lateinit var core: (f: F, x: X, y: Y, dx: dX) -> Y
 
-    override fun setUp(
-            initialPoint: InitialPoint,
-            computationConfig: ComputationConfigs
-    ): Method {
-        this.dx = computationConfig.dx
-        this.d = initialPoint.y0.size
+    override fun setUp(dx: X, d: D): Method {
+        this.dx = dx
+        this.d = d
         initK()
         initCore()
         return this
@@ -73,7 +69,12 @@ constructor(
             if (i == 0) {
                 K[i] = { f, x, y -> f(x, y) }
             } else {
-                K[i] = { f, x, y -> f(x + c[i] * dx, y + dx * sumOfProd(i, A[i], K)(f, x, y)) }
+                K[i] = { f, x, y ->
+                    f(
+                        x + c[i] * dx,
+                        y + dx * sumOfProd(i, A[i], K)(f, x, y)
+                    )
+                }
             }
         }
     }
@@ -85,7 +86,7 @@ constructor(
 
     private fun sumOfProd(i: Int, values: Array<Double>, kFuncs: Array<kFunc>): kFunc
     {
-        val count = values.filter { it != 0.0 }.count()
+        val count = values.count { it != 0.0 }
         val adds = ArrayList<(f: F, x: X, y: Y) -> k>(count)
         for (j in 0 until i) {
             if (values[j] != 0.0) {

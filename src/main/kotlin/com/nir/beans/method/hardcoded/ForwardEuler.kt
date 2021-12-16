@@ -1,9 +1,8 @@
 package com.nir.beans.method.hardcoded
 
-import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.InitialPoint
-import com.nir.utils.math.F
 import com.nir.beans.method.Method
+import com.nir.utils.math.D
+import com.nir.utils.math.F
 import com.nir.utils.math.N
 import com.nir.utils.math.X
 import com.nir.utils.math.Xs
@@ -14,8 +13,7 @@ import com.nir.utils.plus
 import com.nir.utils.times
 
 object ForwardEuler : HardcodedMethod("Forward Euler") {
-    override fun setUp(initialPoint: InitialPoint,
-                       computationConfig: ComputationConfigs): Method {
+    override fun setUp(dx: X, d: D): Method {
         return this
     }
 

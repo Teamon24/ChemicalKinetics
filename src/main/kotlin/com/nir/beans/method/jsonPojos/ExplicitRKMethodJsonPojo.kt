@@ -2,12 +2,12 @@ package com.nir.beans.method.jsonPojos
 
 import com.fasterxml.jackson.annotation.JsonCreator
 import com.fasterxml.jackson.annotation.JsonProperty
-import com.nir.beans.method.generalized.GeneralizedMethodInfoJsonPojo
+import com.nir.beans.method.generalized.MethodInfoJsonPojo
 import java.util.ArrayList
 
 enum class ExpressionType { NUMERIC, SYMBOLIC }
 
-data class ExplicitRKGeneralizedMethodJsonPojo(
+data class ExplicitRKMethodJsonPojo(
         override val name: String,
         val info: String?,
         val type: String,
@@ -15,7 +15,7 @@ data class ExplicitRKGeneralizedMethodJsonPojo(
         val stages: Int,
         @JsonProperty("butchers_table")
         val butchersTableJsonPojo: ButchersTableJsonPojo
-): GeneralizedMethodInfoJsonPojo(name)
+): MethodInfoJsonPojo(name)
 
 data class ButchersTableJsonPojo(
     val expression: ExpressionJsonPojo?,

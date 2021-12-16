@@ -222,3 +222,19 @@ infix fun
 infix fun
         <A, B, C, D, E, F, G>
         Sixfold<A, B, C, D, E, F>.to(sixth: G): Sevenfold<A, B, C, D, E, F, G> = Sevenfold(a, b, c, d, e, f, sixth)
+
+/**
+ * [7] to [1] = [8]
+ * [Sevenfold] to [Any] = [Eightfold]
+ */
+infix fun
+        <A,B,C,D,E,F,G,H>
+        Sevenfold<A,B,C,D,E,F,G>.to(seventh: H): Eightfold<A,B,C,D,E,F,G,H> = Eightfold(a, b, c, d, e, f, g, seventh)
+
+/**
+ * [8] to [1] = [9]
+ * [Eightfold] to [Any] = [Ninefold]
+ */
+infix fun
+        <A,B,C,D,E,F,G,H,I>
+        Eightfold<A,B,C,D,E,F,G,H>.to(eighth: I): Ninefold<A,B,C,D,E,F,G,H,I> = Ninefold(a, b, c, d, e, f, g, h, eighth)

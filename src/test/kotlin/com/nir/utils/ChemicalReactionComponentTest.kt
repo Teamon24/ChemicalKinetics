@@ -54,7 +54,7 @@ class ChemicalReactionComponentTest {
             val stehiomatrix = ChemicalReactionComponent.getStehiometricMatrix(stages)
             val rates = ChemicalReactionComponent.getRates(stages, k)
             val transposed = stehiomatrix.transpose()
-            val system = ChemicalReactionComponent.times(transposed, rates)
+            val system = ChemicalReactionComponent.system(transposed, rates)
             Assert.assertEquals(r0.size, system.size)
             Assert.assertEquals(r0.size, system.size)
             val actualValues = system(0.0, r0)

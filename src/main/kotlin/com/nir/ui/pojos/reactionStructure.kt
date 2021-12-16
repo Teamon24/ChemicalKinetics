@@ -1,29 +1,22 @@
 package com.nir.ui.pojos
 
 typealias Reaction = Collection<ReactionStage>
-class Compounds(): ArrayList<Compound>() {
-    constructor(vararg compounds: Compound): this() {
-        this.addAll(compounds)
-    }
-
-    constructor(compounds: ArrayList<Compound>): this() {
-        this.addAll(compounds)
-    }
-
-}
 typealias ElementSymbol = String
 
-/**
- * Стадия химической реакции.
- */
+/** Стадия химической реакции. */
 data class ReactionStage
+
+/**
+ * @param reagents - химические соединения, которые были затрачены в ходе стадии.
+ * @param products - химические соединения, которые были получениы в ходе стадии.
+ */
 constructor(
         val reagents: Compounds = Compounds(),
         val type: String,
         val products: Compounds = Compounds()
 ) {
     /**
-     * Содержит ли стадия химисческое соединение.
+     * Содержит ли стадия химическое соединение.
      * @param compound соединение, наличие которого в стадии необходимо проверить.
      */
     fun contains(compound: String): Boolean {
@@ -32,9 +25,11 @@ constructor(
         }
         return this.getAmountOf(compound) != 0
     }
-
     /**
-     * Какое количество молекул химического соединения содержит стадия.
+     * Какое количество молекул химического соединения содержит стадия
+     * </br>Например, -1 для Br как реагента или +1 для HBr как продукта в стадии Br+H<SUB>2</SUB> ->HBr+H.
+     * -1 значит, что соединение было затрачено в ходе стадии, а +1 - значит получено.
+     *
      * @param soughtCompound химическое соединение, количество молекул которого необходимо найти.
      * @return количество молекул химичесого соединения в стадии.
      */
@@ -57,18 +52,15 @@ constructor(
     }
 }
 
+class Compounds(): ArrayList<Compound>() {
+    constructor(vararg compounds: Compound): this() { this.addAll(compounds) }
+    constructor(compounds: ArrayList<Compound>): this() { this.addAll(compounds) }
+}
 
-/**
- * Химическое соединение.
- */
-data class Compound
-constructor(val amount: Int,
-            val elements: ElementsAndAmounts = ElementsAndAmounts())
+/** Химическое соединение. */
+data class Compound(val amount: Int, val elements: ElementsAndAmounts = ElementsAndAmounts())
 
-
-/**
- * Химическик элементы и количество их атомов в химическом соединении.
- */
+/** Химическик элементы и количество их атомов в химическом соединении. */
 class ElementsAndAmounts() : LinkedHashMap<ElementSymbol, Int>() {
     constructor(source: Map<String, Int>): this() {
         super.putAll(source)

@@ -4,14 +4,15 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.KotlinModule
-import com.nir.beans.method.GeneralizedMethodComponent
-import com.nir.beans.method.GeneralizedMethodInfoComponentImpl
+import com.nir.beans.method.MethodConverterComponent
+import com.nir.beans.method.MethodInfoComponentImpl
 import com.nir.beans.method.HardcodedMethodComponent
+import com.nir.beans.method.MethodInfoComponent
 import com.nir.beans.reaction.parsing.JacksonComponent
-import com.nir.beans.method.generalized.GeneralizedMethodInfoJsonPojo
-import com.nir.beans.method.jsonPojos.AdamsBashforthGeneralizedMethodJsonPojo
-import com.nir.beans.method.jsonPojos.AdamsMoultonGeneralizedMethodJsonPojo
-import com.nir.beans.method.jsonPojos.ExplicitRKGeneralizedMethodJsonPojo
+import com.nir.beans.method.generalized.MethodInfoJsonPojo
+import com.nir.beans.method.jsonPojos.AdamsBashforthMethodJsonPojo
+import com.nir.beans.method.jsonPojos.AdamsMoultonMethodJsonPojo
+import com.nir.beans.method.jsonPojos.ExplicitRKMethodJsonPojo
 import org.apache.commons.lang3.tuple.Pair
 
 object Beans {
@@ -31,29 +32,29 @@ object Beans {
     }
 
     @JvmStatic
-    fun generalizedMethodInfoComponent(): GeneralizedMethodInfoComponentImpl {
-        val jacksonComponents: List<JacksonComponent<out GeneralizedMethodInfoJsonPojo>> = arrayListOf(
-                Pair.of("json/runge-kutta.json", ExplicitRKGeneralizedMethodJsonPojo::class.java),
-                Pair.of("json/adams-bashforth.json", AdamsBashforthGeneralizedMethodJsonPojo::class.java),
-                Pair.of("json/adams-multon.json", AdamsMoultonGeneralizedMethodJsonPojo::class.java)
+    fun methodInfoComponent(): MethodInfoComponent {
+        val jacksonComponents: List<JacksonComponent<out MethodInfoJsonPojo>> = arrayListOf(
+                Pair.of("json/runge-kutta.json", ExplicitRKMethodJsonPojo::class.java),
+                Pair.of("json/adams-bashforth.json", AdamsBashforthMethodJsonPojo::class.java),
+                Pair.of("json/adams-multon.json", AdamsMoultonMethodJsonPojo::class.java)
         )
                 .map(Beans::jacksonComponent)
                 .toList()
 
-        return GeneralizedMethodInfoComponentImpl(jacksonComponents)
+        return MethodInfoComponentImpl(jacksonComponents)
     }
 
     fun jacksonComponent(
-            jsonAndClass: Pair<String, out Class<out GeneralizedMethodInfoJsonPojo>>
-    ): JacksonComponent<out GeneralizedMethodInfoJsonPojo> {
+            jsonAndClass: Pair<String, out Class<out MethodInfoJsonPojo>>
+    ): JacksonComponent<out MethodInfoJsonPojo> {
         val filename = jsonAndClass.key
-        val aClass: Class<out GeneralizedMethodInfoJsonPojo> = jsonAndClass.value
+        val aClass: Class<out MethodInfoJsonPojo> = jsonAndClass.value
         return JacksonComponent(filename, aClass)
     }
 
     @JvmStatic
-    fun generalizedMethodComponent(): GeneralizedMethodComponent {
-        return GeneralizedMethodComponent()
+    fun methodConverterComponent(): MethodConverterComponent {
+        return MethodConverterComponent()
     }
 
     @JvmStatic

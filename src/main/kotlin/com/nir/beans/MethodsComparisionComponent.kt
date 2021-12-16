@@ -2,9 +2,8 @@ package com.nir.beans
 
 import com.nir.utils.PlotUtils.dataSets
 import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.InitialPoint
 import com.nir.utils.math.F
-import com.nir.beans.method.Method
+import com.nir.utils.math.InitialPoint
 import com.nir.utils.math.X
 import com.nir.utils.math.solution.Solution
 import com.nir.utils.to
@@ -18,7 +17,6 @@ import java.util.concurrent.FutureTask
 import kotlin.math.abs
 
 typealias MethodName = String
-typealias FormattedTime = String
 typealias VarName = String
 typealias VarValues = List<Double>
 typealias AnalyticalVarValues = List<Double>
@@ -46,21 +44,20 @@ class MethodsComparisionComponent {
         system: F,
         initialPoint: InitialPoint,
         computationConfigs: ComputationConfigs,
-        methods: List<Method>,
+        methods: List<String>,
         analyticalSolution: Map<String, (X) -> Double>
     ): List<Comparision> {
-        methods.forEach { it.setUp(initialPoint, computationConfigs) }
 
         val methodsRunnablesDatasets = methods.map {
             val dataSets = dataSets(titles)
             val computation = Solution
-                .method(it)
-                .computation(computationConfigs)
                 .system(system)
                 .initialPoint(initialPoint)
+                .computation(computationConfigs)
+                .method(it)
                 .datasets(dataSets)
                 .futureTask()
-            it.name to computation to dataSets
+            it to computation to dataSets
         }
 
 

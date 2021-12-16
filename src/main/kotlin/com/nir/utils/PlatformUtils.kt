@@ -1,53 +1,21 @@
 package com.nir.utils
 
-import com.nir.utils.math.solution.SolutionBatchFlow
 import com.nir.utils.math.solution.SolutionFlow
 import javafx.application.Platform
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.asFlow
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 object PlatformUtils {
 
     @JvmStatic
-    fun runLater(vararg solutionFlows: SolutionFlow) {
-        Platform.runLater() {
-            solutionFlows.forEach {
-                CoroutineScope(Dispatchers.IO).launch {
-                    it.collect()
-                }
-            }
-        }
-    }
-
-    @JvmStatic
-    fun runLater(vararg solutionBatchFlows: SolutionBatchFlow) {
-        Platform.runLater() {
-            solutionBatchFlows.forEach {
-                CoroutineScope(Dispatchers.IO).launch {
-                    it.collect()
-                }
-            }
-        }
-    }
-
-    @JvmStatic
-    fun runLater(flowSolutionBatchFlow: SolutionBatchFlow) {
-        Platform.runLater() {
-            CoroutineScope(Dispatchers.IO).launch {
-                flowSolutionBatchFlow.collect()
-            }
-        }
-    }
-
-    @JvmStatic
     fun runLater(flow: SolutionFlow) {
-        Platform.runLater() {
+        Timer.countMillis {
             CoroutineScope(Dispatchers.IO).launch {
                 flow.collect()
             }
+        } count {
+            println(duration)
         }
     }
 
@@ -55,4 +23,9 @@ object PlatformUtils {
     fun runLater(runnable: Runnable) {
         Platform.runLater(runnable)
     }
+}
+
+private infix fun ResultAndCount<*>.count(function: Timer.CountInfo.() -> Unit): ResultAndCount<*> {
+    this.second.function()
+    return this
 }

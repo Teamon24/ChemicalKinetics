@@ -1,10 +1,9 @@
 package com.nir.beans.method.generalized
 
 import com.nir.beans.reaction.parsing.ExpressionParser
-import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.InitialPoint
 import com.nir.utils.math.F
 import com.nir.beans.method.Method
+import com.nir.utils.math.D
 import com.nir.utils.math.N
 import com.nir.utils.math.X
 import com.nir.utils.math.Xs
@@ -15,13 +14,13 @@ import com.nir.utils.times
 import com.nir.utils.plus
 import kotlin.properties.Delegates
 
-class GeneralizedAdamsBashforthMethod internal constructor(
+class AdamsBashforthMethod internal constructor(
         name: String,
         val order: Int,
         betta: Array<Any>,
         val c: Any
 )
-    : GeneralizedMethod(name)
+    : Method("$name (Generalized)")
 {
 
     private val bettas = betta.map { ExpressionParser.toDouble(it) }.toTypedArray()
@@ -40,8 +39,8 @@ class GeneralizedAdamsBashforthMethod internal constructor(
         this.Y = accelerationPoints
     }
 
-    override fun setUp(initialPoint: InitialPoint, computationConfig: ComputationConfigs): Method {
-        this.d = initialPoint.y0.size
+    override fun setUp(dx: X, d: D): Method {
+        this.d = d
         if (this.Y.isEmpty()) {
             throw RuntimeException("Acceleration points have to present")
         }

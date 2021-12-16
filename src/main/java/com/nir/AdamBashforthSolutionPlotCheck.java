@@ -1,5 +1,6 @@
 package com.nir;
 
+import com.nir.beans.method.hardcoded.AdamBashforthMethod;
 import com.nir.utils.LorentzStrangeAttractor;
 import com.nir.utils.PlatformUtils;
 import com.nir.utils.PlotUtils;
@@ -37,19 +38,19 @@ public class AdamBashforthSolutionPlotCheck extends Application {
         final InitialPoint initialPoint = system.initialPoint();
         final ComputationConfigs computationConfigs = new ComputationConfigs(0.00001, 2_000_000);
 
-        final AdamBashforth4thMethods method = new AdamBashforth4thMethods();
-
-        method.setFirstAccelerationPointMethodName("Runge-Kutta 4-order (Hardcoded)");
-        method.setUp(initialPoint, computationConfigs);
-
-        System.out.println(String.format("Numeric Method: \"%s\"", method.getName()));
+        String methodName = "Adam-Bashforth Method of ${order}-order (Hardcoded)";
+        System.out.println(String.format("Numeric Method: \"%s\"", methodName));
 
         final Runnable solution =
             Solution
-                .method(method)
-                .computation(computationConfigs)
                 .system(system)
                 .initialPoint(initialPoint)
+                .computation(computationConfigs)
+                .method(
+                    methodName,
+                    (method) -> ((AdamBashforthMethod) method)
+                        .setFirstAccelerationPointMethodName("Runge-Kutta 4-order (Generalized)")
+                )
                 .datasets(dataSets)
                 .futureTask();
 

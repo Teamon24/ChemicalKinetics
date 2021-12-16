@@ -2,7 +2,7 @@ package com.nir;
 
 import com.nir.ui.UiComponents;
 import com.nir.beans.Beans;
-import com.nir.beans.RawStage;
+import com.nir.beans.StringStage;
 import com.nir.beans.StageParser;
 import com.nir.ui.pojos.ReactionStage;
 import com.nir.utils.CSS;
@@ -50,7 +50,7 @@ public class Main2 extends Application {
                 //connect to database
                 //search reaction in db, get id of complex reaction, find reactions with foreign key
                 //for...{
-                    RawStage rawReaction = StageParser.parse(reactionString);
+                    StringStage rawReaction = StageParser.parse(reactionString);
                     com.nir.ui.pojos.ReactionStage reactionStage = StageParser.convert(rawReaction);
                     reactionStages.add(reactionStage);
                 // }

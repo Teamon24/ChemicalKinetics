@@ -12,9 +12,8 @@ import com.nir.beans.isArrayStart
 import com.nir.beans.isFieldName
 import com.nir.beans.isObjectEnd
 import com.nir.beans.isObjectStart
-import com.nir.beans.method.jsonPojos.ExplicitRKGeneralizedMethodJsonPojo
+import com.nir.beans.method.jsonPojos.ExplicitRKMethodJsonPojo
 import com.nir.beans.nextToken
-import com.nir.utils.ifTrue
 import kotlinx.coroutines.flow.asFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
@@ -23,7 +22,7 @@ import kotlinx.coroutines.flow.Flow
 
 fun main() = runBlocking {
     val filename = "json/runge-kutta.json"
-    val jacksonComponent = JacksonComponent(filename, ExplicitRKGeneralizedMethodJsonPojo::class.java)
+    val jacksonComponent = JacksonComponent(filename, ExplicitRKMethodJsonPojo::class.java)
     val flow = jacksonComponent.flow()
 
     flow.collect {
@@ -56,9 +55,8 @@ class JacksonComponent<T : Any>(filename: String, private val type: Class<T>) {
 
     fun readAll(): List<T> {
         val javaType = codec.typeFactory.constructCollectionType(List::class.java, type);
-        return codec.readValue(file, javaType);
+        return codec.readValue(file, javaType)
     }
-
 
     fun next(jsonParser: JsonParser): T? {
         val stringBuilder = StringBuilder()
@@ -99,11 +97,11 @@ class JacksonComponent<T : Any>(filename: String, private val type: Class<T>) {
         var counterOfEnd = 0
         do {
             val token = nextToken(jsonParser)
-            token.isObjectStart().ifTrue {
+            if (token.isObjectStart()) {
                 counterOfStart++
                 stringBuilder.append("{")
             }
-            token.isObjectEnd().ifTrue {
+            if (token.isObjectEnd()) {
                 counterOfEnd++
                 stringBuilder.addEndObject()
             }
@@ -117,7 +115,7 @@ class JacksonComponent<T : Any>(filename: String, private val type: Class<T>) {
             stringBuilder: StringBuilder,
             jsonParser: JsonParser
     ) {
-        this.isArrayStart().ifTrue {
+        if (this.isArrayStart()) {
             parseArray(stringBuilder, jsonParser)
         }
     }
@@ -128,18 +126,18 @@ class JacksonComponent<T : Any>(filename: String, private val type: Class<T>) {
         var counterOfEnd = 0
         do {
             val token = nextToken(jsonParser)
-            token.isArrayStart().ifTrue {
+            if (token.isArrayStart()) {
                 counterOfStart++
                 parseArray(stringBuilder, jsonParser)
                 counterOfEnd++
             }
-            token.isArrayEnd().ifTrue {
+            if(token.isArrayEnd()) {
                 counterOfEnd++
                 stringBuilder.addEndArray()
             }
             token.isFieldName(stringBuilder, jsonParser)
             token.areValues(stringBuilder, jsonParser)
-            token.isObjectStart().ifTrue {
+            if (token.isObjectStart()) {
                 parseObject(stringBuilder, jsonParser)
             }
         } while (counterOfStart != counterOfEnd)

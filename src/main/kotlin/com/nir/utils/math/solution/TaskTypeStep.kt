@@ -1,12 +1,15 @@
 package com.nir.utils.math.solution
 
+import com.nir.beans.method.Method
 import com.nir.utils.InitUtils
 import com.nir.utils.Timer
 import com.nir.utils.Timer.Companion.formatMillis
 import com.nir.utils.math.ArrayUtils
 import com.nir.utils.math.ComputationConfigs
 import com.nir.utils.math.D
+import com.nir.utils.math.F
 import com.nir.utils.math.InitialPoint
+import de.gsi.dataset.spi.DoubleDataSet
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.flow
 import java.text.DecimalFormat
@@ -15,7 +18,13 @@ import java.util.*
 import java.util.concurrent.FutureTask
 
 
-class TaskStep(private val info: Solution.Info) {
+class TaskTypeStep(
+    private val method: Method,
+    private val computationConfigs: ComputationConfigs,
+    private val system: F,
+    private val initialPoint: InitialPoint,
+    private val dataSets: List<DoubleDataSet>
+) {
 
     private val decimalFormat: DecimalFormat
 
@@ -27,30 +36,38 @@ class TaskStep(private val info: Solution.Info) {
 
     fun futureTask(): FutureTask<Long> {
         return FutureTask {
+            val x0 = initialPoint.x0
+            val y0 = initialPoint.y0
+            val dx = computationConfigs.dx
+            val n = computationConfigs.n
 
-            val (method, system, dataSets, y0, x0, dx, n, _) = info.datas()
-
-            method.setUp(InitialPoint(x0, y0), ComputationConfigs(dx,n))
             println("${method.name}: started at ${formatMillis(System.currentTimeMillis())}.")
 
-            val (solution, countInfo) = Timer.countMillis { method(system, x0, y0, dx, n) }
+            val (solution, countInfo) = Timer.countMillis {
+                method(system, x0, y0, dx, n)
+            }
 
-            val formattedDuration = formatMillis(countInfo.duration)
-            println("${method.name}: runnable calculation was ended. Duration: $formattedDuration")
+            println("${method.name}: calculation was ended. Duration: ${formatMillis(countInfo.duration)}")
 
             dataSets.withIndex().forEach { (index, dataSet) ->
                 dataSet.add(solution.first, solution.second.map { it[index] }.toDoubleArray())
             }
+
             countInfo.duration
         }
     }
 
     /**
-     * Подготовка объекта [SolutionFlow] для вычислений решения системы.
+     * Подготовка объекта [SolutionFlowImpl] для вычислений решения системы.
      */
-    fun flow(): SolutionFlow {
+    fun flow(): SolutionFlowImpl {
         val flow = flow {
-            val (method, system, _, y0, x0, dx, n, d) = info.datas()
+            val x0 = initialPoint.x0
+            val y0 = initialPoint.y0
+            val dx = computationConfigs.dx
+            val n = computationConfigs.n
+            val d = y0.size
+
             var x = x0
             val y = ArrayUtils.twoDimArray(2 to d)
             (0 until d).forEach { i -> y[0][i] = y0[i] }
@@ -64,7 +81,7 @@ class TaskStep(private val info: Solution.Info) {
             }
             println("Flow ended its emissions")
         }
-        return SolutionFlow(this.info.dataSets, flow)
+        return SolutionFlowImpl(DoubleDataSets(dataSets), flow)
     }
 
     /**
@@ -74,7 +91,12 @@ class TaskStep(private val info: Solution.Info) {
      */
     fun batchFlow(batchSize: Int): SolutionBatchFlow {
         val flow = flow {
-            val (method, system, _, y0, x0, dx, n, d) = info.datas()
+            val x0 = initialPoint.x0
+            val y0 = initialPoint.y0
+            val dx = computationConfigs.dx
+            val n = computationConfigs.n
+            val d = y0.size
+
             var t = x0
             val r = ArrayUtils.twoDimArray(2 to d)
             (0 until d).forEach { i -> r[0][i] = y0[i] }
@@ -116,16 +138,16 @@ class TaskStep(private val info: Solution.Info) {
             }
             println("Batch flow ended its emissions. Whole duration: ${timer.total()}")
         }
-        return SolutionBatchFlow(this.info.dataSets, flow)
+        return SolutionBatchFlow(DoubleDataSets(dataSets), flow)
     }
 
     fun batchFlow(): SolutionBatchFlow {
-        val batchSize = this.info.computationConfigs.n/10
+        val batchSize = computationConfigs.n/10
         return batchFlow(batchSize)
     }
 
     private fun message(batchesCounter: Int, batchSize: Int, duration: Long, totalTime: Long, n: Int, totalCounter: Long) =
-                    """"${info.method.name}": batch #$batchesCounter with size '$batchSize' was emitted. Duration: ${formatMillis(duration)}. Total time: ${formatMillis(totalTime)}. Counted ${totalCounter.separate1000()} from ${n.separate1000()}."""
+                    """"${method.name}": batch #$batchesCounter with size '$batchSize' was emitted. Duration: ${formatMillis(duration)}. Total time: ${formatMillis(totalTime)}. Counted ${totalCounter.separate1000()} from ${n.separate1000()}."""
 
     private fun Int.separate1000() = decimalFormat.format(this)
     private fun Long.separate1000() = decimalFormat.format(this)

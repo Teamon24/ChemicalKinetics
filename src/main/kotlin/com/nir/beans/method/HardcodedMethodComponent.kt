@@ -5,5 +5,9 @@ import com.nir.beans.method.hardcoded.RungeKutta
 
 class HardcodedMethodComponent {
     val getMethods: List<Method>
-        get() = arrayListOf(RungeKutta(4), RungeKutta(5), ForwardEuler)
+        get() = arrayListOf(
+            RungeKutta(4),
+            RungeKutta(5),
+            ForwardEuler
+        )
 }

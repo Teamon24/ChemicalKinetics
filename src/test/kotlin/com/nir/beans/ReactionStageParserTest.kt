@@ -37,22 +37,22 @@ class ReactionStageParserTest {
         val s1 = "<=>"
         val lc1 = listOf("10H2SO4", "N3SO5", "Ge4Ua19To24")
         val rc1 = listOf("He2SiAu4", "12Ag3CO15")
-        val expected = rawReaction(lc1, s1, rc1)
+        val expected = stringReaction(lc1, s1, rc1)
 
         val s2 = "=>"
         val lc2 = listOf("Au2Si4", "NO5")
         val rc2 = listOf("HeAu4", "Ag2O15")
-        val expected1 = rawReaction(lc2, s2, rc2)
+        val expected1 = stringReaction(lc2, s2, rc2)
 
         val s3 = "->"
         val lc3 = listOf("Au2Si4", "NO5", "Ba4Re6", "AlBr10")
         val rc3 = listOf("HeAu4", "C2O15")
-        val expected2 = rawReaction(lc3, s3, rc3)
+        val expected2 = stringReaction(lc3, s3, rc3)
 
         val s4 = "<->"
         val lc4 = listOf("Au5O7", "Br4Re6", "AlBr10")
         val rc4 = listOf("HeAu4", "Ag2O15")
-        val expected3 = rawReaction(lc4, s4, rc4)
+        val expected3 = stringReaction(lc4, s4, rc4)
         return arrayOf(
                 arrayOf(lc1, s1, rc1, expected),
                 arrayOf(lc2, s2, rc2, expected1),
@@ -88,10 +88,10 @@ fun compound(amountAndCompound: String): String {
 
 private fun element(element: String, amount: Int) = """"$element": $amount"""
 
-fun compounds(compounds: List<String>): String {
+fun stringCompounds(compounds: List<String>): String {
     return """[${compounds.joinToString(truncated = "") { compound(it) }}]"""
 }
 
-fun rawReaction(leftCompounds: List<String>, symbol: RawStageType, rightCompounds: List<String>): String {
-    return """{"reagents": ${compounds(leftCompounds)},"stageType":"$symbol","products": ${compounds(rightCompounds)}}""".delete("\n", " ")
+fun stringReaction(leftCompounds: List<String>, symbol: String, rightCompounds: List<String>): String {
+    return """{"reagents": ${stringCompounds(leftCompounds)},"stageType":"$symbol","products": ${stringCompounds(rightCompounds)}}""".delete("\n", " ")
 }

@@ -17,23 +17,19 @@ fun main() {
     val initialPoint = chemicalReaction.initialPoint
     val computationConfigs = chemicalReaction.computationConfigs
     val system = ChemicalReactionComponent.getSystem(chemicalReaction)
-    val rungeKutta4General = Methods.getByName("Runge-Kutta 4th-order: v.1 (Generalized)")
-    val rungeKutta5General = Methods.getByName("Runge-Kutta 5th-order method (Generalized)")
-    val eulerGeneral = Methods.getByName("Forward Euler (Generalized)")
-    val rungeKutta4 = RungeKutta(4)
-    val rungeKutta5 = RungeKutta(5)
-    val euler = Methods.getByName("Forward Euler (Hardcoded)")
+    val rungeKutta4General = "Runge-Kutta 4th-order: v.1 (Generalized)"
+    val rungeKutta5General = "Runge-Kutta 5th-order method (Generalized)"
+    val eulerGeneral = "Forward Euler (Generalized)"
+    val rungeKutta4 = RungeKutta(4).name
+    val rungeKutta5 = RungeKutta(5).name
+    val euler = "Forward Euler (Hardcoded)"
 
-    val adamBashforth3thMethods = AdamBashforth3thMethods()
-    adamBashforth3thMethods.setFirstAccelerationPointMethod(rungeKutta4)
-
-    val adamBashforth4thMethods = AdamBashforth4thMethods()
-    adamBashforth4thMethods.setFirstAccelerationPointMethod(rungeKutta4)
-
-    val adamBashforth5thMethods = AdamBashforth5thMethods()
-    adamBashforth5thMethods.setFirstAccelerationPointMethod(rungeKutta4)
+    val adamBashforth3thMethods = "Adam-Bashforth Method of 3-order"
+    val adamBashforth4thMethods = "Adam-Bashforth Method of 4-order"
+    val adamBashforth5thMethods = "Adam-Bashforth Method of 5-order"
 
     val methods = listOf(
+            eulerGeneral,
             euler,
             rungeKutta4General,
             rungeKutta4,

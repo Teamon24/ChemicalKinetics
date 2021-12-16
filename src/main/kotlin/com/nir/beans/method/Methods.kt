@@ -1,65 +1,43 @@
 package com.nir.beans.method
 
-import com.nir.beans.Beans.generalizedMethodComponent
-import com.nir.beans.Beans.generalizedMethodInfoComponent
+import com.nir.beans.Beans.methodConverterComponent
+import com.nir.beans.Beans.methodInfoComponent
 import com.nir.beans.Beans.hardcodedMethodComponent
-import com.nir.beans.method.generalized.GeneralizedMethodInfoJsonPojo
+import com.nir.beans.method.generalized.MethodInfoJsonPojo
 
 object Methods {
-    private val generalizedMethodInfoComponent: GeneralizedMethodInfoComponent = generalizedMethodInfoComponent()
-    private val generalizedMethodComponent = generalizedMethodComponent()
+    private val methodInfoComponent: MethodInfoComponent = methodInfoComponent()
+
+    private val generalizedMethodComponent = methodConverterComponent()
     private val hardcodedMethodComponent = hardcodedMethodComponent()
-    private val generalizedMethods: MutableList<Method> = ArrayList()
+
     private val hardcodedMethods: MutableList<Method> = ArrayList()
     private val allMethods: MutableList<Method> = ArrayList()
-    private val generalizedMethodInfoJsonPojos: MutableList<GeneralizedMethodInfoJsonPojo> = ArrayList()
+    private val allMethodsJsonPojos: MutableList<MethodInfoJsonPojo> = ArrayList()
 
-    fun getAll(): List<Method> {
-        initGeneralizedMethods()
-        initHardcodedMethods()
-        initAllMethods()
-        return allMethods
-    }
+    init {
 
+        if (hardcodedMethods.isEmpty()) {
+            allMethods.addAll(hardcodedMethodComponent.getMethods)
+        }
 
-    fun getNames(): List<String> {
-        return getAll().map { it.name }
+        allMethodsJsonPojos.addAll(methodInfoComponent.getMethods)
+        allMethodsJsonPojos.forEach { println(it) }
     }
 
     @JvmStatic
     fun getByName(name: String): Method {
-        val all = getAll()
-        val first =
-            all.stream().filter { it.name == name }.findFirst()
-        return first.get()
-    }
-
-    private fun initAllMethods() {
-        if (allMethods.isEmpty()) {
-            allMethods.addAll(hardcodedMethods)
-            allMethods.addAll(generalizedMethods)
+        val all = allMethods.filter { it.name == name }
+        if (all.isNotEmpty()) {
+            return all.first()
         }
-    }
 
-    private fun initHardcodedMethods() {
-        if (hardcodedMethods.isEmpty()) {
-            val created = hardcodedMethodComponent.getMethods
-            hardcodedMethods.addAll(created)
+        val pojo = allMethodsJsonPojos.first { it.name == name }
+        val method = generalizedMethodComponent.create(arrayListOf(pojo))[0]
+        if (!allMethods.contains(method)) {
+            allMethods.add(method)
         }
-    }
 
-    private fun initGeneralizedMethods() {
-        initGeneralizedMethodsInfos()
-        if (generalizedMethods.isEmpty()) {
-            val created = generalizedMethodComponent.create(generalizedMethodInfoJsonPojos)
-            generalizedMethods.addAll(created.filterNotNull())
-        }
-    }
-
-    private fun initGeneralizedMethodsInfos() {
-        if (generalizedMethodInfoJsonPojos.isEmpty()) {
-            val all = generalizedMethodInfoComponent.getMethods
-            generalizedMethodInfoJsonPojos.addAll(all)
-        }
+        return method
     }
 }

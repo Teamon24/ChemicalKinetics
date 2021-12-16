@@ -15,21 +15,15 @@ import com.nir.utils.times
 /**
  * Тест для класса [ExplicitRungeKuttaMethod]
  */
-class GeneralizedExplicitRungeKuttaMethodTest {
-    init {
-        Methods.getAll()
-        println(Methods.getNames())
-    }
-
+class ExplicitRungeKuttaMethodTest {
     private var k = ArrayUtils.twoDimArray(6 to f.size)
-
     private val precision = 1E-15
 
     @Test
     fun testRK4th1v() {
         val method = Methods.getByName("Runge-Kutta 4th-order: v.1 (Generalized)")
         val expectedY = expctedY1(f, x0, y0, dx)
-        val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
+        val actualY = method.setUp(dx, y0.size)(f, x0, y0, dx)
         actualY.println("actualY:")
         actualY.println("expectedY:")
         AssertUtils.assertWithPrecision(expectedY, actualY, precision)
@@ -39,7 +33,7 @@ class GeneralizedExplicitRungeKuttaMethodTest {
     fun testRK4th2v() {
         val method = Methods.getByName("Runge-Kutta 4th-order: v.2 (Generalized)")
         val expectedY = expectedY2(f, x0, y0, dx)
-        val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
+        val actualY = method.setUp(dx, y0.size)(f, x0, y0, dx)
         AssertUtils.assertWithPrecision(expectedY, actualY, precision)
     }
 
@@ -47,7 +41,7 @@ class GeneralizedExplicitRungeKuttaMethodTest {
     fun testRKThreeEightRule() {
         val method = Methods.getByName("3/8-rule 4th-order method (Generalized)")
         val expectedY = expectedY3(f, x0, y0, dx)
-        val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
+        val actualY = method.setUp(dx, y0.size)(f, x0, y0, dx)
         AssertUtils.assertWithPrecision(expectedY, actualY, precision)
     }
 
@@ -55,7 +49,7 @@ class GeneralizedExplicitRungeKuttaMethodTest {
     fun testRK5thOrder() {
         val method = Methods.getByName("Runge-Kutta 5th-order method (Generalized)")
         val expectedY = expectedY4(f, x0, y0, dx)
-        val actualY = method.setUp(initialPoint, computationConfigs)(f, x0, y0, dx)
+        val actualY = method.setUp(dx, y0.size)(f, x0, y0, dx)
         AssertUtils.assertWithPrecision(expectedY, actualY, precision)
     }
 

@@ -35,7 +35,7 @@ class RungeKutta5Core: RungeKuttaCore {
 
     override fun setUp(d: D, dx: dX) {
         k = init(stages, d)
-        `1-2`  =  1 / 2.0 * dx
+        `1-2`  = 1 / 2.0 * dx
         `1-4`  = 1 / 4.0 * dx
         `1-6`  = 1 / 6.0 * dx
         `1-7`  = 1 / 7.0 * dx

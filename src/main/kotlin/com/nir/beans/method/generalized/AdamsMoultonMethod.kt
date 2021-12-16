@@ -1,9 +1,8 @@
 package com.nir.beans.method.generalized
 
-import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.InitialPoint
 import com.nir.utils.math.F
 import com.nir.beans.method.Method
+import com.nir.utils.math.D
 import com.nir.utils.math.N
 import com.nir.utils.math.X
 import com.nir.utils.math.Xs
@@ -11,16 +10,16 @@ import com.nir.utils.math.Y
 import com.nir.utils.math.Ys
 import com.nir.utils.math.dX
 
-class GeneralizedAdamsMoultonMethod(
+class AdamsMoultonMethod(
         name: String,
         val order: Int,
         val betta: Array<Any>,
         val c: Any
 )
-    : GeneralizedMethod(name)
+    : Method("$name (Generalized)")
 {
 
-    override fun setUp(initialPoint: InitialPoint, computationConfig: ComputationConfigs): Method {
+    override fun setUp(dx: X, d: D): Method {
         TODO("AdamsMoultonMethod has not been implemented yet")
     }
 

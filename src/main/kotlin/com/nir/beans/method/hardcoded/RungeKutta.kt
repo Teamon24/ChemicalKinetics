@@ -1,11 +1,8 @@
 package com.nir.beans.method.hardcoded
 
-import com.nir.utils.math.ArrayUtils
-import com.nir.utils.math.ComputationConfigs
-import com.nir.utils.math.InitialPoint
+import com.nir.beans.method.Method
 import com.nir.utils.math.D
 import com.nir.utils.math.F
-import com.nir.beans.method.Method
 import com.nir.utils.math.N
 import com.nir.utils.math.X
 import com.nir.utils.math.Xs
@@ -26,10 +23,8 @@ class RungeKutta(order: Int): HardcodedMethod("Runge-Kutta ${order}-order") {
                 else -> throw RuntimeException("For order='$order' no Runge-Kutta method")
             }
 
-    override fun setUp(initialPoint: InitialPoint,
-                       computationConfig: ComputationConfigs): Method
-    {
-        core.setUp(initialPoint.y0.size, computationConfig.dx)
+    override fun setUp(dx: X, d: D): Method {
+        core.setUp(d, dx)
         return this
     }
 
@@ -56,6 +51,4 @@ class RungeKutta(order: Int): HardcodedMethod("Runge-Kutta ${order}-order") {
     override fun invoke(f: F, x: X, y: Y, dx: dX): Y {
         return y + core(f, y, x, dx)
     }
-
-    private fun init(n: N, d: D) = ArrayUtils.twoDimArray(n to d)
 }

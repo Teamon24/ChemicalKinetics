@@ -10,26 +10,36 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 typealias Amount = Int
-typealias RawStageType = String
-typealias RawElement = String
+typealias ChemicalElement = String
 
-@JsonDeserialize data class RawCompound(
+/**
+ * Соединение в структурном представлении, например [2S<SUB>2</SUB>HO<SUB>4</SUB>] как
+ * (2; {"S":2, "H":1, "O":4})
+ */
+@JsonDeserialize data class StringCompound(
         val amount: Int,
-        val compound: LinkedHashMap<RawElement, Amount>
+        val compound: LinkedHashMap<ChemicalElement, Amount>
 )
 
-@JsonDeserialize data class RawStage(
-        val reagents: List<RawCompound>,
-        val stageType: RawStageType,
-        val products: List<RawCompound>
+/**
+ * Реация в строковом предствалении, разделенная на части.
+ */
+@JsonDeserialize data class StringStage(
+    val reagents: List<StringCompound>,
+    val stageType: String,
+    val products: List<StringCompound>
 )
 
 object StageParser {
     val separateByCapital = Regex("(?<=.)(?=\\p{Lu})")
     val separateDigitsAndLetters = Regex("(?<=\\D)(?=\\d)|(?<=\\d)(?=\\D)")
 
+    /**
+     * Метод, преобразующий строку с реакцией в объект [StringStage].
+     * Например: "H+HBr->Br+H2" в {"H","HBr"}, "->", {"Br","H2"}
+     */
     @JvmStatic
-    fun parse(stage: String): RawStage {
+    fun parse(stage: String): StringStage {
         val stageTypes = stageSymbols()
         val symbol = stageTypes.first { isContain(stage, it) }
 
@@ -49,20 +59,20 @@ object StageParser {
             val reagents = separateAmountFromCompoundElements(leftCompounds)
             val products = separateAmountFromCompoundElements(rightCompounds)
 
-            return RawStage(reagents, symbol, products)
+            return StringStage(reagents, symbol, products)
         } else {
             throw RuntimeException("Reaction stage after split by type has no parts")
         }
     }
 
     @JvmStatic
-    fun convert(rawStage: RawStage): ReactionStage {
+    fun convert(stringStage: StringStage): ReactionStage {
         val leftCompounds = ArrayList<Compound>()
         val rightCompounds = ArrayList<Compound>()
 
-        val lefts = rawStage.reagents.map { convert(it) }.toCollection(leftCompounds)
-        val rights = rawStage.products.map { convert(it) }.toCollection(rightCompounds)
-        val stageTypeSymbol = rawStage.stageType
+        val lefts = stringStage.reagents.map { convert(it) }.toCollection(leftCompounds)
+        val rights = stringStage.products.map { convert(it) }.toCollection(rightCompounds)
+        val stageTypeSymbol = stringStage.stageType
 
         val reagents = Compounds(lefts)
         val products = Compounds(rights)
@@ -85,7 +95,7 @@ object StageParser {
         return Pair(compound, amount)
     }
 
-    private fun separateAmountFromCompoundElements(compounds: Map<String, Int>): List<RawCompound> {
+    private fun separateAmountFromCompoundElements(compounds: Map<String, Int>): List<StringCompound> {
         val rightElements = compounds.entries
                 .map { (compound, amount) -> compound.split(separateByCapital) to amount }
                 .map { divideElementAndAmount(it) }
@@ -106,18 +116,18 @@ object StageParser {
         return m.find()
     }
 
-    private fun divideElementAndAmount(elementsAndAmounts: Pair<List<String>, Int>): RawCompound {
-        val destination = LinkedHashMap<RawElement, Amount>()
+    private fun divideElementAndAmount(elementsAndAmounts: Pair<List<String>, Int>): StringCompound {
+        val destination = LinkedHashMap<ChemicalElement, Amount>()
         val rawElements = elementsAndAmounts.first.map { elementAndAmount: String ->
             val split = elementAndAmount.split(separateDigitsAndLetters)
             val element = split[0]
             val amount = amount(split) { split[1].toInt() }
             Pair(element, amount)
         }.toMap(destination)
-        return RawCompound(elementsAndAmounts.second, rawElements)
+        return StringCompound(elementsAndAmounts.second, rawElements)
     }
 
-    private fun convert(compound: RawCompound): Compound {
+    private fun convert(compound: StringCompound): Compound {
         return Compound(compound.amount, ElementsAndAmounts(compound.compound))
     }
 }

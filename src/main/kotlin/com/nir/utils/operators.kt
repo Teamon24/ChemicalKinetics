@@ -1,8 +1,5 @@
 package com.nir.utils
 
-/***       ***/
-/*** MINUS ***/
-/***       ***/
 operator fun Array<Double>.minus(array: Array<Double>): Array<Double> {
     val thisSize = size
     val arraySize = array.size
@@ -10,9 +7,6 @@ operator fun Array<Double>.minus(array: Array<Double>): Array<Double> {
     return this.zip(array).map { it.first - it.second }.toTypedArray()
 }
 
-/***      ***/
-/*** PLUS ***/
-/***      ***/
 operator fun Array<Double>.plus(array: Array<Double>): Array<Double> {
     val thisSize = size
     val arraySize = array.size
@@ -20,9 +14,6 @@ operator fun Array<Double>.plus(array: Array<Double>): Array<Double> {
     return this.zip(array).map { it.first + it.second }.toTypedArray()
 }
 
-/***       ***/
-/*** TIMES ***/
-/***       ***/
 operator fun Double.times(other: Array<Double>): Array<Double> {
     return other.map { it * this }.toTypedArray()
 }

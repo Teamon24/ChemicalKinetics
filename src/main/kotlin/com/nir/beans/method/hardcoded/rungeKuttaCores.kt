@@ -10,11 +10,10 @@ import com.nir.utils.math.dX
 
 interface RungeKuttaCore {
     fun setUp(d: D, dx: dX)
-
+    fun init(n: N, d: D) = ArrayUtils.twoDimArray(n to d)
     operator fun invoke(f: F, y: Y, x: X, dx: dX): Array<Double>
 }
 
-fun init(n: N, d: D) = ArrayUtils.twoDimArray(n to d)
 
 
 

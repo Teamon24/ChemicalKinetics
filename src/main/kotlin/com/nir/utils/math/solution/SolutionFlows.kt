@@ -1,35 +1,55 @@
 package com.nir.utils.math.solution
 
-import com.nir.utils.math.X
-import com.nir.utils.math.Y
+import com.nir.utils.math.XY
+import com.nir.utils.math.XsYs
 import de.gsi.dataset.spi.DoubleDataSet
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 
-class SolutionFlow(private val collectTo: List<DoubleDataSet>,
-                   private val flow: Flow<Pair<X, Y>>) {
+interface SolutionFlow {
+    suspend fun collect()
+}
 
-    suspend fun collect() {
-        this.flow.collect { value ->
-            collectTo.withIndex().forEach { (index, dataSet) ->
-                val time = value.first
-                val point = value.second[index]
-                dataSet.add(time, point)
-            }
+interface PointsStorage {
+    fun addPoints(points: XsYs)
+    fun addPoint(point: XY)
+}
+
+class DoubleDataSets(private var dataSets: List<DoubleDataSet>): PointsStorage {
+    override fun addPoints(points: XsYs) {
+        dataSets.withIndex().forEach { (index, dataSet) ->
+            val xs = points.first
+            val ys = points.second[index]
+            dataSet.add(xs, ys)
         }
+    }
+
+    override fun addPoint(point: XY) {
+        dataSets.withIndex().forEach { (index, dataSet) ->
+            val xs = point.first
+            val ys = point.second[index]
+            dataSet.add(xs, ys)
+        }
+    }
+
+}
+
+class SolutionFlowImpl(
+    private val collectTo: PointsStorage,
+    private val flow: Flow<XY>): SolutionFlow
+{
+
+    override suspend fun collect() {
+        this.flow.collect { point -> collectTo.addPoint(point) }
     }
 }
 
-class SolutionBatchFlow(private val dataSets: List<DoubleDataSet>,
-                        private val flow: Flow<Pair<DoubleArray, Array<DoubleArray>>>) {
+class SolutionBatchFlow(
+    private val collectTo: PointsStorage,
+    private val flow: Flow<XsYs>): SolutionFlow
+{
 
-    suspend fun collect() {
-        this.flow.collect { pairs ->
-            dataSets.withIndex().forEach { (index, dataSet) ->
-                val toDoubleArray = pairs.first
-                val toDoubleArray2 = pairs.second[index]
-                dataSet.add(toDoubleArray, toDoubleArray2)
-            }
-        }
+    override suspend fun collect() {
+        this.flow.collect { point -> collectTo.addPoints(point) }
     }
 }

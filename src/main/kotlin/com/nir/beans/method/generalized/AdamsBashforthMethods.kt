@@ -1,11 +1,11 @@
 package com.nir.beans.method.generalized
 
-object GeneralizedAdamsBashforthMethods {
+object AdamsBashforthMethods {
 
-    private val methods = LinkedHashMap<Int, GeneralizedAdamsBashforthMethod>()
+    private val methods = LinkedHashMap<Int, AdamsBashforthMethod>()
 
     @JvmStatic
-    operator fun get(order: Int): GeneralizedAdamsBashforthMethod {
+    operator fun get(order: Int): AdamsBashforthMethod {
         val adamsBashforthMethod = methods[order]!!
         return adamsBashforthMethod
     }
@@ -13,7 +13,7 @@ object GeneralizedAdamsBashforthMethods {
     @JvmStatic
     operator fun set(
             order: Int,
-            adamsBashforthMethod: GeneralizedAdamsBashforthMethod
+            adamsBashforthMethod: AdamsBashforthMethod
     ) {
         methods[order] = adamsBashforthMethod
     }

@@ -15,11 +15,12 @@ import com.nir.utils.math.Y
 import com.nir.utils.math.Ys
 import com.nir.utils.math.dX
 import com.nir.beans.method.hardcoded.AdamBashforthMethods.getAccelerationPoints
+import com.nir.utils.math.X0
 import com.nir.utils.plus
 import com.nir.utils.times
 import kotlin.properties.Delegates
 
-abstract class AdamBashforthMethod(
+open class AdamBashforthMethod(
         val order: Int,
         private val coeffs: List<Double>) : HardcodedMethod("Adam-Bashforth Method of ${order}-order")
 {
@@ -27,8 +28,8 @@ abstract class AdamBashforthMethod(
     private lateinit var accelerationPoints : Array<Y>
     private var d by Delegates.notNull<D>()
 
-    override fun setUp(initialPoint: InitialPoint, computationConfig: ComputationConfigs): Method {
-        this.d = initialPoint.y0.size
+    override fun setUp(dx: X, d: D): Method {
+        this.d = d
         return this
     }
 
@@ -40,7 +41,7 @@ abstract class AdamBashforthMethod(
         this.firstAccelerationPointMethod = firstAccelerationPointMethod
     }
 
-    override fun invoke(f: F, x0: X, y0: Y, dx: dX, n: N): Pair<Xs, Ys> {
+    override fun invoke(f: F, x0: X0, y0: Y, dx: dX, n: N): Pair<Xs, Ys> {
 
         this.accelerationPoints = getAccelerationPoints(
                 order,
