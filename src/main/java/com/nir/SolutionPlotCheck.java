@@ -33,8 +33,8 @@ public class SolutionPlotCheck extends Application {
             new RungeKutta(5).getName()
         );
 
-        double dx = 0.000001;
-        int N = 10000;
+        double dx = 0.001;
+        int N = 100000;
 
         final ComputationConfigs computationConfigs = new ComputationConfigs(dx, N);
         final InitialPoint initialPoint = system.initialPoint();
@@ -42,15 +42,17 @@ public class SolutionPlotCheck extends Application {
         final List<DoubleDataSet> dataSets = PlotUtils.dataSets(system.titles());
         final List<XYChart> charts = PlotUtils.charts(dataSets);
 
-        SolutionFlow flow = getSolutionFlow(
+        SolutionFlow<?> flow = getSolutionFlow(
             system, dataSets, computationConfigs, initialPoint, methods.get(1));
 
-//        PlotUtils.show(charts, stage);
-        PlatformUtils.runLater(flow);
+
+        //Запуск решения системы уравнений -
+        //на этом моменте времене в графики будут добавляться точки решения
+        PlotUtils.show(stage, charts, flow);
     }
 
     @NotNull
-    private SolutionFlow getSolutionFlow(
+    private SolutionFlow<?> getSolutionFlow(
         LorentzStrangeAttractor system,
         List<DoubleDataSet> dataSets,
         ComputationConfigs computationConfigs,
@@ -58,7 +60,8 @@ public class SolutionPlotCheck extends Application {
         String methodName)
     {
         System.out.println(String.format("Numeric Method: \"%s\"", methodName));
-        SolutionFlow flow = Solution
+
+        SolutionFlow<?> flow = Solution
             .system(system)
             .initialPoint(initialPoint)
             .computation(computationConfigs)

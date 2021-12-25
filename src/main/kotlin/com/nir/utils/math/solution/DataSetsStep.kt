@@ -12,7 +12,7 @@ class DataSetsStep(
     private val system: F,
     private val initialPoint: InitialPoint) {
 
-    fun datasets(dataSets: List<DoubleDataSet>): TaskTypeStep {
-        return TaskTypeStep(method, computationConfigs, system, initialPoint, dataSets)
+    fun datasets(dataSets: List<DoubleDataSet>): FlowTypeStep {
+        return FlowTypeStep(method, computationConfigs, system, initialPoint, dataSets)
     }
 }

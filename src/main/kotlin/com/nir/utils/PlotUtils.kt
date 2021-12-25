@@ -1,9 +1,8 @@
 package com.nir.utils
 
 import com.nir.ui.UiComponents
-import com.nir.utils.math.N
-import com.nir.utils.math.X0
-import com.nir.utils.math.dX
+import com.nir.utils.PlatformUtils.runLater
+import com.nir.utils.math.solution.SolutionFlow
 import de.gsi.chart.XYChart
 import de.gsi.chart.axes.spi.DefaultNumericAxis
 import de.gsi.dataset.spi.DoubleDataSet
@@ -42,41 +41,59 @@ object PlotUtils {
     }
 
     @JvmStatic
-    fun show(charts: List<XYChart>, stage: Stage) {
-
+    fun <T> show(stage: Stage, charts: List<XYChart>, solutionFlow: SolutionFlow<T>) {
         val root = StackPane()
-        val scrollPane = ScrollPane()
-        val flowPane = FlowPane()
-        flowPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT)
-        scrollPane.content = flowPane
-        scrollPane.isFitToWidth = true
-        scrollPane.isFitToHeight = true
+        val flowPane = flowPane()
+        val scrollPane = scrollPane(flowPane)
+        val periodicTableButton = getPeriodicTableButton()
+        val computationButton = computationButton(solutionFlow)
 
-        val button = Button().apply {
-            this.text = "Periodic Table"
-            this.onAction = EventHandler {
-                UiComponents.periodicElementsStage().show()
-            }
-        }
         flowPane.children.addAll(charts)
-        flowPane.children.add(button)
+        flowPane.children.add(periodicTableButton)
+        flowPane.children.add(computationButton)
 
         root.children.add(scrollPane)
-        val scene = Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT)
 
+        val scene = Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT)
         stage.scene = scene
         stage.setOnCloseRequest { exitProcess(0) }
         stage.show()
     }
 
-    fun series(x0: X0, n: N, dx: dX): DoubleArray {
-        val series = DoubleArray(n)
-        var t = x0
-        for (i in 0 until n) {
-            series[i] = t
-            t += dx
-        }
-        return series
+    private fun <T> computationButton(solutionFlow: SolutionFlow<T>): Button {
+        val computationButton = Button()
+            .apply {
+                this.text = "Computation"
+                this.onAction = EventHandler {
+                    this.isDisable = true
+                    runLater(solutionFlow, onComplete = { this.isDisable = false })
+                }
+            }
+        return computationButton
     }
 
+    private fun flowPane(): FlowPane {
+        val flowPane = FlowPane()
+        flowPane.setPrefSize(WINDOW_WIDTH, WINDOW_HEIGHT)
+        return flowPane
+    }
+
+    private fun scrollPane(flowPane: FlowPane): ScrollPane {
+        val scrollPane = ScrollPane()
+        scrollPane.content = flowPane
+        scrollPane.isFitToWidth = true
+        scrollPane.isFitToHeight = true
+        return scrollPane
+    }
+
+    private fun getPeriodicTableButton(): Button {
+        val periodicTableButton = Button()
+            .apply {
+                this.text = "Periodic Table"
+                this.onAction = EventHandler {
+                    UiComponents.periodicElementsStage().show()
+                }
+            }
+        return periodicTableButton
+    }
 }

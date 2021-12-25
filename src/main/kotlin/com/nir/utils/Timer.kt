@@ -16,10 +16,12 @@ class Timer {
 
     fun stop(): Long {
         this.end = System.currentTimeMillis()
-        val duration = this.end - this.start
+        val duration = get()
         allDurations.add(duration)
         return duration
     }
+
+    fun get() = this.end - this.start
 
     fun total(): Long {
         return allDurations.sum()

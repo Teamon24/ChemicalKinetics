@@ -1,27 +1,22 @@
 package com.nir.utils
 
 import com.nir.utils.math.solution.SolutionFlow
-import javafx.application.Platform
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.async
 
 object PlatformUtils {
 
     @JvmStatic
-    fun runLater(flow: SolutionFlow) {
+    fun <T> runLater(solutionFlow: SolutionFlow<T>, onComplete: () -> Unit = {}) {
         Timer.countMillis {
-            CoroutineScope(Dispatchers.IO).launch {
-                flow.collect()
+            CoroutineScope(Dispatchers.IO).async {
+                solutionFlow.collect()
+                onComplete()
             }
         } count {
             println("Start: $start, end: $end. Duration: $duration")
         }
-    }
-
-    @JvmStatic
-    fun runLater(runnable: Runnable) {
-        Platform.runLater(runnable)
     }
 }
 
